@@ -10,32 +10,11 @@ $errorMsg = [];
 $successMsg = "";
 
 // Connect to MySQL server
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create DB if not exists
-$db_check = $conn->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbname'");
-if ($db_check->num_rows == 0) {
-    $conn->query("CREATE DATABASE $dbname");
-}
-
-// Reconnect to the created DB
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Create UserAccount table if not exists
-$conn->query("CREATE TABLE IF NOT EXISTS UserAccount (
-    UserID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Fname VARCHAR(50) NOT NULL,
-    Lname VARCHAR(50) NOT NULL,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    usertype VARCHAR(10) NOT NULL,
-    Birthday DATE
-)");
-
-// SIGNUP
 // SIGNUP
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
   $Fname = $_POST['firstName'];

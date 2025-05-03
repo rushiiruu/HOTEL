@@ -2,10 +2,92 @@
 <?php
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
+
+  $servername = "localhost";
+  $dbuser = "root";
+  $password = "";
+  $dbname = "hotel_db";
+  $errorMsg = [];
+  $successMsg = "";
+
+  // Connect to MySQL server
+  $conn = new mysqli($servername, $dbuser, $password);
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
+
+  // Create DB if not exists
+  $db_check = $conn->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbname'");
+  if ($db_check->num_rows == 0) {
+      $conn->query("CREATE DATABASE $dbname");
+  }
+
+  $conn = new mysqli($servername, $dbuser, $password, $dbname);
+
+  // Create UserAccount table if not exists
+  $conn->query("CREATE TABLE IF NOT EXISTS UserAccount (
+      UserID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+      Fname VARCHAR(50) NOT NULL,
+      Lname VARCHAR(50) NOT NULL,
+      username VARCHAR(50) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      usertype VARCHAR(10) NOT NULL,
+      Birthday DATE
+  )");
+  
+  $conn->query("CREATE TABLE IF NOT EXISTS RoomsandSuites (
+      RaSid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+      Img VARCHAR(300) NOT NULL,
+      RoomName VARCHAR(50) NOT NULL,
+      RoomDesc VARCHAR(500) NOT NULL,
+      RoomSize VARCHAR(50) NOT NULL,
+      RoomAccomdation VARCHAR(50) NOT NULL,
+      Beds VARCHAR(50) NOT NULL
+  )");
+
+  if ($conn->query("SELECT COUNT(*) FROM RoomsandSuites")->fetch_row()[0] == 0) {
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomdation, Beds)
+      values ('https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg',
+      'DELUXE KING ROOM',
+      'Enjoy a tranquil stay in this 35 sqm room with a plush king bed, modern amenities, and a view of Cebu\'s serene mountain range.',
+      '35 sqm', '2 adults', 'King Bed')");
+
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomdation, Beds)
+      values ('https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg',
+      'PREMIUM TWIN ROOM',
+      'Wake up to fresh sea breeze and ocean views in this 38 sqm room with two twin beds—ideal for friends or colleagues.',
+      '38 sqm', '2 adults', ' 2 Twin Beds')");
+
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomdation, Beds)
+      values ('https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg',
+      'COURTYARD QUEEN ROOM',
+      'This 30 sqm room offers cozy comfort, a private courtyard view, and a queen bed—perfect for couples or solo travelers.',
+      '30 sqm', '2 adults', ' Queen Bed')");
+
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomdation, Beds)
+      values ('https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg',
+      'EXECUTIVE SUITE',
+      'Unwind in this spacious 50 sqm suite with a separate living area, panoramic views, and a luxurious king bed..',
+      '50 sqm', '2 adults, 1 child', 'King Bed + Sofa Bed')");
+
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomdation, Beds)
+      values ('https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg',
+      'HONEYMOON SUITE',
+      'Celebrate love in this romantic 45 sqm suite featuring ocean views, soft lighting, and an indulgent king bed.',
+      '45 sqm', '2 adults', 'King Bed')");
+
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomdation, Beds)
+      values ('https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg',
+      'PRESIDENTIAL SUITE',
+      'Our most luxurious 70 sqm suite features a private garden terrace, elegant interiors, and ample space for family stays.',
+      '70 sqm', '2 adults, 2 children', '2 King Bed + 2 Single Beds')");
+  }
+
+
 ?>
 
 
-<!DOCTYPE html>
+<!DOCTYPE html
 <html lang="en">
   <head>
     <meta charset="UTF-8" />

@@ -59,22 +59,3 @@
   function closeForm() {
     document.getElementById("myForm").style.display = "none";
   }
-
-
-  const logdia = document.getElementById("Login-dialog");
-      const signdia = document.getElementById("Signup");
-      const menu = document.querySelector(".menu");
-
-      function Log() {
-        if (signdia.open) {
-          signdia.close();
-        }
-        logdia.showModal();
-      }
-
-      function Sign(){
-        if(logdia.open){
-          logdia.close();
-        }
-        signdia.showModal();
-      }
