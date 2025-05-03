@@ -2,6 +2,19 @@
 <?php
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
+
+  $servername = "localhost";
+  $dbuser = "root";
+  $password = "";
+  $dbname = "hotel_db";
+  $errorMsg = [];
+  $successMsg = "";
+
+  // Connect to MySQL server
+  $conn = new mysqli($servername, $dbuser, $password, $dbname);
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
 ?>
 
 
@@ -528,126 +541,3 @@ span a:hover {
 
       <h1>ROOMS & SUITES</h1>
       <p class="room-description">
-  Discover our refined selection of rooms and suites, each designed with elegance, comfort, and style to make your stay truly unforgettable.
-</p>
-
-      
-<div class="room-container">
-  <!-- Room 1: DELUXE KING ROOM -->
-  <div class="room-section">
-    <img src="https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg" alt="Room 1" class="room-image">
-    <div class="room-info">
-      <h2>DELUXE KING ROOM</h2>
-      <p>Enjoy a tranquil stay in this 35 sqm room with a plush king bed, modern amenities, and a view of Cebu's serene mountain range.</p>
-      <ul>
-        <li><i class="bi bi-rulers"></i> 35 sqm</li>
-        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
-        <li><i class="bi bi-basket"></i> King Bed</li>
-      </ul>
-      <a href="Reservation.php?room_id=1&room_name=DELUXE+KING+ROOM&room_size=35sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg&room_price=1500">
-        <button>BOOK NOW</button>
-      </a>
-    </div>
-  </div>
-
-  <!-- Room 2: PREMIUM TWIN ROOM -->
-  <div class="room-section">
-    <img src="https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg" alt="Room 2" class="room-image">
-    <div class="room-info">
-      <h2>PREMIUM TWIN ROOM</h2>
-      <p>Wake up to fresh sea breeze and ocean views in this 38 sqm room with two twin beds—ideal for friends or colleagues.</p>
-      <ul>
-        <li><i class="bi bi-rulers"></i> 38 sqm</li>
-        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
-        <li><i class="bi bi-basket"></i> 2 Twin Beds</li>
-      </ul>
-      <a href="Reservation.php?room_id=2&room_name=PREMIUM+TWIN+ROOM&room_size=38sqm&room_capacity=2+adults&bed_types=2+Twin+Beds&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg&room_price=2000">
-        <button>BOOK NOW</button>
-      </a>
-    </div>
-  </div>
-
-  <!-- Room 3: COURTYARD QUEEN ROOM -->
-  <div class="room-section">
-    <img src="https://images.trvl-media.com/lodging/1000000/440000/438500/438418/0a9e7004.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill" alt="Room 3" class="room-image">
-    <div class="room-info">
-      <h2>COURTYARD QUEEN ROOM</h2>
-      <p>This 30 sqm room offers cozy comfort, a private courtyard view, and a queen bed—perfect for couples or solo travelers.</p>
-      <ul>
-        <li><i class="bi bi-rulers"></i> 30 sqm</li>
-        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
-        <li><i class="bi bi-basket"></i> Queen Bed</li>
-      </ul>
-      <a href="Reservation.php?room_id=3&room_name=COURTYARD+QUEEN+ROOM&room_size=30sqm&room_capacity=2+adults&bed_types=Queen+Bed&room_image=https://images.trvl-media.com/lodging/1000000/440000/438500/438418/0a9e7004.jpg&room_price=2500">
-        <button>BOOK NOW</button>
-      </a>
-    </div>
-  </div>
-
-  <!-- Suite 1: EXECUTIVE SUITE -->
-  <div class="room-section">
-    <img src="https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg" alt="Executive Suite" class="room-image">
-    <div class="room-info">
-      <h2>EXECUTIVE SUITE</h2>
-      <p>Unwind in this spacious 50 sqm suite with a separate living area, panoramic views, and a luxurious king bed.</p>
-      <ul>
-        <li><i class="bi bi-rulers"></i> 50 sqm</li>
-        <li><i class="bi bi-person-lines-fill"></i> 2 adults, 1 child</li>
-        <li><i class="bi bi-basket"></i> King Bed + Sofa Bed</li>
-      </ul>
-      <a href="Reservation.php?room_id=4&room_name=EXECUTIVE+SUITE&room_size=50sqm&room_capacity=2+adults,+1+child&bed_types=King+Bed+and+Sofa+Bed&room_image=https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg&room_price=3500">
-        <button>BOOK NOW</button>
-      </a>
-    </div>
-  </div>
-
-  <!-- Suite 2: HONEYMOON SUITE -->
-  <div class="room-section">
-    <img src="https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C1Q_1_300x240.jpg" alt="Honeymoon Suite" class="room-image">
-    <div class="room-info">
-      <h2>HONEYMOON SUITE</h2>
-      <p>Celebrate love in this romantic 45 sqm suite featuring ocean views, soft lighting, and an indulgent king bed.</p>
-      <ul>
-        <li><i class="bi bi-rulers"></i> 45 sqm</li>
-        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
-        <li><i class="bi bi-basket"></i> King Bed</li>
-      </ul>
-      <a href="Reservation.php?room_id=5&room_name=HONEYMOON+SUITE&room_size=45sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C1Q_1_300x240.jpg&room_price=4000">
-        <button>BOOK NOW</button>
-      </a>
-    </div>
-  </div>
-
-  <!-- Suite 3: ROYAL GARDEN SUITE -->
-  <div class="room-section">
-    <img src="https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg" alt="Royal Garden Suite" class="room-image">
-    <div class="room-info">
-      <h2>ROYAL GARDEN SUITE</h2>
-      <p>Our most luxurious 70 sqm suite features a private garden terrace, elegant interiors, and ample space for family stays.</p>
-      <ul>
-        <li><i class="bi bi-rulers"></i> 70 sqm</li>
-        <li><i class="bi bi-person-lines-fill"></i> 2 adults, 2 children</li>
-        <li><i class="bi bi-basket"></i> King Bed + 2 Single Beds</li>
-      </ul>
-      <a href="Reservation.php?room_id=6&room_name=ROYAL+GARDEN+SUITE&room_size=70sqm&room_capacity=2+adults,+2+children&bed_types=King+and+2+Single+Beds&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg&room_price=4500">
-        <button>BOOK NOW</button>
-      </a>
-    </div>
-  </div>
-</div>
-
-
-<script>
-function filterRooms() {
-  const input = document.getElementById("roomSearch").value.toLowerCase();
-  const rooms = document.querySelectorAll(".room-section");
-
-  rooms.forEach(room => {
-    const text = room.innerText.toLowerCase();
-    room.style.display = text.includes(input) ? "flex" : "none";
-  });
-}
-</script>
-
-  </body>
-</html>
