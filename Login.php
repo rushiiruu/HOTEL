@@ -84,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     if ($result->num_rows === 1) {
         $row = $result->fetch_assoc();
         $hashedPassword = $row['password'];
+        $usertype = $row['usertype'];
 
         if (password_verify($password, $hashedPassword)) {
             $_SESSION["username"] = $username;
