@@ -1,8 +1,4 @@
 
-  function toggleMenu() {
-    const menu = document.getElementById("mobileMenu");
-    menu.classList.toggle("show");
-  }
 
   window.addEventListener('scroll', function() {
     var navbar = document.querySelector('nav');
