@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $username = $_POST['loginUser'];
     $password = $_POST['loginPass'];
 
-    $stmt = $conn->prepare("SELECT password FROM UserAccount WHERE username = ?");
+    $stmt = $conn->prepare("SELECT password, usertype FROM UserAccount WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
