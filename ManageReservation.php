@@ -2,19 +2,6 @@
 <?php
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
-
-  $servername = "localhost";
-  $dbuser = "root";
-  $password = "";
-  $dbname = "hotel_db";
-  $errorMsg = [];
-  $successMsg = "";
-
-  // Connect to MySQL server
-  $conn = new mysqli($servername, $dbuser, $password, $dbname);
-  if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-  }
 ?>
 
 
@@ -48,7 +35,7 @@
     background-image: url('https://drive.google.com/thumbnail?id=1GXytGrNIa9HMRXBQ7y61vWJ-px4xPIrk&sz=s800');
   background-repeat: repeat;
   background-size: auto; /* or 'contain' if you want each tile to fit fully */
-  
+  padding-top: 90px; /* height of your nav */
     
 }
 
@@ -179,36 +166,6 @@ nav.scrolled {
   padding-bottom: 0;
 }
 
-
-  
-  h1 {
-    text-align: justify;
-  font-family: "Quicksand", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  text-align: center;
-  line-height: 1.6;
-  }
-
-  .center-logo {
-    width: 100px;
-    height: auto;
-    margin-bottom: 15px;
-  }
-  
-  .centered-title h1 {
-    font-size: 60px;
-    margin: 0;
-    letter-spacing: 2px;
-  }
-  
-  .centered-title h2 {
-    font-size: 24px;
-    margin: 10px 0 0 0;
-    font-weight: 300;
-    letter-spacing: 3px;
-  }
   
 
 .hidden-on-load {
@@ -316,175 +273,106 @@ nav.scrolled {
 }
 
 
-span {
-    display: flex;
-    justify-content: center; 
-    align-items: center;     
-    margin-top: 20px;        
-    width: 100%;
-}
-
-span a {
-    color: black;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 12px;
-    font-weight: bold;
-    position: relative;
-}
-
-span a:hover {
-    border-bottom: 1px solid black;
-}
-
-.pop-offers {
-    text-align: center;
-    margin-top: 80px;
-}
-
-.long-line {
-    width: 100%;
-    height: 1px;
-    background-color: #e0e2e1;
-    margin-top: 20px;
-}
-.room-container {
-  max-width: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.room-section {
-  display: flex;
-  width: 100%;
-  margin-bottom: 30px
-}
-
-.room-image {
-  width: 50%;
-  height: 70vh;
-  display: block;
-  object-fit: cover;
-}
-
-.room-info {
-  width: 35%;
+.reservation-container {
   padding: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
- 
-  
+  background-color: #ffffffcc;
+  margin: 80px auto;
+  max-width: 1500px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 30px; /* space for nav + some breathing room */
 }
 
-.room-info h2 {
-  color: #d0b683;
-  font-family: "Cormorant Garamond", serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: italic;
-  font-size: 32px;
-  margin-bottom: 20px;
-}
-
-.room-info p {
-  text-align: justify;
-  font-family: "Quicksand", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.room-info ul {
-  list-style: none;
-  padding: 0;
-  font-size: 16spx;
-  margin-bottom: 20px;
-}
-
-.room-info ul li {
-  margin-bottom: 5px;
-}
-
-.room-info button {
-  padding: 15px 35px;
-  background-color: black;
-  color: white;
-  border: none;
-  font-weight: bold;
-  margin-top: 40px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  width: fit-content;
-  max-width: 200px; /* adjust as needed */
-  white-space: nowrap; /* keeps text in one line */
-}
-
-.room-info button:hover {
-  background-color: #333; /* dark gray instead of red */
-}
-
-.search-container {
-  max-width: 500px;
-  margin: 40px auto 20px;
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.search-container input {
-  width: 100%;
-  padding: 12px 40px 12px 15px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  outline: none;
-  font-family: "Quicksand", sans-serif;
-}
-
-.search-container .search-icon {
-  position: absolute;
-  right: 15px;
-  font-size: 18px;
-  color: #aaa;
-}
-
-.room-description {
+.reservation-container h2 {
   text-align: center;
   font-family: "Quicksand", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: #333;
-  margin-top: 10px;
-  margin-bottom: 40px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
+  margin-bottom: 30px;
 }
 
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Quicksand", sans-serif;
+}
 
+.reservation-table th, .reservation-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.reservation-table th {
+  background-color: #000000;
+  color: white;
+}
+
+.reservation-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: #000;
+  color: white;
+  padding: 8px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 6px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 10px 12px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #333;
+}
 
 
     </style>
   </head>
   <body>
-    <script src="Home.js"></script>
-    <nav id="navbar">
+    
+  <nav id="navbar" class="scrolled">
+
       <a href="#" class="menu-icon" onclick="toggleMenu()">
         <i class="bi bi-list" id="menu"></i>
       </a>
 
-      <a href="#" class="hotel-name hidden-on-load">
+      <a href="#" class="hotel-name ">
         LA GINTA REAL
         <span class="hotel-location">PHILIPPINES</span>
       </a>
 
       <div class="nav-right">
-        <a href="ManageReservation.php">MY RESERVATION</a>
+        <a href="#">MY RESERVATION</a>
         <a href="#">BOOK</a>
       </div>
     </nav>
@@ -502,7 +390,7 @@ span a:hover {
         <li><a href="#">Exlusive Offers</a></li>
         <li><a href="AboutUs.php">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
-        <li><a href="ManageReservation.php">My Reservation</a></li>
+        <li><a href="#">My Reservation</a></li>
         <?php if ($username): ?>
     <li>
       <a href="Logout.php">
@@ -521,23 +409,51 @@ span a:hover {
       </ul>
     </div>
 
-    <img
-      src="https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F54089c95-8f88-4f62-a702-b77d2cc3a6c4.jpg?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1"
-      class="main-image"
-      alt="bg"
-    />
-    <span class =span-menu>
-      <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
-      <a href="">OFFERS</a>
-      <a href="AboutUs.php">ABOUT US</a>
-    </span>
-    <div class="long-line"></div>
-
-    <div class="search-container">
-  <input type="text" id="roomSearch" placeholder="Search for rooms or suites..." onkeyup="filterRooms()" />
-  <i class="bi bi-search search-icon"></i>
+    
+    <div class="reservation-container">
+  <h2>Your Reservations</h2>
+  <table class="reservation-table">
+    <thead>
+      <tr>
+        <th>Room No.</th>
+        <th>Check-In</th>
+        <th>Check-Out</th>
+        <th>Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>101</td>
+        <td>2025-05-10</td>
+        <td>2025-05-15</td>
+        <td>$500</td>
+        <td>
+          <div class="dropdown">
+            <button class="dropbtn">Actions</button>
+            <div class="dropdown-content">
+              <a href="#">View</a>
+              <a href="#">Edit</a>
+              <a href="#">Cancel</a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
 </div>
 
-      <h1>ROOMS & SUITES</h1>
-      <p class="room-description">
+       
+    <script>
+
+        // Menu Toggle Functionality
+        function toggleMenu() {
+            var sideMenu = document.getElementById('sideMenu');
+            sideMenu.classList.toggle('show');
+        }
+
+     
+    </script>
+</body>
+</html>

@@ -41,10 +41,10 @@
 
 .main-image {
     width: 100%;
-    height: 40vh;
+    height: 100vh;
     object-fit: cover;
     display: block;
-    filter: brightness(40%); 
+    filter: brightness(70%); 
     position: relative;
     z-index: 1;
   }
@@ -185,6 +185,7 @@ nav.scrolled {
   font-style: normal;
   text-align: center;
   line-height: 1.6;
+  margin-top: 90px;
   }
 
   .center-logo {
@@ -456,7 +457,7 @@ span a:hover {
   color: #333;
   margin-top: 10px;
   margin-bottom: 40px;
-  max-width: 700px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
@@ -505,7 +506,6 @@ span a:hover {
   flex-direction: column;
   gap: 10px;
   max-width: 300px;
-  margin-left: 100px;
 }
 
 .room-form label {
@@ -537,33 +537,6 @@ span a:hover {
   background-color: #333;
 }
 
-.people-inputs {
-  margin-top: 10px;
-}
-
-.counter {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.counter button {
-  background-color: #d0b683;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  font-size: 18px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.counter span {
-  min-width: 20px;
-  text-align: center;
-  font-size: 16px;
-}
 
 
     </style>
@@ -581,7 +554,7 @@ span a:hover {
       </a>
 
       <div class="nav-right">
-        <a href="ManageReservation.php">MY RESERVATION</a>
+        <a href="#">MY RESERVATION</a>
         <a href="#">BOOK</a>
       </div>
     </nav>
@@ -597,9 +570,9 @@ span a:hover {
         <li><a href="Home.php">Home</a></li>
         <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
         <li><a href="#">Exlusive Offers</a></li>
-        <li><a href="AboutUs.php">About Us</a></li>
+        <li><a href="#">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
-        <li><a href="ManageReservation.php">My Reservation</a></li>
+        <li><a href="#">My Reservation</a></li>
         <?php if ($username): ?>
     <li>
       <a href="Logout.php">
@@ -619,152 +592,42 @@ span a:hover {
     </div>
 
     <img
-      src="https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F54089c95-8f88-4f62-a702-b77d2cc3a6c4.jpg?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1"
+      src="https://media.istockphoto.com/id/1680455174/photo/a-profile-portrait-of-a-woman.jpg?s=612x612&w=0&k=20&c=axGw-raQ8jVJA5SSd6QmFOIOow6LNEpF874hIdZVErg="
       class="main-image"
       alt="bg"
     />
+    <div class="centered-title show-on-scroll">
+      <img
+        src="icons/logo-2.png"
+        alt="Logo"
+        class="center-logo"
+      />
+      <h1>ABOUT LA GINTA REAL</h1>
+      <h2>PHILIPPINES</h2>
+    </div>
     <span class =span-menu>
       <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.">ROOMS & SUITES</a>
+      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
       <a href="">OFFERS</a>
-      <a href="AboutUs.php">ABOUT US</a>
+      <a href="">ABOUT US</a>
     </span>
     <div class="long-line"></div>
-    <?php
-        // Fetch room details
-        $room_name = isset($_GET['room_name']) ? $_GET['room_name'] : 'No room selected';
-        $room_description = isset($_GET['room_description']) ? $_GET['room_description'] : 'No description available.';
-        $room_price = isset($_GET['room_price']) ? $_GET['room_price'] : 'Price not available.';
-        $room_image = isset($_GET['room_image']) ? $_GET['room_image'] : 'https://via.placeholder.com/500';
+    <h1>THE ESSENCE OF ELEGANCE</h1>
+      <p class="room-description">
+      Nestled in the heart of timeless charm and coastal elegance, Hotel La Ginta Real offers a refined escape for travelers seeking comfort, sophistication, and warm Filipino hospitality. Our hotel blends classic design with modern amenities, creating a serene sanctuary where every guest feels truly welcomed.
 
-        echo "<h1>{$room_name}</h1>
-        ";
+<br><br>From our carefully curated rooms and suites to the personalized service provided by our dedicated staff, every detail at La Ginta Real reflects our commitment to quality and relaxation. Whether you're here for a family vacation, romantic getaway, or business retreat, we ensure your experience is as luxurious as it is memorable.
 
-        ?>
+At Hotel La Ginta Real, we believe that true hospitality means creating moments that stay with you long after you leave.</p>
+
       
-  
-<div class="room-container">
-        <!-- Room Display Section -->
-        <?php
-        // Fetch room details
-        $room_name = isset($_GET['room_name']) ? $_GET['room_name'] : 'No room selected';
-        $room_description = isset($_GET['room_description']) ? $_GET['room_description'] : 'No description available.';
-        $room_price = isset($_GET['room_price']) ? $_GET['room_price'] : 'Price not available.';
-        $room_image = isset($_GET['room_image']) ? $_GET['room_image'] : 'https://via.placeholder.com/500';
-
-        echo "
-        <div class='room-section'>
-            <img class='room-image' src='{$room_image}' alt='{$room_name}'>
-          ";
-        ?>
-
-        <!-- Reservation Form -->
-        <div class="room-form">
-        <label for="room-type">Room Type:</label>
-<select id="room-type" name="room-type">
-  <option value="" disabled selected>Select a room type</option>
-  <option value="standard">Standard Room</option>
-  <option value="deluxe">Deluxe Room</option>
-</select>
-            <label for="checkin">Check-in Date:</label>
-            <input type="date" id="checkin" name="checkin">
-            <label for="checkout">Check-out Date:</label>
-            <input type="date" id="checkout" name="checkout">
-            <div class="people-inputs">
-  <label>Adults:</label>
-  <div class="counter">
-    <button type="button" onclick="decrement('adult')">-</button>
-    <span id="adult-count">1</span>
-    <button type="button" onclick="increment('adult')">+</button>
-  </div>
-
-  <label>Children:</label>
-  <div class="counter">
-    <button type="button" onclick="decrement('child')">-</button>
-    <span id="child-count">0</span>
-    <button type="button" onclick="increment('child')">+</button>
-  </div>
-</div>
-
-<!-- Hidden inputs to submit values -->
-<input type="hidden" name="adults" id="adultsInput" value="1">
-<input type="hidden" name="children" id="childrenInput" value="0">
-
-            <button type="submit" class="reserve-btn">Confirm Reservation</button>
-        </div>
-    </div>
-
-    <div class="price-output">
-  <p>Total Price: <span id="calculated-price">₱0</span></p>
-</div>
-
+    
     <script>
-
-const baseRoomPrice = <?php echo isset($_GET['room_price']) ? (int)$_GET['room_price'] : 0; ?>;
         // Menu Toggle Functionality
         function toggleMenu() {
             var sideMenu = document.getElementById('sideMenu');
             sideMenu.classList.toggle('show');
         }
-
-        let adultCount = 1;
-  let childCount = 0;
-
-  function increment(type) {
-    if (type === 'adult') {
-      adultCount++;
-      document.getElementById('adult-count').textContent = adultCount;
-      document.getElementById('adultsInput').value = adultCount;
-    } else if (type === 'child') {
-      childCount++;
-      document.getElementById('child-count').textContent = childCount;
-      document.getElementById('childrenInput').value = childCount;
-    }
-  }
-
-  function decrement(type) {
-    if (type === 'adult' && adultCount > 1) {
-      adultCount--;
-      document.getElementById('adult-count').textContent = adultCount;
-      document.getElementById('adultsInput').value = adultCount;
-    } else if (type === 'child' && childCount > 0) {
-      childCount--;
-      document.getElementById('child-count').textContent = childCount;
-      document.getElementById('childrenInput').value = childCount;
-    }
-  }
-
-  function calculatePrice() {
-  const roomType = document.getElementById('room-type').value;
-  const checkin = new Date(document.getElementById('checkin').value);
-  const checkout = new Date(document.getElementById('checkout').value);
-
-  if (isNaN(checkin.getTime()) || isNaN(checkout.getTime()) || !roomType) {
-    document.getElementById('calculated-price').textContent = '₱0';
-    return;
-  }
-
-  const timeDiff = checkout - checkin;
-  const nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-  if (nights <= 0) {
-    document.getElementById('calculated-price').textContent = '₱0';
-    return;
-  }
-
-  let pricePerNight = baseRoomPrice;
-  if (roomType === 'deluxe') {
-    pricePerNight += 1000;
-  }
-
-  const totalPrice = pricePerNight * nights;
-  document.getElementById('calculated-price').textContent = `₱${totalPrice}`;
-}
-
-document.getElementById('room-type').addEventListener('change', calculatePrice);
-document.getElementById('checkin').addEventListener('change', calculatePrice);
-document.getElementById('checkout').addEventListener('change', calculatePrice);
-
     </script>
 </body>
 </html>
