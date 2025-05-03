@@ -559,7 +559,7 @@ span a:hover {
         echo '<li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomAccomodation']) . '</li>';
         echo '<li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['Beds']) . '</li>';
         echo '</ul>';
-        echo '<button>BOOK NOW</button></a>';
+        echo '<button type="submit">BOOK NOW</button></a>';
         echo '</div></div>';
       }
     ?>
@@ -576,6 +576,8 @@ function filterRooms() {
     room.style.display = text.includes(input) ? "flex" : "none";
   });
 }
+
+
 </script>
 
   </body>
