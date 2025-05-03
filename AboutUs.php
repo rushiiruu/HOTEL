@@ -41,10 +41,10 @@
 
 .main-image {
     width: 100%;
-    height: 40vh;
+    height: 100vh;
     object-fit: cover;
     display: block;
-    filter: brightness(40%); 
+    filter: brightness(70%); 
     position: relative;
     z-index: 1;
   }
@@ -185,6 +185,7 @@ nav.scrolled {
   font-style: normal;
   text-align: center;
   line-height: 1.6;
+  margin-top: 90px;
   }
 
   .center-logo {
@@ -456,7 +457,7 @@ span a:hover {
   color: #333;
   margin-top: 10px;
   margin-bottom: 40px;
-  max-width: 700px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
@@ -569,7 +570,7 @@ span a:hover {
         <li><a href="Home.php">Home</a></li>
         <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
         <li><a href="#">Exlusive Offers</a></li>
-        <li><a href="AboutUs.php">About Us</a></li>
+        <li><a href="#">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
         <li><a href="#">My Reservation</a></li>
         <?php if ($username): ?>
@@ -591,55 +592,36 @@ span a:hover {
     </div>
 
     <img
-      src="https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F54089c95-8f88-4f62-a702-b77d2cc3a6c4.jpg?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1"
+      src="https://media.istockphoto.com/id/1680455174/photo/a-profile-portrait-of-a-woman.jpg?s=612x612&w=0&k=20&c=axGw-raQ8jVJA5SSd6QmFOIOow6LNEpF874hIdZVErg="
       class="main-image"
       alt="bg"
     />
+    <div class="centered-title show-on-scroll">
+      <img
+        src="icons/logo-2.png"
+        alt="Logo"
+        class="center-logo"
+      />
+      <h1>ABOUT LA GINTA REAL</h1>
+      <h2>PHILIPPINES</h2>
+    </div>
     <span class =span-menu>
       <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.">ROOMS & SUITES</a>
+      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
       <a href="">OFFERS</a>
-      <a href="AboutUs.php">ABOUT US</a>
+      <a href="">ABOUT US</a>
     </span>
     <div class="long-line"></div>
-    <?php
-        // Fetch room details
-        $room_name = isset($_GET['room_name']) ? $_GET['room_name'] : 'No room selected';
-        $room_description = isset($_GET['room_description']) ? $_GET['room_description'] : 'No description available.';
-        $room_price = isset($_GET['room_price']) ? $_GET['room_price'] : 'Price not available.';
-        $room_image = isset($_GET['room_image']) ? $_GET['room_image'] : 'https://via.placeholder.com/500';
+    <h1>THE ESSENCE OF ELEGANCE</h1>
+      <p class="room-description">
+      Nestled in the heart of timeless charm and coastal elegance, Hotel La Ginta Real offers a refined escape for travelers seeking comfort, sophistication, and warm Filipino hospitality. Our hotel blends classic design with modern amenities, creating a serene sanctuary where every guest feels truly welcomed.
 
-        echo "<h1>{$room_name}</h1>
-        ";
+<br><br>From our carefully curated rooms and suites to the personalized service provided by our dedicated staff, every detail at La Ginta Real reflects our commitment to quality and relaxation. Whether you're here for a family vacation, romantic getaway, or business retreat, we ensure your experience is as luxurious as it is memorable.
 
-        ?>
+At Hotel La Ginta Real, we believe that true hospitality means creating moments that stay with you long after you leave.</p>
+
       
-  
-<div class="room-container">
-        <!-- Room Display Section -->
-        <?php
-        // Fetch room details
-        $room_name = isset($_GET['room_name']) ? $_GET['room_name'] : 'No room selected';
-        $room_description = isset($_GET['room_description']) ? $_GET['room_description'] : 'No description available.';
-        $room_price = isset($_GET['room_price']) ? $_GET['room_price'] : 'Price not available.';
-        $room_image = isset($_GET['room_image']) ? $_GET['room_image'] : 'https://via.placeholder.com/500';
-
-        echo "
-        <div class='room-section'>
-            <img class='room-image' src='{$room_image}' alt='{$room_name}'>
-          ";
-        ?>
-
-        <!-- Reservation Form -->
-        <div class="room-form">
-            <label for="checkin">Check-in Date:</label>
-            <input type="date" id="checkin" name="checkin">
-            <label for="checkout">Check-out Date:</label>
-            <input type="date" id="checkout" name="checkout">
-            <button type="submit" class="reserve-btn">Confirm Reservation</button>
-        </div>
-    </div>
-
+    
     <script>
         // Menu Toggle Functionality
         function toggleMenu() {

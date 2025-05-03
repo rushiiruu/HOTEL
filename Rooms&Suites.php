@@ -350,7 +350,7 @@ span a:hover {
 
 .room-image {
   width: 50%;
-  height: auto;
+  height: 70vh;
   display: block;
   object-fit: cover;
 }
@@ -487,7 +487,7 @@ span a:hover {
         <li><a href="Home.php">Home</a></li>
         <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
         <li><a href="#">Exlusive Offers</a></li>
-        <li><a href="#">About Us</a></li>
+        <li><a href="AboutUs.php">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
         <li><a href="#">My Reservation</a></li>
         <?php if ($username): ?>
@@ -517,7 +517,7 @@ span a:hover {
       <a href="Home.php">LA GINTA REAL</a>
       <a href="Rooms&Suites.php">ROOMS & SUITES</a>
       <a href="">OFFERS</a>
-      <a href="">ABOUT US</a>
+      <a href="AboutUs.php">ABOUT US</a>
     </span>
     <div class="long-line"></div>
 
@@ -532,114 +532,106 @@ span a:hover {
 </p>
 
       
-      <div class="room-container">
-  <!-- Room 1 -->
+<div class="room-container">
+  <!-- Room 1: DELUXE KING ROOM -->
   <div class="room-section">
-    <img src="https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg" alt="Room 1" class="room-image">
+    <img src="https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg" alt="Room 1" class="room-image">
     <div class="room-info">
       <h2>DELUXE KING ROOM</h2>
-      <p>Soak up Cebu's mountain view from a 32-square-metre Deluxe Room designed with comfort and convenience in mind.</p>
+      <p>Enjoy a tranquil stay in this 35 sqm room with a plush king bed, modern amenities, and a view of Cebu's serene mountain range.</p>
       <ul>
-      <li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> 32 sqm</li>
-      <li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> 2 adults, 2 children</li>
-      <li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> King and Double</li>
-
-
+        <li><i class="bi bi-rulers"></i> 35 sqm</li>
+        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
+        <li><i class="bi bi-basket"></i> King Bed</li>
       </ul>
-      <a href="Reservation.php?room_id=2&room_name=DELUXE+KING+ROOM&room_size=32sqm&room_capacity=2+adults,+2+children&bed_types=King+and+Double&room_image=https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg">
-            <button>BOOK NOW</button>
-        </a>
-
+      <a href="Reservation.php?room_id=1&room_name=DELUXE+KING+ROOM&room_size=35sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg">
+        <button>BOOK NOW</button>
+      </a>
     </div>
   </div>
 
-  <!-- Room 2 (image on right) -->
+  <!-- Room 2: PREMIUM TWIN ROOM -->
   <div class="room-section">
-    <img src="your-image-url-2.jpg" alt="Room 2" class="room-image">
+    <img src="https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg" alt="Room 2" class="room-image">
     <div class="room-info">
       <h2>PREMIUM TWIN ROOM</h2>
-      <p>Wake up to stunning ocean views and enjoy the fresh breeze in this spacious and elegant room designed for relaxation.</p>
+      <p>Wake up to fresh sea breeze and ocean views in this 38 sqm room with two twin beds—ideal for friends or colleagues.</p>
       <ul>
-      <li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> 32 sqm</li>
-      <li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> 2 adults, 2 children</li>
-      <li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> King and Double</li>
+        <li><i class="bi bi-rulers"></i> 38 sqm</li>
+        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
+        <li><i class="bi bi-basket"></i> 2 Twin Beds</li>
       </ul>
-      <<a href="Reservation.php?room_id=2&room_name=PREMIUM+TWIN+ROOM&room_size=32sqm&room_capacity=2+adults,+2+children&bed_types=King+and+Double&room_image=https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg">
-            <button>BOOK NOW</button>
-        </a>
-
+      <a href="Reservation.php?room_id=2&room_name=PREMIUM+TWIN+ROOM&room_size=38sqm&room_capacity=2+adults&bed_types=2+Twin+Beds&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg">
+        <button>BOOK NOW</button>
+      </a>
     </div>
   </div>
 
-  <!-- Room 3 -->
+  <!-- Room 3: COURTYARD QUEEN ROOM -->
   <div class="room-section">
-    <img src="your-image-url-3.jpg" alt="Room 3" class="room-image">
+    <img src="https://images.trvl-media.com/lodging/1000000/440000/438500/438418/0a9e7004.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill" alt="Room 3" class="room-image">
     <div class="room-info">
       <h2>COURTYARD QUEEN ROOM</h2>
-      <p>Perfect for families or groups, this suite offers generous space, a relaxing ambiance, and amenities for all ages.</p>
+      <p>This 30 sqm room offers cozy comfort, a private courtyard view, and a queen bed—perfect for couples or solo travelers.</p>
       <ul>
-      <li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> 32 sqm</li>
-      <li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> 2 adults, 2 children</li>
-      <li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> King and Double</li>
+        <li><i class="bi bi-rulers"></i> 30 sqm</li>
+        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
+        <li><i class="bi bi-basket"></i> Queen Bed</li>
       </ul>
-      <<a href="Reservation.php?room_id=2&room_name=COURTYARD+QUEEN+ROOM&room_size=32sqm&room_capacity=2+adults,+2+children&bed_types=King+and+Double&room_image=https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg">
-            <button>BOOK NOW</button>
-        </a>
-
+      <a href="Reservation.php?room_id=3&room_name=COURTYARD+QUEEN+ROOM&room_size=30sqm&room_capacity=2+adults&bed_types=Queen+Bed&room_image=https://images.trvl-media.com/lodging/1000000/440000/438500/438418/0a9e7004.jpg">
+        <button>BOOK NOW</button>
+      </a>
     </div>
   </div>
 
-  <!-- Suite 1 -->
+  <!-- Suite 1: EXECUTIVE SUITE -->
   <div class="room-section">
-    <img src="https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg" alt="Room 1" class="room-image">
+    <img src="https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg" alt="Executive Suite" class="room-image">
     <div class="room-info">
       <h2>EXECUTIVE SUITE</h2>
-      <p>Soak up Cebu's mountain view from a 32-square-metre Deluxe Room designed with comfort and convenience in mind.</p>
+      <p>Unwind in this spacious 50 sqm suite with a separate living area, panoramic views, and a luxurious king bed.</p>
       <ul>
-      <li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> 32 sqm</li>
-      <li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> 2 adults, 2 children</li>
-      <li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> King and Double</li>
+        <li><i class="bi bi-rulers"></i> 50 sqm</li>
+        <li><i class="bi bi-person-lines-fill"></i> 2 adults, 1 child</li>
+        <li><i class="bi bi-basket"></i> King Bed + Sofa Bed</li>
       </ul>
-      <a href="Reservation.php?room_id=2&room_name=EXECUTIVE+SUITE&room_size=32sqm&room_capacity=2+adults,+2+children&bed_types=King+and+Double&room_image=https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg">
-            <button>BOOK NOW</button>
-        </a>
-
+      <a href="Reservation.php?room_id=4&room_name=EXECUTIVE+SUITE&room_size=50sqm&room_capacity=2+adults,+1+child&bed_types=King+Bed+and+Sofa+Bed&room_image=https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg">
+        <button>BOOK NOW</button>
+      </a>
     </div>
   </div>
 
-<!-- Suite 2 -->
-<div class="room-section">
-    <img src="your-image-url-2.jpg" alt="Room 2" class="room-image">
-    <div class="room-info">
-        <h2>HONEYMOON SUITE</h2>
-        <p>Wake up to stunning ocean views and enjoy the fresh breeze in this spacious and elegant room designed for relaxation.</p>
-        <ul>
-            <li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> 32 sqm</li>
-            <li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> 2 adults, 2 children</li>
-            <li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> King and Double</li>
-        </ul>
-        <a href="Reservation.php?room_id=2&room_name=HONEYMOON+SUITE&room_size=32sqm&room_capacity=2+adults,+2+children&bed_types=King+and+Double&room_image=https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg">
-            <button>BOOK NOW</button>
-        </a>
-    </div>
-</div>
-
-
-  <!-- Suite 3 -->
+  <!-- Suite 2: HONEYMOON SUITE -->
   <div class="room-section">
-    <img src="your-image-url-3.jpg" alt="Room 3" class="room-image">
+    <img src="https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C1Q_1_300x240.jpg" alt="Honeymoon Suite" class="room-image">
+    <div class="room-info">
+      <h2>HONEYMOON SUITE</h2>
+      <p>Celebrate love in this romantic 45 sqm suite featuring ocean views, soft lighting, and an indulgent king bed.</p>
+      <ul>
+        <li><i class="bi bi-rulers"></i> 45 sqm</li>
+        <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
+        <li><i class="bi bi-basket"></i> King Bed</li>
+      </ul>
+      <a href="Reservation.php?room_id=5&room_name=HONEYMOON+SUITE&room_size=45sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C1Q_1_300x240.jpg">
+        <button>BOOK NOW</button>
+      </a>
+    </div>
+  </div>
+
+  <!-- Suite 3: ROYAL GARDEN SUITE -->
+  <div class="room-section">
+    <img src="https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg" alt="Royal Garden Suite" class="room-image">
     <div class="room-info">
       <h2>ROYAL GARDEN SUITE</h2>
-      <p>Perfect for families or groups, this suite offers generous space, a relaxing ambiance, and amenities for all ages.</p>
+      <p>Our most luxurious 70 sqm suite features a private garden terrace, elegant interiors, and ample space for family stays.</p>
       <ul>
-        <li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> 32 sqm</li>
-      <li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> 2 adults, 2 children</li>
-      <li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> King and Double</li>
+        <li><i class="bi bi-rulers"></i> 70 sqm</li>
+        <li><i class="bi bi-person-lines-fill"></i> 2 adults, 2 children</li>
+        <li><i class="bi bi-basket"></i> King Bed + 2 Single Beds</li>
       </ul>
-      <a href="Reservation.php?room_id=2&room_name=DELUXE+KING+ROOM&room_size=32sqm&room_capacity=2+adults,+2+children&bed_types=King+and+Double&room_image=https://mamounia.com/media/cache/jadro_resize/rc/mpoFtzwQ1743405860/jadroRoot/medias/611cb518484a1/611cb52076321/photo-accueil-les-chambres.jpg">
-            <button>BOOK NOW</button>
-        </a>
-
+      <a href="Reservation.php?room_id=6&room_name=ROYAL+GARDEN+SUITE&room_size=70sqm&room_capacity=2+adults,+2+children&bed_types=King+and+2+Single+Beds&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg">
+        <button>BOOK NOW</button>
+      </a>
     </div>
   </div>
 </div>

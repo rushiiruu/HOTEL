@@ -617,7 +617,6 @@ nav.scrolled {
 
 
 
-
     </style>
   </head>
   <body>
@@ -649,7 +648,7 @@ nav.scrolled {
         <li><a href="Home.php">Home</a></li>
         <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
         <li><a href="#">Exlusive Offers</a></li>
-        <li><a href="#">About Us</a></li>
+        <li><a href="AboutUs.php">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
         <li><a href="#">My Reservation</a></li>
         <?php if ($username): ?>
@@ -686,11 +685,11 @@ nav.scrolled {
       <h2>PHILIPPINES</h2>
     </div>
 
-    <span class =span-menu>
+    <span class="span-menu">
       <a href="Home.php">LA GINTA REAL</a>
       <a href="Rooms&Suites.php">ROOMS & SUITES</a>
       <a href="">OFFERS</a>
-      <a href="">ABOUT US</a>
+      <a href="AboutUs.php">ABOUT US</a>
     </span>
     <div class="long-line"></div>
 
