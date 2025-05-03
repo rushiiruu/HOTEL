@@ -471,7 +471,7 @@ span a:hover {
       </a>
 
       <div class="nav-right">
-        <a href="#">MY RESERVATION</a>
+        <a href="ManageReservation.php">MY RESERVATION</a>
         <a href="#">BOOK</a>
       </div>
     </nav>
@@ -489,7 +489,7 @@ span a:hover {
         <li><a href="#">Exlusive Offers</a></li>
         <li><a href="AboutUs.php">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
-        <li><a href="#">My Reservation</a></li>
+        <li><a href="ManageReservation.php">My Reservation</a></li>
         <?php if ($username): ?>
     <li>
       <a href="Logout.php">

@@ -562,7 +562,7 @@ nav.scrolled {
 
 .exclusive-offers {
   
-  background-image: url('https://drive.google.com/thumbnail?id=1_7EN-fetbc-rp-Kx8_KeB_6E-dSNNETQ&sz=s800');
+  background-image: url('icons/bg-2.png');
   background-repeat: repeat;
   background-size: auto; /* or 'contain' if you want each tile to fit fully */
   background-position: top left;
@@ -604,7 +604,7 @@ nav.scrolled {
       </a>
 
       <div class="nav-right">
-        <a href="#">MY RESERVATION</a>
+        <a href="ManageReservation.php">MY RESERVATION</a>
         <a href="#">BOOK</a>
       </div>
     </nav>
@@ -622,7 +622,7 @@ nav.scrolled {
         <li><a href="#">Exlusive Offers</a></li>
         <li><a href="AboutUs.php">About Us</a></li>
         <li><a href="#">Contact Us</a></li>
-        <li><a href="#">My Reservation</a></li>
+        <li><a href="ManageReservation.php">My Reservation</a></li>
         <?php if ($username): ?>
     <li>
       <a href="Logout.php">
