@@ -49,6 +49,7 @@
   display: flex;
   width: 100%;
   min-height: 100vh;
+  background-image: url('icons/bg-1.png');
 }
 
 .accommodations-desc {
@@ -430,7 +431,7 @@ nav.scrolled {
   text-align: center;
   font-size: 35px;
   margin-top: 90px;
-  color: #d0b683;
+  color: #781924;
   margin-bottom: 70px;
   }
 
@@ -514,15 +515,15 @@ nav.scrolled {
 
 .books-image img {
   width: 100%;
-  max-width: 900px;
-  height: auto;
-  
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .book-a-stay {
-  background-image: url('https://drive.google.com/thumbnail?id=1GXytGrNIa9HMRXBQ7y61vWJ-px4xPIrk&sz=s800');
+  background-image: url('icons/bg-1.png');
   background-repeat: repeat;
-  background-size: auto; /* or 'contain' if you want each tile to fit fully */
+  background-size: contain;
   padding: 90px;
   color: white;
 }
@@ -585,35 +586,6 @@ nav.scrolled {
   color: black;
 }
 
-.book-a-stay {
-  display: flex;
-  align-items: center;
-  
-}
-
-.books-image {
-  flex: 1;
-}
-
-.books-image img {
-  width: 100%;
-  max-width: 500px;
- 
-}
-
-.book-a-stay-content {
-  flex: 1;
-}
-
-.book-a-stay-content h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
-.book-a-stay-content p {
-  font-size: 16px;
-  line-height: 1.6;
-}
 
 
 
@@ -751,25 +723,29 @@ nav.scrolled {
   </div>
 </section>
 
-  <!-- Book a Stay Section -->
-<section class="book-a-stay">
-<div class="books-image">
-        <img
-          src="https://mamounia.com/media/cache/jadro_resize/rc/in9iLpVz1743575366/jadroRoot/medias/653fcee154467/6540e50e0c796/6540e5783a736/accueil-entree.jpeg"
-          alt=""
-          class="acc-image"
-        />
-      </div>
-  <div class="book-a-stay-content">
-    <h2>To return to La Ginta Real time and time again</h2>
-    <p>
-      We are both honoured and inspired to have been nominated the best hotel in the world on several occasions.<br><br>
-      Our excellence is the result of tireless endeavour, the unfailing commitment of our 800 employees, constant self-questioning, and innovations that are daring yet respectful of the past. This is how La Mamounia remains a place of legend that moves with the times while always remaining in tune with the here and now.<br><br>
-      Our greatest reward is the loyalty of our customers, who love coming back here because they are made to feel so at home.
-    </p>
-    <button class="book-button">BOOK A STAY</button>
-  </div>
-</section>
 
+<section class="accommodations-container">
+      
+
+      <div class="accommodations-image">
+      <img
+      src="https://mamounia.com/media/cache/jadro_resize/rc/in9iLpVz1743575366/jadroRoot/medias/653fcee154467/6540e50e0c796/6540e5783a736/accueil-entree.jpeg"
+      alt=""
+      class="acc-image"
+    />
+      </div>
+      <div class="accommodations-desc">
+        <h2 class="acc-desc-title">
+        To return to La Ginta Real time and time again
+        </h2>
+        <p class="acc-desc">
+        We are both honoured and inspired to have been nominated the best hotel in the world on several occasions.<br><br>
+      Our excellence is the result of tireless endeavour, the unfailing commitment of our 800 employees, constant self-questioning, and innovations that are daring yet respectful of the past. This is how La Mamounia remains a place of legend that moves with the times while always remaining in tune with the here and now.<br><br>
+      Our greatest reward is the loyalty of our customers, who love coming back here because they are made to feel so at home.<br />
+         
+        </p>
+        <button class="acc-button">BOOK A STAY</button>
+      </div>
+  </section>
   </body>
 </html>

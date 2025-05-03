@@ -544,7 +544,7 @@ span a:hover {
         <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
         <li><i class="bi bi-basket"></i> King Bed</li>
       </ul>
-      <a href="Reservation.php?room_id=1&room_name=DELUXE+KING+ROOM&room_size=35sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg">
+      <a href="Reservation.php?room_id=1&room_name=DELUXE+KING+ROOM&room_size=35sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg&room_price=1500">
         <button>BOOK NOW</button>
       </a>
     </div>
@@ -561,7 +561,7 @@ span a:hover {
         <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
         <li><i class="bi bi-basket"></i> 2 Twin Beds</li>
       </ul>
-      <a href="Reservation.php?room_id=2&room_name=PREMIUM+TWIN+ROOM&room_size=38sqm&room_capacity=2+adults&bed_types=2+Twin+Beds&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg">
+      <a href="Reservation.php?room_id=2&room_name=PREMIUM+TWIN+ROOM&room_size=38sqm&room_capacity=2+adults&bed_types=2+Twin+Beds&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg&room_price=2000">
         <button>BOOK NOW</button>
       </a>
     </div>
@@ -578,7 +578,7 @@ span a:hover {
         <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
         <li><i class="bi bi-basket"></i> Queen Bed</li>
       </ul>
-      <a href="Reservation.php?room_id=3&room_name=COURTYARD+QUEEN+ROOM&room_size=30sqm&room_capacity=2+adults&bed_types=Queen+Bed&room_image=https://images.trvl-media.com/lodging/1000000/440000/438500/438418/0a9e7004.jpg">
+      <a href="Reservation.php?room_id=3&room_name=COURTYARD+QUEEN+ROOM&room_size=30sqm&room_capacity=2+adults&bed_types=Queen+Bed&room_image=https://images.trvl-media.com/lodging/1000000/440000/438500/438418/0a9e7004.jpg&room_price=2500">
         <button>BOOK NOW</button>
       </a>
     </div>
@@ -595,7 +595,7 @@ span a:hover {
         <li><i class="bi bi-person-lines-fill"></i> 2 adults, 1 child</li>
         <li><i class="bi bi-basket"></i> King Bed + Sofa Bed</li>
       </ul>
-      <a href="Reservation.php?room_id=4&room_name=EXECUTIVE+SUITE&room_size=50sqm&room_capacity=2+adults,+1+child&bed_types=King+Bed+and+Sofa+Bed&room_image=https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg">
+      <a href="Reservation.php?room_id=4&room_name=EXECUTIVE+SUITE&room_size=50sqm&room_capacity=2+adults,+1+child&bed_types=King+Bed+and+Sofa+Bed&room_image=https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg&room_price=3500">
         <button>BOOK NOW</button>
       </a>
     </div>
@@ -612,7 +612,7 @@ span a:hover {
         <li><i class="bi bi-person-lines-fill"></i> 2 adults</li>
         <li><i class="bi bi-basket"></i> King Bed</li>
       </ul>
-      <a href="Reservation.php?room_id=5&room_name=HONEYMOON+SUITE&room_size=45sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C1Q_1_300x240.jpg">
+      <a href="Reservation.php?room_id=5&room_name=HONEYMOON+SUITE&room_size=45sqm&room_capacity=2+adults&bed_types=King+Bed&room_image=https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C1Q_1_300x240.jpg&room_price=4000">
         <button>BOOK NOW</button>
       </a>
     </div>
@@ -629,7 +629,7 @@ span a:hover {
         <li><i class="bi bi-person-lines-fill"></i> 2 adults, 2 children</li>
         <li><i class="bi bi-basket"></i> King Bed + 2 Single Beds</li>
       </ul>
-      <a href="Reservation.php?room_id=6&room_name=ROYAL+GARDEN+SUITE&room_size=70sqm&room_capacity=2+adults,+2+children&bed_types=King+and+2+Single+Beds&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg">
+      <a href="Reservation.php?room_id=6&room_name=ROYAL+GARDEN+SUITE&room_size=70sqm&room_capacity=2+adults,+2+children&bed_types=King+and+2+Single+Beds&room_image=https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg&room_price=4500">
         <button>BOOK NOW</button>
       </a>
     </div>

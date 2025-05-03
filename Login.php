@@ -31,6 +31,7 @@ $conn->query("CREATE TABLE IF NOT EXISTS UserAccount (
     Lname VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    usertype VARCHAR(10) NOT NULL,
     Birthday DATE
 )");
 
@@ -41,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
   $Lname = $_POST['lastName'];
   $username = $_POST['signupUser'];
   $password = $_POST['signupPass'];
+  $usertype = $_POST['usertype'];
 
   // Default birthday if not provided
   $Birthday = date('2000-01-01');
@@ -54,13 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
       $errorMsg['signup'] = "Username already exists.";
   } else {
       $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-      $stmt = $conn->prepare("INSERT INTO UserAccount (Fname, Lname, password, Birthday, username) VALUES (?, ?, ?, ?, ?)");
-      $stmt->bind_param("sssss", $Fname, $Lname, $hashedPassword, $Birthday, $username);
+      $stmt = $conn->prepare("INSERT INTO UserAccount (Fname, Lname, password, Birthday, username, usertype) VALUES (?,?, ?, ?, ?, ?)");
+      $stmt->bind_param("ssssss", $Fname, $Lname, $hashedPassword, $Birthday, $username, $usertype);
       if ($stmt->execute()) {
-          // Set session and redirect to Home.php
-          $_SESSION["username"] = $username;
-          header("Location: Home.php");
-          exit();
+        echo "<script>
+            alert('Account Successfully Made');
+            window.location.href = 'Login.php?form=login';
+        </script>";
+        exit();
       } else {
           $errorMsg['signup'] = "Error creating account.";
       }
@@ -73,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $username = $_POST['loginUser'];
     $password = $_POST['loginPass'];
 
-    $stmt = $conn->prepare("SELECT password FROM UserAccount WHERE username = ?");
+    $stmt = $conn->prepare("SELECT password, usertype FROM UserAccount WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -81,11 +84,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     if ($result->num_rows === 1) {
         $row = $result->fetch_assoc();
         $hashedPassword = $row['password'];
+        $usertype = $row['usertype'];
 
         if (password_verify($password, $hashedPassword)) {
             $_SESSION["username"] = $username;
-            header("Location: Home.php");
-            exit();
+            if ($usertype == "Admin") {
+                $_SESSION["usertype"] = "Admin";
+                header("Location: Dashboard.php");
+                exit();
+            } else {
+                $_SESSION["usertype"] = "Guest";
+                header("Location: Home.php");
+                exit();
+            }
+
         } else {
             $errorMsg['login'] = "Incorrect password.";
         }
@@ -380,6 +392,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
           <label for="signupUser">Username</label>
           <input type="text" required name="signupUser" id="signupUser" />
+          <label for="">User-type</label>
+          <select name="usertype" id="">
+            <option value="Guest">Guest</option>
+            <option value="Admin">Admin</option>
+          </select>
 
           <div class="row">
             <div class="field">
