@@ -15,6 +15,13 @@
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
+
+  if (isset($_POST['book'])) {
+      $room_id = $_POST['roomId'];
+      $_SESSION['room_id'] = $room_id; // Store room ID in session for later use
+      header("Location: Reservation.php");
+      exit();
+  }
 ?>
 
 
@@ -549,6 +556,7 @@ span a:hover {
        $rows = $conn->query("SELECT * FROM roomsandsuites")->fetch_all(MYSQLI_ASSOC);
  
        foreach ($rows as $room){
+         echo '<form action="" method="post">';
          echo '<div class="room-section">';
          echo '<img src="' . htmlspecialchars($room['Img']) . '" alt="Room Image" class="room-image">';
          echo '<div class="room-info">';
@@ -559,8 +567,10 @@ span a:hover {
          echo '<li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomAccomodation']) . '</li>';
          echo '<li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['Beds']) . '</li>';
          echo '</ul>';
-         echo '<button type="submit">BOOK NOW</button></a>';
+         echo '<input type="hidden" name="roomId" value="' . htmlspecialchars($room['RaSid']) . '">';
+         echo '<button type="submit" name="book">BOOK NOW</button></a>';
          echo '</div></div>';
+         echo '</form>';
        }
      ?>
  </div>
