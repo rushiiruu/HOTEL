@@ -539,5 +539,46 @@ span a:hover {
   <i class="bi bi-search search-icon"></i>
 </div>
 
-      <h1>ROOMS & SUITES</h1>
-      <p class="room-description">
+<h1>ROOMS & SUITES</h1>
+<p class="room-description">
+  Discover our refined selection of rooms and suites, each designed with elegance, comfort, and style to make your stay truly unforgettable.
+</p>
+
+<div class="room-container">    
+     <?php
+       $rows = $conn->query("SELECT * FROM roomsandsuites")->fetch_all(MYSQLI_ASSOC);
+ 
+       foreach ($rows as $room){
+         echo '<div class="room-section">';
+         echo '<img src="' . htmlspecialchars($room['Img']) . '" alt="Room Image" class="room-image">';
+         echo '<div class="room-info">';
+         echo '<h2>' . htmlspecialchars($room['RoomName']) . '</h2>';
+         echo '<p>' . htmlspecialchars($room['RoomDesc']) . '</p>';
+         echo '<ul>';
+         echo '<li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomSize']) . '</li>';
+         echo '<li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomAccomodation']) . '</li>';
+         echo '<li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['Beds']) . '</li>';
+         echo '</ul>';
+         echo '<button type="submit">BOOK NOW</button></a>';
+         echo '</div></div>';
+       }
+     ?>
+ </div>
+ 
+ 
+ <script>
+ function filterRooms() {
+   const input = document.getElementById("roomSearch").value.toLowerCase();
+   const rooms = document.querySelectorAll(".room-section");
+ 
+   rooms.forEach(room => {
+     const text = room.innerText.toLowerCase();
+     room.style.display = text.includes(input) ? "flex" : "none";
+   });
+ }
+ 
+ 
+ </script>
+ 
+   </body>
+ </html>
