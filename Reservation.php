@@ -2,6 +2,19 @@
 <?php
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
+
+  $servername = "localhost";
+  $dbuser = "root";
+  $password = "";
+  $dbname = "hotel_db";
+  $errorMsg = [];
+  $successMsg = "";
+
+  // Connect to MySQL server
+  $conn = new mysqli($servername, $dbuser, $password, $dbname);
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
 ?>
 
 
@@ -631,26 +644,37 @@ span a:hover {
     </span>
     <div class="long-line"></div>
     <?php
-        // Fetch room details
-        $room_name = isset($_GET['room_name']) ? $_GET['room_name'] : 'No room selected';
-        $room_description = isset($_GET['room_description']) ? $_GET['room_description'] : 'No description available.';
-        $room_price = isset($_GET['room_price']) ? $_GET['room_price'] : 'Price not available.';
-        $room_image = isset($_GET['room_image']) ? $_GET['room_image'] : 'https://via.placeholder.com/500';
+        if (isset($_SESSION['room_id']) && is_numeric($_SESSION['room_id'])) {
+            $room_id = intval($_SESSION['room_id']); // Sanitize the room ID
+            $result = $conn->query("SELECT * FROM RoomsandSuites WHERE RaSid = $room_id");
+
+            if ($result && $result->num_rows > 0) {
+                $room = $result->fetch_assoc(); // Fetch a single row
+                $room_name = $room['RoomName'] ?? 'No room selected';
+                $room_description = $room['RoomDesc'] ?? 'No description available.';
+                $room_image = $room['Img'] ?? 'https://via.placeholder.com/500';
+            } else {
+                $room_name = 'No room selected';
+                $room_description = 'No description available.';
+                $room_price = 'Price not available.';
+                $room_image = 'https://via.placeholder.com/500';
+            }
+        } else {
+            $room_name = 'No room selected';
+            $room_description = 'No description available.';
+            $room_price = 'Price not available.';
+            $room_image = 'https://via.placeholder.com/500';
+}
 
         echo "<h1>{$room_name}</h1>
         ";
-
         ?>
       
   
 <div class="room-container">
         <!-- Room Display Section -->
         <?php
-        // Fetch room details
-        $room_name = isset($_GET['room_name']) ? $_GET['room_name'] : 'No room selected';
-        $room_description = isset($_GET['room_description']) ? $_GET['room_description'] : 'No description available.';
-        $room_price = isset($_GET['room_price']) ? $_GET['room_price'] : 'Price not available.';
-        $room_image = isset($_GET['room_image']) ? $_GET['room_image'] : 'https://via.placeholder.com/500';
+
 
         echo "
         <div class='room-section'>
@@ -659,32 +683,33 @@ span a:hover {
         ?>
 
         <!-- Reservation Form -->
-        <div class="room-form">
+    <div class="room-form">
+        <label for="checkin">Check-in Date:</label>
+        <input type="date" id="checkin" name="checkin">
+        <label for="checkout">Check-out Date:</label>
+        <input type="date" id="checkout" name="checkout">
         <label for="room-type">Room Type:</label>
-<select id="room-type" name="room-type">
-  <option value="" disabled selected>Select a room type</option>
-  <option value="standard">Standard Room</option>
-  <option value="deluxe">Deluxe Room</option>
-</select>
-            <label for="checkin">Check-in Date:</label>
-            <input type="date" id="checkin" name="checkin">
-            <label for="checkout">Check-out Date:</label>
-            <input type="date" id="checkout" name="checkout">
-            <div class="people-inputs">
-  <label>Adults:</label>
-  <div class="counter">
-    <button type="button" onclick="decrement('adult')">-</button>
-    <span id="adult-count">1</span>
-    <button type="button" onclick="increment('adult')">+</button>
-  </div>
+        <select id="room-type" name="room-type">
+          <option value="" disabled selected>Select a room type</option>
+          <option value="standard">Standard Room</option>
+          <option value="deluxe">Deluxe Room</option>
+        </select>
 
-  <label>Children:</label>
-  <div class="counter">
-    <button type="button" onclick="decrement('child')">-</button>
-    <span id="child-count">0</span>
-    <button type="button" onclick="increment('child')">+</button>
-  </div>
-</div>
+    <div class="people-inputs">
+      <label>Adults:</label>
+      <div class="counter">
+        <button type="button" onclick="decrement('adult')">-</button>
+        <span id="adult-count">1</span>
+        <button type="button" onclick="increment('adult')">+</button>
+      </div>
+
+      <label>Children:</label>
+      <div class="counter">
+        <button type="button" onclick="decrement('child')">-</button>
+        <span id="child-count">0</span>
+        <button type="button" onclick="increment('child')">+</button>
+      </div>
+    </div>
 
 <!-- Hidden inputs to submit values -->
 <input type="hidden" name="adults" id="adultsInput" value="1">
@@ -700,7 +725,7 @@ span a:hover {
 
     <script>
 
-const baseRoomPrice = <?php echo isset($_GET['room_price']) ? (int)$_GET['room_price'] : 0; ?>;
+  const baseRoomPrice = <?php echo isset($_GET['room_price']) ? (int)$_GET['room_price'] : 0; ?>;
         // Menu Toggle Functionality
         function toggleMenu() {
             var sideMenu = document.getElementById('sideMenu');

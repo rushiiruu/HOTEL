@@ -133,6 +133,19 @@
       }
     }
   }
+
+  $conn->query("CREATE TABLE IF NOT EXISTS MyReservation (
+      ReservationID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+      UserID INT UNSIGNED NOT NULL,
+      RoomID INT UNSIGNED NOT NULL,
+      RaSid INT UNSIGNED NOT NULL,
+      CheckIn DATE NOT NULL,
+      CheckOut DATE NOT NULL,
+      TotalPrice INT NOT NULL,
+      FOREIGN KEY (UserID) REFERENCES UserAccount(UserID),
+      FOREIGN KEY (RoomID) REFERENCES Rooms(RoomID),
+      FOREIGN KEY (RaSid) REFERENCES RoomsandSuites(RaSid)
+  )");
 ?>
 
 
