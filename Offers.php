@@ -2,26 +2,6 @@
 <?php
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
-
-  $servername = "localhost";
-  $dbuser = "root";
-  $password = "";
-  $dbname = "hotel_db";
-  $errorMsg = [];
-  $successMsg = "";
-
-  // Connect to MySQL server
-  $conn = new mysqli($servername, $dbuser, $password, $dbname);
-  if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-  }
-
-  if (isset($_POST['book'])) {
-      $room_id = $_POST['roomId'];
-      $_SESSION['room_id'] = $room_id; // Store room ID in session for later use
-      header("Location: Reservation.php");
-      exit();
-  }
 ?>
 
 
@@ -186,7 +166,16 @@ nav.scrolled {
   padding-bottom: 0;
 }
 
-
+.centered-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 2;
+    font-family: "Cormorant Garamond", serif;
+  }
   
   h1 {
     text-align: justify;
@@ -370,7 +359,7 @@ span a:hover {
 
 .room-image {
   width: 50%;
-  height: 70vh;
+  height: auto;
   display: block;
   object-fit: cover;
 }
@@ -473,7 +462,108 @@ span a:hover {
   line-height: 1.6;
 }
 
+.room-banner {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
+}
 
+.room-banner img.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%);
+}
+
+.room-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  color: white;
+}
+
+.room-title {
+  font-size: 50px;
+  font-weight: 600;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.room-form {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  color: black;
+  font-family: "Quicksand", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+  margin-left: 100px;
+}
+
+.room-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.room-form select,
+.room-form input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.reserve-btn {
+  padding: 12px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.reserve-btn:hover {
+  background-color: #333;
+}
+
+.people-inputs {
+  margin-top: 10px;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.counter button {
+  background-color: #d0b683;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.counter span {
+  min-width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
 
 
     </style>
@@ -535,61 +625,21 @@ span a:hover {
     />
     <span class =span-menu>
       <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
+      <a href="Rooms&Suites.">ROOMS & SUITES</a>
       <a href="">OFFERS</a>
       <a href="AboutUs.php">ABOUT US</a>
     </span>
     <div class="long-line"></div>
+   
+    <script>
 
-    <div class="search-container">
-  <input type="text" id="roomSearch" placeholder="Search for rooms or suites..." onkeyup="filterRooms()" />
-  <i class="bi bi-search search-icon"></i>
-</div>
+        // Menu Toggle Functionality
+        function toggleMenu() {
+            var sideMenu = document.getElementById('sideMenu');
+            sideMenu.classList.toggle('show');
+        }
 
-<h1>ROOMS & SUITES</h1>
-<p class="room-description">
-  Discover our refined selection of rooms and suites, each designed with elegance, comfort, and style to make your stay truly unforgettable.
-</p>
-
-<div class="room-container">    
-     <?php
-       $rows = $conn->query("SELECT * FROM roomsandsuites")->fetch_all(MYSQLI_ASSOC);
- 
-       foreach ($rows as $room){
-         echo '<form action="" method="post">';
-         echo '<div class="room-section">';
-         echo '<img src="' . htmlspecialchars($room['Img']) . '" alt="Room Image" class="room-image">';
-         echo '<div class="room-info">';
-         echo '<h2>' . htmlspecialchars($room['RoomName']) . '</h2>';
-         echo '<p>' . htmlspecialchars($room['RoomDesc']) . '</p>';
-         echo '<ul>';
-         echo '<li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomSize']) . '</li>';
-         echo '<li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomAccomodation']) . '</li>';
-         echo '<li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['Beds']) . '</li>';
-         echo '<input type="hidden" name="roomId" value="' . htmlspecialchars($room['RaSid']) . '">';
-         echo '<li><i class="bi bi-gear" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['Utilities']) . '</li>';
-         echo '</ul>';
-         echo '<button type="submit" name="book">BOOK NOW</button></a>';
-         echo '</div></div>';
-         echo '</form>';
-       }
-     ?>
- </div>
- 
- 
- <script>
- function filterRooms() {
-   const input = document.getElementById("roomSearch").value.toLowerCase();
-   const rooms = document.querySelectorAll(".room-section");
- 
-   rooms.forEach(room => {
-     const text = room.innerText.toLowerCase();
-     room.style.display = text.includes(input) ? "flex" : "none";
-   });
- }
- 
- 
- </script>
- 
-   </body>
- </html>
+        
+    </script>
+</body>
+</html>
