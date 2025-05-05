@@ -103,41 +103,41 @@
 
 
   if($conn->query("SELECT COUNT(*) FROM Rooms")->fetch_row()[0] == 0) {
-    for($i = 1; $i <= 120; $i++) {
-      if($i <=10){
+    for($i = 1; $i <= 60; $i++) {
+      if($i <=5){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 2000, 'Standard Room', 1)");
       }
-      elseif($i > 10 && $i <= 20){
+      elseif($i > 5 && $i <= 10){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 3000, 'Deluxe Room', 1)");
       }
-      elseif($i > 20 && $i <= 30){
+      elseif($i > 10 && $i <= 15){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 2500, 'Standard Room', 2)");
       }
-      elseif($i > 30 && $i <= 40){
+      elseif($i > 15 && $i <= 20){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 3500, 'Deluxe Room', 2)");
       }
-      elseif($i > 40 && 50){
+      elseif($i > 20 && $i <= 25){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 3100, 'Standard Room', 3)");
       }
-      elseif($i > 50 && $i <= 60){
+      elseif($i > 25 && $i <= 30){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 4100, 'Deluxe Room', 3)");
       }
-      elseif($i > 60 && $i <= 70){
+      elseif($i > 30 && $i <= 35){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 3500, 'Standard Room', 4)");
       }
-      elseif($i > 70 && $i <= 80){
+      elseif($i > 35 && $i <= 40){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 4500, 'Deluxe Room', 4)");
       }
-      elseif($i > 80 && $i <= 90){
+      elseif($i > 40 && $i <= 45){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 4100, 'Standard Room', 5)");
       }
-      elseif($i > 90 && $i <= 100){
+      elseif($i > 45 && $i <= 50){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 5100, 'Deluxe Room', 5)");
       }
-      elseif($i > 100 && $i <= 110){
+      elseif($i > 50 && $i <= 55){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 4500, 'Standard Room', 6)");
       }
-      elseif($i > 110 && $i <= 120){
+      elseif($i > 55 && $i <= 60){
         $conn->query("INSERT INTO Rooms (RoomID, Price, roomtype, RaSid) VALUES ($i, 5500, 'Deluxe Room', 6)");
       }
     }
