@@ -15,6 +15,58 @@
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
+  $room_id = $_SESSION['room_id'];
+
+  $rooms = $conn->query("Select * from MyReservation where RaSid = $room_id")->fetch_all(MYSQLI_ASSOC);
+  $avail = $conn->query("Select * from Rooms where RaSid = $room_id and Avail = 'Available'")->fetch_all(MYSQLI_ASSOC);
+  $UserID = $conn->query("select UserID from UserAccount where Username = '$username'")->fetch_all(MYSQLI_ASSOC);
+
+  if (isset($_POST['submit'])) {
+      $checkin = $_POST['checkin'];
+      $checkout = $_POST['checkout'];
+      $adults = $_POST['adults'];
+      $children = $_POST['children'];
+      $room_type = $_POST['room-type'];
+      $check1 = $_POST['checkin'];
+      $check2 = $_POST['checkout'];
+   
+
+
+      foreach ($avail as $row) {
+        foreach ($rooms as $row2) {
+          if ($row['RoomID'] == $row2['RoomID']) {   
+            $count = 0;
+            while ($check1 != $check2) {
+              if ($row['CheckIn'] == $check1) {
+                $count++;
+                $check1 = date('Y-m-d', strtotime($check1 . ' +1 day'));
+              } 
+            }
+            if ($count == 0){
+              $conn->query("Insert Into MyReservation (CheckIn, CheckOut, Adults, Children, UserID,) Values ('$checkin', '$checkout', '$adults', '$children', '$room_type')");
+            }
+          }
+        }
+      }
+
+      // Validate inputs
+      if (empty($checkin) || empty($checkout) || empty($adults) || empty($children) || empty($room_type)) {
+          $errorMsg[] = "All fields are required.";
+      } else {
+          // Insert into database
+          $stmt = $conn->prepare("INSERT INTO MyReservation (CheckIn, CheckOut, Adults, Children, RoomType) VALUES (?, ?, ?, ?, ?)");
+          $stmt->bind_param("sssss", $checkin, $checkout, $adults, $children, $room_type);
+          if ($stmt->execute()) {
+              $successMsg = "Reservation successful!";
+          } else {
+              $errorMsg[] = "Error: " . $stmt->error;
+          }
+          $stmt->close();
+      }
+  }
+  
+
+  
 ?>
 
 
@@ -666,8 +718,8 @@ span a:hover {
             $room_image = 'https://via.placeholder.com/500';
 }
 
-        echo "<h1>{$room_name}</h1>
-        ";
+        echo "<h1>{$room_name}</h1>";
+        echo "<p>{$room_description}</p>"
         ?>
       
   
