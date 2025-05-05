@@ -566,6 +566,7 @@ span a:hover {
          echo '<li><i class="bi bi-rulers" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomSize']) . '</li>';
          echo '<li><i class="bi bi-person-lines-fill" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['RoomAccomodation']) . '</li>';
          echo '<li><i class="bi bi-basket" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['Beds']) . '</li>';
+          echo '<li><i class="bi bi-gear" style="font-size: 1.2rem;"></i> ' . htmlspecialchars($room['Utilities']) . '</li>';
          echo '</ul>';
          echo '<input type="hidden" name="roomId" value="' . htmlspecialchars($room['RaSid']) . '">';
          echo '<button type="submit" name="book">BOOK NOW</button></a>';
