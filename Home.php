@@ -34,7 +34,14 @@
       usertype VARCHAR(10) NOT NULL,
       Birthday DATE
   )");
+
+  if($conn->query("SELECT COUNT(*) FROM UserAccount")->fetch_row()[0] == 0) {
+    $conn->query("INSERT INTO UserAccount (Fname, Lname, username, password, usertype, Birthday) VALUES (
+    'John', 'Doe', 'Admin1', '" . password_hash('admin1', PASSWORD_BCRYPT) . "', 'Admin', '1990-01-01')");
   
+    $conn->query("INSERT INTO UserAccount (Fname, Lname, username, password, usertype, Birthday) VALUES (
+    'Jane', 'Doe', 'Admin2', '" . password_hash('admin2', PASSWORD_BCRYPT) . "', 'Admin', '1990-01-01')");
+  }
   $conn->query("CREATE TABLE IF NOT EXISTS RoomsandSuites (
       RaSid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
       Img VARCHAR(300) NOT NULL,
@@ -85,11 +92,11 @@
 
   $conn->query("CREATE TABLE IF NOT EXISTS Rooms (
       RoomID INT UNSIGNED PRIMARY KEY,
-      
       Price DECIMAL(10, 2) NOT NULL,
       roomtype VARCHAR(50) NOT NULL,
       RaSid INT UNSIGNED NOT NULL,
-      FOREIGN KEY (RaSid) REFERENCES RoomsandSuites(RaSid)
+      FOREIGN KEY (RaSid) REFERENCES RoomsandSuites(RaSid),
+      Avail VARCHAR(50) NOT NULL DEFAULT 'Available'
   )");
 
 

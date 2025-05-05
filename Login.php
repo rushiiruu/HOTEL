@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -24,12 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
   $usertype = $_POST['usertype'];
 
   // Default birthday if not provided
-  $Birthday = date('2000-01-01');
+  $Birthday = $_POST['Birthday'] ?? date('Y-m-d');
 
   $stmt = $conn->prepare("SELECT username FROM UserAccount WHERE username = ?");
   $stmt->bind_param("s", $username);
   $stmt->execute();
   $result = $stmt->get_result();
+  $usertype = "Guest";
 
   if ($result->num_rows > 0) {
       $errorMsg['signup'] = "Username already exists.";
@@ -371,16 +371,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
           <label for="signupUser">Username</label>
           <input type="text" required name="signupUser" id="signupUser" />
-          <label for="">User-type</label>
-          <select name="usertype" id="">
-            <option value="Guest">Guest</option>
-            <option value="Admin">Admin</option>
-          </select>
-
           <div class="row">
             <div class="field">
-              <label for="signupEmail">Email</label>
-              <input type="text" required name="signupEmail" id="signupEmail" />
+              <label for="signupEmail">Birthday</label>
+              <input type="date" required name="Birthday" id="signupEmail" />
             </div>
             <div class="field">
               <label for="signupPass">Password</label>
@@ -389,11 +383,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
           </div>
 
           <div class="checkbox-container">
-            <input type="checkbox" id="terms">
+            <input type="checkbox" id="terms" required >
             <label for="terms">I agree to the terms and conditions</label>
           </div>
-
-          <button type="submit" name="create">Sign up</button>
+          <button type="submit" name="create" >Sign up</button>
 
           <p class="signup-text">
             Already have an account?
