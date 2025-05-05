@@ -49,46 +49,48 @@
       RoomDesc VARCHAR(500) NOT NULL,
       RoomSize VARCHAR(50) NOT NULL,
       RoomAccomodation VARCHAR(50) NOT NULL,
-      Beds VARCHAR(50) NOT NULL
+      Beds VARCHAR(50) NOT NULL,
+      Utilities VARCHAR(100) NOT NULL
   )");
 
   if ($conn->query("SELECT COUNT(*) FROM RoomsandSuites")->fetch_row()[0] == 0) {
-      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds)
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds, Utilities)
       values ('https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg',
       'DELUXE KING ROOM',
       'Enjoy a tranquil stay in this 35 sqm room with a plush king bed, modern amenities, and a view of Cebu\'s serene mountain range.',
-      '35 sqm', '2 adults', 'King Bed')");
+      '35 sqm', '2 adults', 'King Bed', 'Aircon, Flat-screen TV, Mini Fridge, Wi-Fi, Coffee Maker')");
 
-      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds)
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds, Utilities)
       values ('https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C2T_1_300x240.jpg',
       'PREMIUM TWIN ROOM',
       'Wake up to fresh sea breeze and ocean views in this 38 sqm room with two twin beds—ideal for friends or colleagues.',
-      '38 sqm', '2 adults', ' 2 Twin Beds')");
+      '38 sqm', '2 adults', ' 2 Twin Beds', 'Aircon, TV, Work Desk, Mini Bar, High-Speed Wi-Fi')");
 
-      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds)
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds, Utilities)
       values ('https://images.trvl-media.com/lodging/1000000/440000/438500/438418/0a9e7004.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill',
       'COURTYARD QUEEN ROOM',
       'This 30 sqm room offers cozy comfort, a private courtyard view, and a queen bed—perfect for couples or solo travelers.',
-      '30 sqm', '2 adults', ' Queen Bed')");
+      '30 sqm', '2 adults', ' Queen Bed', 'Aircon, Smart TV, Wi-Fi, Electric Kettle, Hair Dryer')");
 
-      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds)
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds, Utilities)
       values ('https://res.cloudinary.com/lastminute/image/upload/q_auto/v1675611494/unqsnclmptl05ifemape.jpg',
       'EXECUTIVE SUITE',
       'Unwind in this spacious 50 sqm suite with a separate living area, panoramic views, and a luxurious king bed..',
-      '50 sqm', '2 adults, 1 child', 'King Bed + Sofa Bed')");
+      '50 sqm', '2 adults, 1 child', 'King Bed + Sofa Bed', 'Aircon, Two Smart TVs, Living Area, Mini Bar, Bathtub, Nespresso Machine')");
 
-      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds)
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds, Utilities)
       values ('https://static-new.lhw.com/HotelImages/Rooms/Final/7006/room_7006_C1Q_1_300x240.jpg',
       'HONEYMOON SUITE',
       'Celebrate love in this romantic 45 sqm suite featuring ocean views, soft lighting, and an indulgent king bed.',
-      '45 sqm', '2 adults', 'King Bed')");
+      '45 sqm', '2 adults', 'King Bed', 'Aircon, Mood Lighting, Jacuzzi, Private Balcony, Bluetooth Speaker, Wine Fridge')");
 
-      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds)
+      $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds, Utilities)
       values ('https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_80216878_790x490.jpg',
       'PRESIDENTIAL SUITE',
       'Our most luxurious 70 sqm suite features a private garden terrace, elegant interiors, and ample space for family stays.',
-      '70 sqm', '2 adults, 2 children', '2 King Bed + 2 Single Beds')");
+      '70 sqm', '2 adults, 2 children', '2 King Bed + 2 Single Beds', 'Aircon, Multiple Smart TVs, Kitchenette, Dining Area, Jacuzzi, Private Garden, Butler Service')");
   }
+
 
   $conn->query("CREATE TABLE IF NOT EXISTS Rooms (
       RoomID INT UNSIGNED PRIMARY KEY,
