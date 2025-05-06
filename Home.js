@@ -10,21 +10,7 @@
     }
   });
   
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const hotelName = document.querySelector('.hotel-name');
-    const centeredTitle = document.querySelector('.centered-title');
 
-    if (scrollY > 50) {
-      hotelName.classList.add('show-on-scroll');
-      centeredTitle.classList.remove('show-on-scroll');
-      centeredTitle.classList.add('hidden-on-load');
-    } else {
-      hotelName.classList.remove('show-on-scroll');
-      centeredTitle.classList.remove('hidden-on-load');
-      centeredTitle.classList.add('show-on-scroll');
-    }
-  });
 
   window.addEventListener("scroll", () => {
     const scrollY = window.scrollY;

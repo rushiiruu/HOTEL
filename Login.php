@@ -38,11 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
       $stmt = $conn->prepare("INSERT INTO UserAccount (Fname, Lname, password, Birthday, username, usertype) VALUES (?,?, ?, ?, ?, ?)");
       $stmt->bind_param("ssssss", $Fname, $Lname, $hashedPassword, $Birthday, $username, $usertype);
       if ($stmt->execute()) {
-        echo "<script>
-            alert('Account Successfully Made');
-            window.location.href = 'Login.php?form=login';
-        </script>";
+        $successMsg = "Account successfully created.";
+        header("Location: Login.php?form=login&success=1");
         exit();
+
       } else {
           $errorMsg['signup'] = "Error creating account.";
       }
@@ -314,6 +313,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     font-size: 12px;
     border-bottom: 1px solid #333;
   }
+
+  .popup {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  transition: opacity 0.5s ease-in-out;
+}
+
   
 </style>
 </head>
@@ -397,6 +411,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     </div>
   </div>
 </div>
+
+<?php if (isset($_GET['success'])): ?>
+<div id="popup-notification" class="popup">
+  Account successfully created.
+</div>
+<script>
+  setTimeout(() => {
+    document.getElementById('popup-notification').style.opacity = '0';
+  }, 3000);
+</script>
+<?php endif; ?>
 
 <script>
   function toggleForm() {
