@@ -150,6 +150,8 @@
       RaSid INT UNSIGNED NOT NULL,
       CheckIn DATE NOT NULL,
       CheckOut DATE NOT NULL,
+      NoOfAdults INT NOT NULL,
+      NoOfChildren INT NOT NULL,
       TotalPrice INT NOT NULL,
       FOREIGN KEY (UserID) REFERENCES UserAccount(UserID),
       FOREIGN KEY (RoomID) REFERENCES Rooms(RoomID),

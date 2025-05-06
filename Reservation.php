@@ -9,64 +9,124 @@
   $dbname = "hotel_db";
   $errorMsg = [];
   $successMsg = "";
+  $roomForReserve = "";
 
   // Connect to MySQL server
   $conn = new mysqli($servername, $dbuser, $password, $dbname);
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $room_id = $_SESSION['room_id'];
+  $room_id = intval($_SESSION['room_id']);
 
   $rooms = $conn->query("Select * from MyReservation where RaSid = $room_id")->fetch_all(MYSQLI_ASSOC);
   $avail = $conn->query("Select * from Rooms where RaSid = $room_id and Avail = 'Available'")->fetch_all(MYSQLI_ASSOC);
-  $UserID = $conn->query("select UserID from UserAccount where Username = '$username'")->fetch_all(MYSQLI_ASSOC);
+  $stmt = $conn->prepare("SELECT UserID FROM UserAccount WHERE Username = ?");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  $userResult = $stmt->get_result();
+  $userRow = $userResult->fetch_assoc();
+  $UserID = $userRow['UserID'] ?? null;
+  $stmt->close();
 
-  if (isset($_POST['submit'])) {
-      $checkin = $_POST['checkin'];
-      $checkout = $_POST['checkout'];
-      $adults = $_POST['adults'];
-      $children = $_POST['children'];
-      $room_type = $_POST['room-type'];
-      $check1 = $_POST['checkin'];
-      $check2 = $_POST['checkout'];
-   
-
-
-      foreach ($avail as $row) {
-        foreach ($rooms as $row2) {
-          if ($row['RoomID'] == $row2['RoomID']) {   
-            $count = 0;
-            while ($check1 != $check2) {
-              if ($row['CheckIn'] == $check1) {
-                $count++;
-                $check1 = date('Y-m-d', strtotime($check1 . ' +1 day'));
-              } 
-            }
-            if ($count == 0){
-              $conn->query("Insert Into MyReservation (CheckIn, CheckOut, Adults, Children, UserID,) Values ('$checkin', '$checkout', '$adults', '$children', '$room_type')");
-            }
-          }
-        }
-      }
-
-      // Validate inputs
-      if (empty($checkin) || empty($checkout) || empty($adults) || empty($children) || empty($room_type)) {
-          $errorMsg[] = "All fields are required.";
-      } else {
-          // Insert into database
-          $stmt = $conn->prepare("INSERT INTO MyReservation (CheckIn, CheckOut, Adults, Children, RoomType) VALUES (?, ?, ?, ?, ?)");
-          $stmt->bind_param("sssss", $checkin, $checkout, $adults, $children, $room_type);
-          if ($stmt->execute()) {
-              $successMsg = "Reservation successful!";
-          } else {
-              $errorMsg[] = "Error: " . $stmt->error;
-          }
-          $stmt->close();
-      }
-  }
+  $standardPrice = $conn->query("SELECT Price FROM Rooms WHERE RaSid = $room_id AND RoomType = 'Standard Room' LIMIT 1")->fetch_assoc()['Price'];
+  $deluxePrice = $conn->query("SELECT Price FROM Rooms WHERE RaSid = $room_id AND RoomType = 'Deluxe Room' LIMIT 1")->fetch_assoc()['Price'];
   
+if (isset($_POST['reserve'])) {
+    $checkin = $_POST['checkin'];
+    $checkout = $_POST['checkout'];
+    $adults = $_POST['adults'];
+    $children = $_POST['children'];
+    $room_type = $_POST['room-type'];
+    $totalPrice = $_POST['total_price'];
+    $roomForReserve = 0;
 
-  
+    // Check for conflicting reservations and room availability
+    $conflictQuery = $conn->prepare("
+        SELECT * FROM MyReservation 
+        WHERE RoomID = ? 
+        AND (
+            (CheckIn < ? AND CheckOut > ?) OR 
+            (CheckIn < ? AND CheckOut > ?) OR
+            (CheckIn >= ? AND CheckOut <= ?)
+        )
+    ");
+
+
+    foreach ($avail as $row) {
+    $roomID = $row['RoomID'];
+    $RaSid = $row['RaSid'];
+
+    // Ensure the RaSid matches the $room_id
+    if ($RaSid != $room_id) {
+        continue; // Skip this room if RaSid does not match
+    }
+
+    // Check if the room type matches
+    $roomTypeQuery = $conn->prepare("SELECT roomtype FROM Rooms WHERE RoomID = ?");
+    $roomTypeQuery->bind_param("i", $roomID);
+    $roomTypeQuery->execute();
+    $roomTypeResult = $roomTypeQuery->get_result();
+    $roomTypeRow = $roomTypeResult->fetch_assoc();
+
+    if (!$roomTypeRow) {
+        error_log("Room type query returned no results for RoomID: $roomID");
+        continue; // Skip if no room type is found
+    }
+
+    if (trim(strtolower($roomTypeRow['roomtype'])) !== trim(strtolower($room_type))) {
+        error_log("Room type mismatch: DB value = " . $roomTypeRow['roomtype'] . ", Form value = $room_type");
+        continue; // Skip this room if the room type does not match
+    }
+
+    // Check if the room is available
+    $availabilityQuery = $conn->prepare("SELECT Avail FROM Rooms WHERE RoomID = ?");
+    $availabilityQuery->bind_param("i", $roomID);
+    $availabilityQuery->execute();
+    $availabilityResult = $availabilityQuery->get_result();
+    $availabilityRow = $availabilityResult->fetch_assoc();
+
+    if (!$availabilityRow) {
+        error_log("Availability query returned no results for RoomID: $roomID");
+        continue; // Skip if no availability data is found
+    }
+
+    if (strtolower($availabilityRow['Avail']) !== 'available') {
+        error_log("Room not available: RoomID = $roomID, Avail = " . $availabilityRow['Avail']);
+        continue; // Room is not available, skip this room
+    }
+
+    // Check for conflicting reservations
+    $conflictQuery->bind_param("issssss", $roomID, $checkout, $checkin, $checkout, $checkin, $checkin, $checkout);
+    $conflictQuery->execute();
+    $conflictResult = $conflictQuery->get_result();
+
+    if ($conflictResult->num_rows > 0) {
+        error_log("Conflict found for RoomID: $roomID");
+        continue; // Conflict found, skip this room
+    }
+
+    // No conflict and room is available, reserve this room
+    $roomForReserve = $roomID;
+    break;
+}
+
+$conflictQuery->close();
+
+if ($roomForReserve != 0) {
+    // Insert the reservation
+    $stmt = $conn->prepare("
+        INSERT INTO MyReservation (UserID, RoomID, RaSid, CheckIn, CheckOut, NoOFAdults, NoOFChildren, TotalPrice) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+    $stmt->bind_param("iiissiii", $UserID, $roomForReserve, $room_id, $checkin, $checkout, $adults, $children, $totalPrice);
+    $stmt->execute();
+    $stmt->close();
+
+    echo "<script>alert('Reservation confirmed!');</script>";
+} else {
+    echo "<script>alert('No available rooms for the selected dates or room type. Please choose different dates or room type.');</script>";
+}
+}
 ?>
 
 
@@ -734,50 +794,52 @@ span a:hover {
           ";
         ?>
 
-        <!-- Reservation Form -->
+<form action="" method="post">
     <div class="room-form">
         <label for="checkin">Check-in Date:</label>
-        <input type="date" id="checkin" name="checkin">
+        <input type="date" id="checkin" name="checkin" required>
+
         <label for="checkout">Check-out Date:</label>
-        <input type="date" id="checkout" name="checkout">
+        <input type="date" id="checkout" name="checkout" required>
+
         <label for="room-type">Room Type:</label>
-        <select id="room-type" name="room-type">
-          <option value="" disabled selected>Select a room type</option>
-          <option value="standard">Standard Room</option>
-          <option value="deluxe">Deluxe Room</option>
+        <select id="room-type" name="room-type" required>
+            <option value="" disabled selected>Select a room type</option>
+            <option value="Standard Room">Standard Room</option>
+            <option value="Deluxe Room">Deluxe Room</option>
         </select>
 
-    <div class="people-inputs">
-      <label>Adults:</label>
-      <div class="counter">
-        <button type="button" onclick="decrement('adult')">-</button>
-        <span id="adult-count">1</span>
-        <button type="button" onclick="increment('adult')">+</button>
-      </div>
+        <div class="people-inputs">
+            <label>Adults:</label>
+            <div class="counter">
+                <button type="button" onclick="decrement('adult')">-</button>
+                <span id="adult-count">1</span>
+                <button type="button" onclick="increment('adult')">+</button>
+            </div>
 
-      <label>Children:</label>
-      <div class="counter">
-        <button type="button" onclick="decrement('child')">-</button>
-        <span id="child-count">0</span>
-        <button type="button" onclick="increment('child')">+</button>
-      </div>
-    </div>
-
-<!-- Hidden inputs to submit values -->
-<input type="hidden" name="adults" id="adultsInput" value="1">
-<input type="hidden" name="children" id="childrenInput" value="0">
-
-            <button type="submit" class="reserve-btn">Confirm Reservation</button>
+            <label>Children:</label>
+            <div class="counter">
+                <button type="button" onclick="decrement('child')">-</button>
+                <span id="child-count">0</span>
+                <button type="button" onclick="increment('child')">+</button>
+            </div>
         </div>
-    </div>
 
-    <div class="price-output">
-  <p>Total Price: <span id="calculated-price">₱0</span></p>
-</div>
+        <!-- Hidden inputs to submit values -->
+        <input type="hidden" name="adults" id="adultsInput" value="1">
+        <input type="hidden" name="children" id="childrenInput" value="0">
+        <input type="hidden" name="total_price" id="total_price">
+
+        <button type="submit" name="reserve" class="reserve-btn">Confirm Reservation</button>
+    </div> 
+   <div class="price-output">
+    <p>Total Price: <span id="calculated-price">₱0</span></p>
+  </div>
+</form>
+
+
 
     <script>
-
-  const baseRoomPrice = <?php echo isset($_GET['room_price']) ? (int)$_GET['room_price'] : 0; ?>;
         // Menu Toggle Functionality
         function toggleMenu() {
             var sideMenu = document.getElementById('sideMenu');
@@ -812,31 +874,35 @@ span a:hover {
   }
 
   function calculatePrice() {
-  const roomType = document.getElementById('room-type').value;
-  const checkin = new Date(document.getElementById('checkin').value);
-  const checkout = new Date(document.getElementById('checkout').value);
+    const roomType = document.getElementById('room-type').value;
+    const checkin = new Date(document.getElementById('checkin').value);
+    const checkout = new Date(document.getElementById('checkout').value);
 
-  if (isNaN(checkin.getTime()) || isNaN(checkout.getTime()) || !roomType) {
-    document.getElementById('calculated-price').textContent = '₱0';
-    return;
+    if (isNaN(checkin.getTime()) || isNaN(checkout.getTime()) || !roomType) {
+      document.getElementById('calculated-price').textContent = '₱0';
+      return;
+    }
+
+    if(roomType === 'Standard Room') {
+      roomPrice = <?php echo $standardPrice; ?> // Standard Room price
+    } else if(roomType === 'Deluxe Room') {
+      roomPrice = <?php echo $deluxePrice; ?> // Deluxe Room price
+    }
+    const timeDiff = checkout - checkin;
+    const nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    if (nights <= 0) {
+      document.getElementById('calculated-price').textContent = '₱0';
+      return;
+    }
+
+
+
+    const totalPrice = roomPrice * nights;
+    document.getElementById('calculated-price').textContent = `₱${totalPrice}`;
+    document.getElementById('total_price').value = totalPrice
+
   }
-
-  const timeDiff = checkout - checkin;
-  const nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-  if (nights <= 0) {
-    document.getElementById('calculated-price').textContent = '₱0';
-    return;
-  }
-
-  let pricePerNight = baseRoomPrice;
-  if (roomType === 'deluxe') {
-    pricePerNight += 1000;
-  }
-
-  const totalPrice = pricePerNight * nights;
-  document.getElementById('calculated-price').textContent = `₱${totalPrice}`;
-}
 
 document.getElementById('room-type').addEventListener('change', calculatePrice);
 document.getElementById('checkin').addEventListener('change', calculatePrice);
