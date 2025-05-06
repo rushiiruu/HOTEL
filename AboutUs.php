@@ -543,54 +543,7 @@ span a:hover {
   </head>
   <body>
     <script src="Home.js"></script>
-    <nav id="navbar">
-      <a href="#" class="menu-icon" onclick="toggleMenu()">
-        <i class="bi bi-list" id="menu"></i>
-      </a>
-
-      <a href="#" class="hotel-name hidden-on-load">
-        LA GINTA REAL
-        <span class="hotel-location">PHILIPPINES</span>
-      </a>
-
-      <div class="nav-right">
-        <a href="#">MY RESERVATION</a>
-        <a href="#">BOOK</a>
-      </div>
-    </nav>
-    <div id="sideMenu" class="side-menu">
-      <button class="close-menu" onclick="toggleMenu()">
-      <a href="#" class="side-menu-name">
-  <?php echo $username ? "Hi, " . htmlspecialchars($username) . "!" : "LA GINTA REAL"; ?>
-</a>
-
-        <i class="bi bi-x"></i>
-      </button>
-      <ul>
-        <li><a href="Home.php">Home</a></li>
-        <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
-        <li><a href="#">Exlusive Offers</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">My Reservation</a></li>
-        <?php if ($username): ?>
-    <li>
-      <a href="Logout.php">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </a>
-    </li>
-  <?php else: ?>
-    <li>
-      <a href="Login.php">
-        <i class="bi bi-box-arrow-in-right"></i> Login
-      </a>
-    </li>
-  <?php endif; ?>
-
-       
-      </ul>
-    </div>
-
+    <?php include 'Navbar.php'; ?>
     <img
       src="https://media.istockphoto.com/id/1680455174/photo/a-profile-portrait-of-a-woman.jpg?s=612x612&w=0&k=20&c=axGw-raQ8jVJA5SSd6QmFOIOow6LNEpF874hIdZVErg="
       class="main-image"

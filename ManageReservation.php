@@ -2,8 +2,38 @@
 <?php
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
-?>
 
+  // Database connection
+  $servername = "localhost";
+  $dbuser = "root";
+  $password = "";
+  $dbname = "hotel_db";
+  $conn = new mysqli($servername, $dbuser, $password, $dbname);
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
+
+  // SQL query to get the reservation details
+  $sql = "SELECT r.RoomID, r.Price, rr.CheckIn, rr.CheckOut
+          FROM Rooms r
+          JOIN MyReservation rr ON r.RoomID = rr.RoomID";
+  
+  $result = $conn->query($sql);
+
+  // Handle cancel request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') {
+  $roomIDToCancel = $_POST['room_id'];
+  $sqlDelete = "DELETE FROM MyReservation WHERE RoomID = ?";
+  $stmt = $conn->prepare($sqlDelete);
+  $stmt->bind_param("i", $roomIDToCancel);
+  $stmt->execute();
+  $stmt->close();
+  // Refresh to reflect the changes
+  header("Location: " . $_SERVER['PHP_SELF']);
+  exit;
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -356,93 +386,146 @@ nav.scrolled {
 }
 
 
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding-left: 10px;
+  margin-bottom: 30px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#user-icon {
+  font-size: 45px;
+
+}
+
+.side-menu-bottom {
+  margin-top: auto;
+  padding-bottom: 30px;
+  padding-left: 10px;
+}
+
+.side-menu-bottom a {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  gap: 10px;
+  font-weight: bold;
+  margin-bottom: 90px;
+}
+
+.dropdown-content button {
+  background: none;
+  border: none;
+  color: black;
+  padding: 10px 12px;
+  text-align: left;
+  width: 100%;
+  font-size: 14px;
+  cursor: pointer;
+}
+.dropdown-content button:hover {
+  background-color: #f1f1f1;
+}
+
     </style>
   </head>
   <body>
     
   <nav id="navbar" class="scrolled">
 
-      <a href="#" class="menu-icon" onclick="toggleMenu()">
+  <a href="#" class="menu-icon" onclick="toggleMenu()">
         <i class="bi bi-list" id="menu"></i>
       </a>
 
-      <a href="#" class="hotel-name ">
+      <a href="#" class="hotel-name">
         LA GINTA REAL
         <span class="hotel-location">PHILIPPINES</span>
       </a>
 
       <div class="nav-right">
-        <a href="#">MY RESERVATION</a>
-        <a href="#">BOOK</a>
+        <a href="ManageReservation.php">MY RESERVATION</a>
+        <a href="Rooms&Suites.php">BOOK</a>
       </div>
     </nav>
     <div id="sideMenu" class="side-menu">
-      <button class="close-menu" onclick="toggleMenu()">
-      <a href="#" class="side-menu-name">
-  <?php echo $username ? "Hi, " . htmlspecialchars($username) . "!" : "LA GINTA REAL"; ?>
-</a>
 
-        <i class="bi bi-x"></i>
-      </button>
-      <ul>
-        <li><a href="Home.php">Home</a></li>
-        <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
-        <li><a href="#">Exlusive Offers</a></li>
-        <li><a href="AboutUs.php">About Us</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">My Reservation</a></li>
-        <?php if ($username): ?>
-    <li>
-      <a href="Logout.php">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </a>
-    </li>
-  <?php else: ?>
-    <li>
-      <a href="Login.php">
-        <i class="bi bi-box-arrow-in-right"></i> Login
-      </a>
-    </li>
-  <?php endif; ?>
+  <!-- User icon and name at the top -->
+  <div class="user-info">
+    <i class="bi bi-person-circle" id="user-icon"></i>
+    <span class="username">
+      <?php echo $username ? htmlspecialchars($username) : "Guest"; ?>
+    </span>
+  </div>
 
-       
-      </ul>
-    </div>
+  <!-- Close button -->
+  <button class="close-menu" onclick="toggleMenu()">
+    <i class="bi bi-x"></i>
+  </button>
+
+  <!-- Navigation menu -->
+  <ul>
+    <li><a href="Home.php">Home</a></li>
+    <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
+    <li><a href="#">Exclusive Offers</a></li>
+    <li><a href="AboutUs.php">About Us</a></li>
+    <li><a href="#">Contact Us</a></li>
+    <li><a href="ManageReservation.php">My Reservation</a></li>
+  </ul>
+
+  <!-- Login/Logout at the bottom -->
+  <div class="side-menu-bottom">
+    <?php if ($username): ?>
+      <a href="Logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <?php else: ?>
+      <a href="Login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+    <?php endif; ?>
+  </div>
+</div>
+
 
     
-    <div class="reservation-container">
-  <h2>Your Reservations</h2>
+<div class="reservation-container">
+  <h2>My Reservations</h2>
   <table class="reservation-table">
     <thead>
       <tr>
-        <th>Room No.</th>
+        <th>Room ID</th>
+        <th>Price</th>
         <th>Check-In</th>
         <th>Check-Out</th>
-        <th>Price</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>101</td>
-        <td>2025-05-10</td>
-        <td>2025-05-15</td>
-        <td>$500</td>
-        <td>
-          <div class="dropdown">
-            <button class="dropbtn">Actions</button>
-            <div class="dropdown-content">
-              <a href="#">View</a>
-              <a href="#">Edit</a>
-              <a href="#">Cancel</a>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <!-- Add more rows as needed -->
+      <?php if ($result->num_rows > 0): ?>
+        <?php while ($row = $result->fetch_assoc()): ?>
+          <tr>
+            <td><?php echo htmlspecialchars($row['RoomID']); ?></td>
+            <td><?php echo htmlspecialchars($row['Price']); ?></td>
+            <td><?php echo htmlspecialchars($row['CheckIn']); ?></td>
+            <td><?php echo htmlspecialchars($row['CheckOut']); ?></td>
+            <td>
+              <form method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                <input type="hidden" name="action" value="cancel">
+                <input type="hidden" name="room_id" value="<?php echo $row['RoomID']; ?>">
+                <button type="submit" class="dropbtn">Cancel</button>
+              </form>
+            </td>
+          </tr>
+        <?php endwhile; ?>
+      <?php else: ?>
+        <tr><td colspan="5">No reservations found.</td></tr>
+      <?php endif; ?>
     </tbody>
   </table>
 </div>
+
 
        
     <script>

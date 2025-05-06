@@ -695,53 +695,7 @@ span a:hover {
   </head>
   <body>
     <script src="Home.js"></script>
-    <nav id="navbar">
-      <a href="#" class="menu-icon" onclick="toggleMenu()">
-        <i class="bi bi-list" id="menu"></i>
-      </a>
-
-      <a href="#" class="hotel-name hidden-on-load">
-        LA GINTA REAL
-        <span class="hotel-location">PHILIPPINES</span>
-      </a>
-
-      <div class="nav-right">
-        <a href="ManageReservation.php">MY RESERVATION</a>
-        <a href="#">BOOK</a>
-      </div>
-    </nav>
-    <div id="sideMenu" class="side-menu">
-      <button class="close-menu" onclick="toggleMenu()">
-      <a href="#" class="side-menu-name">
-  <?php echo $username ? "Hi, " . htmlspecialchars($username) . "!" : "LA GINTA REAL"; ?>
-</a>
-
-        <i class="bi bi-x"></i>
-      </button>
-      <ul>
-        <li><a href="Home.php">Home</a></li>
-        <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
-        <li><a href="#">Exlusive Offers</a></li>
-        <li><a href="AboutUs.php">About Us</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="ManageReservation.php">My Reservation</a></li>
-        <?php if ($username): ?>
-    <li>
-      <a href="Logout.php">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </a>
-    </li>
-  <?php else: ?>
-    <li>
-      <a href="Login.php">
-        <i class="bi bi-box-arrow-in-right"></i> Login
-      </a>
-    </li>
-  <?php endif; ?>
-
-       
-      </ul>
-    </div>
+    <?php include 'Navbar.php'; ?>
 
     <img
       src="https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F54089c95-8f88-4f62-a702-b77d2cc3a6c4.jpg?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1"
@@ -889,13 +843,18 @@ span a:hover {
       roomPrice = <?php echo $deluxePrice; ?> // Deluxe Room price
     }
     const timeDiff = checkout - checkin;
-    const nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+let nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-    if (nights <= 0) {
-      document.getElementById('calculated-price').textContent = '₱0';
-      return;
-    }
+// Handle invalid date range (checkout before checkin)
+if (timeDiff < 0) {
+  document.getElementById('calculated-price').textContent = '₱0';
+  return;
+}
 
+// Treat same-day check-in and check-out as 1 night
+if (nights === 0) {
+  nights = 1;
+}
 
 
     const totalPrice = roomPrice * nights;

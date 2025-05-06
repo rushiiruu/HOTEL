@@ -60,30 +60,55 @@
     font-weight: bold;
     color: white;
     font-family: "Cormorant Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     text-align: center;
   }
-
+  
   .hotel-location {
-    display: block;
+    display: block; 
     font-size: 14px;
     font-weight: normal;
     margin-top: 0px;
     font-family: "Cormorant Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     text-align: center;
   }
 
   .nav-right {
     display: flex;
     align-items: center;
+}
+
+.hidden-menu {
+    display: none;
+    flex-direction: column;
+    background-color: white;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .hidden-menu.show {
+    display: flex;
   }
 
-  .nav-right a {
+.nav-right a {
     margin-right: 20px;
     font-family: "Cormorant Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     font-size: 16px;
     text-decoration: none;
     color: white;
-  }
+    text-align: center;
+}
 
   .menu-icon i {
     font-size: 2rem;
@@ -118,7 +143,7 @@
   .side-menu a {
     color: white;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 20px;
     font-weight: bold;
   }
@@ -162,44 +187,124 @@
     border-bottom: 1px solid white;
     padding-left: 20px;
   }
+
+  .user-info {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding-left: 10px;
+  margin-bottom: 30px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#user-icon {
+  font-size: 45px;
+
+}
+
+.side-menu-bottom {
+  margin-top: auto;
+  padding-bottom: 30px;
+  padding-left: 10px;
+}
+
+.side-menu-bottom a {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  gap: 10px;
+  font-weight: bold;
+  margin-bottom: 90px;
+}
+
 </style>
 
 <nav id="navbar">
-  <a href="#" class="menu-icon" onclick="toggleMenu()">
-    <i class="bi bi-list" id="menu"></i>
-  </a>
+      <a href="#" class="menu-icon" onclick="toggleMenu()">
+        <i class="bi bi-list" id="menu"></i>
+      </a>
 
-  <a href="#" class="hotel-name hidden-on-load">
-    LA GINTA REAL
-    <span class="hotel-location">PHILIPPINES</span>
-  </a>
+      <a href="#" class="hotel-name hidden-on-load">
+        LA GINTA REAL
+        <span class="hotel-location">PHILIPPINES</span>
+      </a>
 
-  <div class="nav-right">
-    <a href="#">MY RESERVATION</a>
-    <a href="#">BOOK</a>
+      <div class="nav-right">
+        <a href="ManageReservation.php">MY RESERVATION</a>
+        <a href="Rooms&Suites.php">BOOK</a>
+      </div>
+    </nav>
+    <div id="sideMenu" class="side-menu">
+
+  <!-- User icon and name at the top -->
+  <div class="user-info">
+    <i class="bi bi-person-circle" id="user-icon"></i>
+    <span class="username">
+      <?php echo $username ? htmlspecialchars($username) : "Guest"; ?>
+    </span>
   </div>
-</nav>
 
-<div id="sideMenu" class="side-menu">
+  <!-- Close button -->
   <button class="close-menu" onclick="toggleMenu()">
-    <i class="bi bi-x-lg"></i>
+    <i class="bi bi-x"></i>
   </button>
+
+  <!-- Navigation menu -->
   <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Rooms</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
-    <?php if ($username): ?>
-      <li><a href="#"><?= htmlspecialchars($username) ?> (Logout)</a></li>
-    <?php else: ?>
-      <li><a href="#">Login</a></li>
-    <?php endif; ?>
+    <li><a href="Home.php">Home</a></li>
+    <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
+    <li><a href="#">Exclusive Offers</a></li>
+    <li><a href="AboutUs.php">About Us</a></li>
+    <li><a href="#">Contact Us</a></li>
+    <li><a href="ManageReservation.php">My Reservation</a></li>
   </ul>
+
+  <!-- Login/Logout at the bottom -->
+  <div class="side-menu-bottom">
+    <?php if ($username): ?>
+      <a href="Logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <?php else: ?>
+      <a href="Login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+    <?php endif; ?>
+  </div>
 </div>
+
+
 
 <script>
   function toggleMenu() {
     const menu = document.getElementById("sideMenu");
     menu.classList.toggle("show");
   }
+
+  window.addEventListener('scroll', function() {
+    var navbar = document.querySelector('nav');
+    
+    if (window.scrollY > 50) {  
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  
+  window.addEventListener("scroll", () => {
+    const scrollY = window.scrollY;
+    const hotelName = document.querySelector(".hotel-name");
+    const centeredTitle = document.querySelector(".centered-title");
+
+    if (scrollY > 50) {
+      hotelName.classList.add("show-on-scroll");
+      centeredTitle.classList.remove("show-on-scroll");
+      centeredTitle.classList.add("hidden-on-load");
+    } else {
+      hotelName.classList.remove("show-on-scroll");
+      centeredTitle.classList.remove("hidden-on-load");
+      centeredTitle.classList.add("show-on-scroll");
+    }
+  });
 </script>
