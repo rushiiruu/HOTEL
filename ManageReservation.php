@@ -12,14 +12,14 @@
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-
-  // SQL query to get the reservation details
-  $sql = "SELECT r.RoomID, r.Price, rr.CheckIn, rr.CheckOut
-          FROM Rooms r
-          JOIN MyReservation rr ON r.RoomID = rr.RoomID";
   
-  $result = $conn->query($sql);
-
+  $stmt = $conn->prepare("SELECT UserID FROM UserAccount WHERE Username = ?");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  $userResult = $stmt->get_result();
+  $userRow = $userResult->fetch_assoc();
+  $UserID = $userRow['UserID'];
+  $stmt->close();
   // Handle cancel request
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') {
   $roomIDToCancel = $_POST['room_id'];
@@ -503,25 +503,33 @@ nav.scrolled {
       </tr>
     </thead>
     <tbody>
-      <?php if ($result->num_rows > 0): ?>
-        <?php while ($row = $result->fetch_assoc()): ?>
-          <tr>
-            <td><?php echo htmlspecialchars($row['RoomID']); ?></td>
-            <td><?php echo htmlspecialchars($row['Price']); ?></td>
-            <td><?php echo htmlspecialchars($row['CheckIn']); ?></td>
-            <td><?php echo htmlspecialchars($row['CheckOut']); ?></td>
-            <td>
-              <form method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
-                <input type="hidden" name="action" value="cancel">
-                <input type="hidden" name="room_id" value="<?php echo $row['RoomID']; ?>">
-                <button type="submit" class="dropbtn">Cancel</button>
-              </form>
-            </td>
-          </tr>
-        <?php endwhile; ?>
-      <?php else: ?>
-        <tr><td colspan="5">No reservations found.</td></tr>
-      <?php endif; ?>
+      <?php 
+       $result = $conn->query("SELECT * FROM MyReservation WHERE UserID = $UserID");
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $roomID = $row['RoomID'];
+                $price = $row['TotalPrice'];
+                $checkIn = $row['CheckIn'];
+                $checkOut = $row['CheckOut'];
+
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($roomID) . "</td>";
+                echo "<td>" . htmlspecialchars($price) . "</td>";
+                echo "<td>" . htmlspecialchars($checkIn) . "</td>";
+                echo "<td>" . htmlspecialchars($checkOut) . "</td>";
+                echo "<td>";
+                echo "<form method='POST' onsubmit=\"return confirm('Are you sure you want to cancel this reservation?');\">";
+                echo "<input type='hidden' name='action' value='cancel'>";
+                echo "<input type='hidden' name='room_id' value='" . htmlspecialchars($roomID) . "'>";
+                echo "<button type='submit' class='dropbtn'>Cancel</button>";
+                echo "</form>";
+                echo "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='5'>No reservations found.</td></tr>";
+        }
+      ?>
     </tbody>
   </table>
 </div>
