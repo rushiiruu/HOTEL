@@ -1,0 +1,230 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 10px;
+    line-height: 1.6;
+    
+
+}
+
+.main-container {
+    height: 100vh;
+    width: 100%;
+    background-image: url("icons/bg-2.png");
+    background-repeat: repeat;
+    background-size: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  h2 {
+    text-align: center;
+    font-family: "Cormorant Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 20px;
+  }
+  
+  .container {
+    display: flex;
+    height: 500px;
+    width: 1000px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+  }
+  
+  .left-panel {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .left-panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block; 
+  }
+  
+  
+  .right-panel {
+    flex: 1;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .right-panel h2 {
+    margin-bottom: 20px;
+  }
+  
+  .right-panel form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .right-panel input {
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 12px;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+
+  .right-panel button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: teal;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .right-panel button:hover {
+    background-color: darkcyan;
+  }
+
+  .right-panel input[type="text"],
+.right-panel input[type="password"] {
+  border: none;
+  border-bottom: 1px solid #333;
+  background: transparent;
+  padding: 6px 4px;
+  font-size: 14px;
+  margin-bottom: 25px;
+  outline: none;
+  letter-spacing: 0.5px;
+}
+
+.right-panel label {
+  font-size: 12px;
+  
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.right-panel .checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.right-panel .checkbox-container input {
+  margin-right: 8px;
+}
+
+.right-panel button {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.right-panel button:hover {
+  background-color: #333;
+}
+
+.signup-text {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  .signup-text a {
+    color: teal;
+    text-decoration: none;
+    margin-left: 5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .signup-text a:hover {
+    text-decoration: underline;
+  }
+  
+  .name-row {
+    display: flex;
+    gap: 6px; /* was 10px */
+    margin-bottom: 10px;
+  }
+  
+  .name-field input {
+    padding: 4px;
+    font-size: 12px; /* was 13px */
+  }
+  
+  .name-field label {
+    font-size: 10px; /* was 11px */
+    margin-bottom: 2px;
+  }
+  
+  .name-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+  .row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .field label {
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+  
+  .field input {
+    padding: 6px;
+    font-size: 12px;
+    border-bottom: 1px solid #333;
+  }
+
+  .popup {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  transition: opacity 0.5s ease-in-out;
+}
