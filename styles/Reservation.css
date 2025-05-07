@@ -523,7 +523,7 @@ span a:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 320px;
+  max-width: 420px;
   margin-left: 100px;
 }
 
@@ -531,6 +531,7 @@ span a:hover {
   display: flex;
   flex-direction: column;
   font-size: 14px;
+  margin-top: 15px;
 }
 
 .room-form select,
@@ -652,64 +653,224 @@ input[type="date"] {
   opacity: 0;
 }
 
-/* Slide-in modal */
+/* Side drawer style for payment modal */
 .slide-modal {
-  display: none; /* Hidden by default */
   position: fixed;
   top: 0;
-  right: -100%; /* Start off-screen */
-  width: 300px;
+  right: -400px; /* hidden initially */
+  width: 350px;
   height: 100%;
-  background-color: white;
-  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  transition: right 0.5s ease; /* Smooth slide-in effect */
+  background-color: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  z-index: 1002;
+  transition: right 0.4s ease;
+  padding: 20px;
 }
 
 .slide-modal.show {
-  right: 0; /* Slide into view */
+  right: 0;
+}
+
+.slide-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.close-icon {
+  font-size: 24px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+
+/* Slide-in Payment Modal as Side Menu */
+.slide-modal {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Start off-screen */
+  width: 350px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: right 0.4s ease-in-out;
+}
+
+.slide-modal.show {
+  right: 0; /* Slide in */
 }
 
 .slide-modal-content {
   padding: 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
 }
 
+.close-icon {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.active {
+  display: flex; /* Show when active */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+/* Side drawer style for payment modal */
+.slide-modal {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Hidden initially */
+  width: 350px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  z-index: 1002;
+  transition: right 0.4s ease;
+  display: none; /* Hidden by default */
+}
+
+.slide-modal.show {
+  right: 0; /* Show when active */
+}
+
+/* Button styles */
 .confirm-btn {
-  background-color: #27ae60; /* Green for confirm */
+  padding: 10px 20px;
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
 .close-btn {
-  background-color: #e74c3c; /* Red for cancel */
+  padding: 10px 20px;
+  background-color: #6c757d;
   color: white;
   border: none;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
   border-radius: 5px;
-}
-
-.confirm-btn:hover, .close-btn:hover {
-  opacity: 0.8;
-}
-
-/* Close Icon Styling */
-.close-icon {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
   cursor: pointer;
 }
 
-.close-icon:hover {
-  color: #000;
+/* Success popup */
+.popup {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  transition: opacity 0.5s ease-in-out;
+  display: none;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+}
+
+.form-column {
+  flex: 1;
+}
+
+.price-column {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.price-output {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  
+  padding: 10px 15px;
+  
+}
+
+
+
+.room-form select,
+.room-form input {
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 250px; /* Same width as the button */
+}
+
+.modal {
+  position: fixed;
+  z-index: 10;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; right: 0;
+  width: 300px;
+  height: 100%;
+  background: #f7f7f7;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+  z-index: 20;
+  overflow-y: auto;
+}
+
+.pay-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  background: #000000;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
 }
