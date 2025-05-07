@@ -35,6 +35,13 @@
 if (isset($_POST['reserve'])) {
     $checkin = $_POST['checkin'];
     $checkout = $_POST['checkout'];
+
+    // Validate that check-in is earlier than check-out
+    if (strtotime($checkin) > strtotime($checkout)) {
+        echo "<script>alert('Check-in date must be earlier than the check-out date.');</script>";
+        return;
+    }
+
     $adults = $_POST['adults'];
     $children = $_POST['children'];
     $room_type = $_POST['room-type'];
@@ -884,35 +891,36 @@ span a:hover {
     const checkout = new Date(document.getElementById('checkout').value);
 
     if (isNaN(checkin.getTime()) || isNaN(checkout.getTime()) || !roomType) {
-      document.getElementById('calculated-price').textContent = '₱0';
-      return;
+        document.getElementById('calculated-price').textContent = '₱0';
+        return;
     }
 
-    if(roomType === 'Standard Room') {
-      roomPrice = <?php echo $standardPrice; ?> // Standard Room price
-    } else if(roomType === 'Deluxe Room') {
-      roomPrice = <?php echo $deluxePrice; ?> // Deluxe Room price
+    // Ensure check-in is earlier than check-out
+    if (checkin > checkout) {
+        alert("Check-in date must be earlier than the check-out date.");
+        document.getElementById('calculated-price').textContent = '₱0';
+        return;
     }
+
+    let roomPrice = 0;
+    if (roomType === 'Standard Room') {
+        roomPrice = <?php echo $standardPrice; ?>; // Standard Room price
+    } else if (roomType === 'Deluxe Room') {
+        roomPrice = <?php echo $deluxePrice; ?>; // Deluxe Room price
+    }
+
     const timeDiff = checkout - checkin;
-let nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    let nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-// Handle invalid date range (checkout before checkin)
-if (timeDiff < 0) {
-  document.getElementById('calculated-price').textContent = '₱0';
-  return;
-}
-
-// Treat same-day check-in and check-out as 1 night
-if (nights === 0) {
-  nights = 1;
-}
-
+    // Treat same-day check-in and check-out as 1 night
+    if (nights === 0) {
+        nights = 1;
+    }
 
     const totalPrice = roomPrice * nights;
     document.getElementById('calculated-price').textContent = `₱${totalPrice}`;
-    document.getElementById('total_price').value = totalPrice
-
-  }
+    document.getElementById('total_price').value = totalPrice;
+}
 
 document.getElementById('room-type').addEventListener('change', calculatePrice);
 document.getElementById('checkin').addEventListener('change', calculatePrice);
