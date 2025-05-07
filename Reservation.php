@@ -3,6 +3,7 @@
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
+  
   $servername = "localhost";
   $dbuser = "root";
   $password = "";
@@ -128,6 +129,8 @@ if ($roomForReserve != 0) {
 }
 }
 ?>
+
+<?php include 'Check_Login.php'; ?>
 
 
 <!DOCTYPE html>
@@ -312,6 +315,17 @@ nav.scrolled {
   line-height: 1.6;
   }
 
+  p {
+    text-align: justify;
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    line-height: 1.6;
+    marginbottom: 20px;
+  }
+
   .center-logo {
     width: 100px;
     height: auto;
@@ -331,6 +345,40 @@ nav.scrolled {
     letter-spacing: 3px;
   }
   
+  .reservation-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding: 15px 20px;
+  border-top: 1px solid #e0e0e0;
+  gap: 20px;
+  flex-wrap: wrap; /* Stacks on small screens */
+}
+
+/* Button style */
+.reserve-btn {
+  padding: 12px 24px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Price box */
+.price-output {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #28a745;
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
 
 .hidden-on-load {
     opacity: 0;
@@ -474,6 +522,7 @@ span a:hover {
   margin: 0;
   display: flex;
   flex-direction: column;
+  margin-top: 50px;
 }
 
 .room-section {
@@ -704,8 +753,7 @@ span a:hover {
     />
     <span class =span-menu>
       <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.">ROOMS & SUITES</a>
-      <a href="">OFFERS</a>
+      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
       <a href="AboutUs.php">ABOUT US</a>
     </span>
     <div class="long-line"></div>
@@ -783,12 +831,15 @@ span a:hover {
         <input type="hidden" name="adults" id="adultsInput" value="1">
         <input type="hidden" name="children" id="childrenInput" value="0">
         <input type="hidden" name="total_price" id="total_price">
+        
+        <div class="reservation-footer">
+  <button type="submit" name="reserve" class="reserve-btn">Confirm Reservation</button>
 
-        <button type="submit" name="reserve" class="reserve-btn">Confirm Reservation</button>
-    </div> 
-   <div class="price-output">
+  <div class="price-output">
     <p>Total Price: <span id="calculated-price">₱0</span></p>
   </div>
+</div>
+
 </form>
 
 

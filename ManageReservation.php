@@ -35,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 ?>
 
+<?php include 'check_login.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

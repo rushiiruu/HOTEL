@@ -489,7 +489,7 @@ span a:hover {
     <span class =span-menu>
       <a href="Home.php">LA GINTA REAL</a>
       <a href="Rooms&Suites.php">ROOMS & SUITES</a>
-      <a href="">OFFERS</a>
+     
       <a href="AboutUs.php">ABOUT US</a>
     </span>
     <div class="long-line"></div>

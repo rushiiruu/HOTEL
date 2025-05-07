@@ -228,7 +228,7 @@
         <i class="bi bi-list" id="menu"></i>
       </a>
 
-      <a href="#" class="hotel-name hidden-on-load">
+      <a href="Home.php" class="hotel-name hidden-on-load">
         LA GINTA REAL
         <span class="hotel-location">PHILIPPINES</span>
       </a>
