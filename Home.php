@@ -725,20 +725,17 @@ nav.scrolled {
   color: white;
 }
 
-.offers-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.offer-card {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  text-align: center;
+.exclusive-offers p {
+  text-align: center; /* Center the text */
+  font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 19px;
+  line-height: 1.6;
   color: black;
+  max-width: 1000px; /* Limit the width */
+  margin: 0 auto; /* Center the element horizontally */
 }
 
 
@@ -770,7 +767,6 @@ nav.scrolled {
     <span class="span-menu">
       <a href="Home.php">LA GINTA REAL</a>
       <a href="Rooms&Suites.php">ROOMS & SUITES</a>
-      <a href="">OFFERS</a>
       <a href="AboutUs.php">ABOUT US</a>
     </span>
     <div class="long-line"></div>
@@ -813,24 +809,12 @@ nav.scrolled {
   </section>
 <!-- Exclusive Offers Section -->
 <section class="exclusive-offers">
-  <h2 style="text-align: center; color: white; font-size: 2.5rem; margin-bottom: 40px;">Exclusive Offers</h2>
-  <div class="offers-container" >
-    <!-- Card 1 -->
-    <div class="offer-card" >
-      <h3>Offer Title 1</h3>
-      <p>Description for offer 1 goes here.</p>
-    </div>
-    <!-- Card 2 -->
-    <div class="offer-card" >
-      <h3>Offer Title 2</h3>
-      <p>Description for offer 2 goes here.</p>
-    </div>
-    <!-- Card 3 -->
-    <div class="offer-card" >
-      <h3>Offer Title 3</h3>
-      <p>Description for offer 3 goes here.</p>
-    </div>
-  </div>
+  <h2 style="text-align: center; color: #781924; font-size: 2.5rem; margin-bottom: 40px;">What makes La Ginta Real so unique in their eyes?  </h2>
+  <p>An art of living inherited from a long tradition of care and attention. A unique atmosphere perfumed with the delicate scent of Moroccan dates. Welcoming smiles and thoughtful touches.
+
+  <br><br>A sense of hospitality that translates into a thousand and one details. From your first visit, we remember your preferences: your ideal room temperature, your favourite coffee, the drinks and dishes you like...
+
+  <br><br> So, we know not only what will please you during your next stay, but also what will surprise you and make you want to come back for an experience that is always fresh and new. </p>
 </section>
 
 
