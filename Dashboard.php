@@ -28,12 +28,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style>
+    .main-cont { /* Fixed typo */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px;
+        max-width: 100%;
+    }
+    .sub-cont1 {
+        display: flex;
+        flex-direction: row;
+        max-width: 100%;
+        
+    }
+
+    .sub-cont2 {
+        max-width: 100%;
+    }
+
+    #Rooms { /* Fixed case sensitivity */
+        width: 700px;
+        height: 400px;
+
+    }
+    #Users {
+        width: 700px;
+        height: 400px;
+    }
+
+    #Dates {
+        width: 1600px;        
+    }
+    </style>
 </head>
 <body>
 
-<div id="Rooms"></div> 
-<div id="Users"></div>
-<div id="Dates"></div>  
+<div class = "main-cont">
+     
+    <div class= "sub-cont1">
+        <div id="Rooms"></div>
+       <div id="Users"></div> 
+    </div>
+    <div class ="sub-cont2">
+        <div id="Dates"></div>  
+    </div>
+</div>
+
+
+
+
 
 <script>
     google.charts.load('current', {packages: ['corechart', 'bar']});
@@ -46,9 +92,13 @@
         var data = google.visualization.arrayToDataTable([
             ['Room Name', 'Number of Reservations'],
             <?php 
-                foreach ($roomNames as $room) {
-                    $count = count($conn->query("SELECT * FROM MyReservation where RaSid = $room[RaSid]")->fetch_all(MYSQLI_ASSOC));
-                    echo "['" . $room['RoomName'] . "', " . $count . "],";
+                if (!empty($roomNames)) {
+                    foreach ($roomNames as $room) {
+                        $count = count($conn->query("SELECT * FROM MyReservation where RaSid = $room[RaSid]")->fetch_all(MYSQLI_ASSOC));
+                        echo "['" . $room['RoomName'] . "', " . $count . "],";
+                    }
+                } else {
+                    echo "['No Data', 0],";
                 }
             ?>
         ]);
@@ -75,9 +125,13 @@
         var data = google.visualization.arrayToDataTable([
             ['Room Name', 'Number of Reservations'],
             <?php 
-                foreach ($userNames as $user) {
-                    $count = count($conn->query("SELECT * FROM MyReservation where UserID = $user[UserID]")->fetch_all(MYSQLI_ASSOC));
-                    echo "['" . $user['username'] . "', " . $count . "],";
+                if (!empty($userNames)) {
+                    foreach ($userNames as $user) {
+                        $count = count($conn->query("SELECT * FROM MyReservation where UserID = $user[UserID]")->fetch_all(MYSQLI_ASSOC));
+                        echo "['" . $user['username'] . "', " . $count . "],";
+                    }
+                } else {
+                    echo "['No Data', 0],";
                 }
             ?>
         ]);
@@ -104,11 +158,15 @@
     var data = google.visualization.arrayToDataTable([
         ['Check-In Date', 'Number of Reservations'],
         <?php 
-            foreach ($resDates as $date) {
-                $checkInDate = $date['CheckIn'];
-                $result = $conn->query("SELECT COUNT(*) AS count FROM MyReservation WHERE CheckIn = '$date[CheckIn]'");
-                $count = $result->fetch_assoc()['count'];
-                echo "['" . $checkInDate . "', " . $count . "],";
+            if (!empty($resDates)) {
+                foreach ($resDates as $date) {
+                    $checkInDate = $date['CheckIn'];
+                    $result = $conn->query("SELECT COUNT(*) AS count FROM MyReservation WHERE CheckIn = '$date[CheckIn]'");
+                    $count = $result->fetch_assoc()['count'];
+                    echo "['" . $checkInDate . "', " . $count . "],";
+                }
+            } else {
+                echo "['No Data', 0],";
             }
         ?>
     ]);
