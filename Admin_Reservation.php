@@ -18,33 +18,73 @@ $successMsg = [];
 
 // Handle updates
 if (isset($_POST['update'])) {
-    $reservationID = $_POST['reservationID'];
-    $newRoomID = $_POST['roomID'];
+    $reservationID = $_POST['ReservationID'];
+    $newRoomID = $_POST['roomID']; // Fetch RoomID from hidden input
     $newCheckIn = $_POST['checkIn'];
     $newCheckOut = $_POST['checkOut'];
+
+    // Validate Check-In and Check-Out dates
+    if (strtotime($newCheckIn) > strtotime($newCheckOut)) {
+        echo "<p>Error: Check-Out date must be after Check-In date.</p>";
+        return;
+    }
+
+    // Check for conflicting reservations in MyReservation
+    $conflictQuery = $conn->prepare("
+        SELECT * FROM MyReservation 
+        WHERE RoomID = ? 
+        AND ReservationID != ? 
+        AND (
+            (CheckIn < ? AND CheckOut > ?) OR 
+            (CheckIn < ? AND CheckOut > ?) OR
+            (CheckIn >= ? AND CheckOut <= ?)
+        )
+    ");
+    $conflictQuery->bind_param("iissssss", $newRoomID, $reservationID, $newCheckOut, $newCheckIn, $newCheckOut, $newCheckIn, $newCheckIn, $newCheckOut);
+    $conflictQuery->execute();
+    $conflictResult = $conflictQuery->get_result();
+
+    if ($conflictResult->num_rows > 0) {
+        echo "<p>Error: The selected dates conflict with an existing reservation for this room.</p>";
+        $conflictQuery->close();
+        return;
+    }
+    $conflictQuery->close();
 
     // Fetch the price per night
     $stmt = $conn->prepare("SELECT Price FROM Rooms WHERE RoomID = ?");
     $stmt->bind_param("i", $newRoomID);
     $stmt->execute();
     $stmt->bind_result($price);
-    $stmt->fetch();
-    $stmt->close();
+    if ($stmt->fetch()) {
+        $stmt->close();
 
-    $days = (strtotime($newCheckOut) - strtotime($newCheckIn)) / (60 * 60 * 24);
-    $totalPrice = $days * $price;
+        // Calculate total price
+        $days = (strtotime($newCheckOut) - strtotime($newCheckIn)) / (60 * 60 * 24);
+        if ($days < 1) {
+            $days = 1; // Minimum of 1 day for same-day reservations
+        }
 
-    $stmt = $conn->prepare("UPDATE MyReservation SET RoomID=?, CheckIn=?, CheckOut=?, TotalPrice=? WHERE ReservationID=?");
-    $stmt->bind_param("issii", $newRoomID, $newCheckIn, $newCheckOut, $totalPrice, $reservationID);
-    $stmt->execute();
-    $stmt->close();
+        $totalPrice = $days * $price;
 
-    echo "<p>Reservation updated successfully!</p>";
+        // Update the reservation
+        $stmt = $conn->prepare("UPDATE MyReservation SET CheckIn=?, CheckOut=?, TotalPrice=? WHERE ReservationID=?");
+        $stmt->bind_param("ssii", $newCheckIn, $newCheckOut, $totalPrice, $reservationID);
+        if ($stmt->execute()) {
+            echo "<p>Reservation updated successfully!</p>";
+        } else {
+            echo "<p>Error: Failed to update reservation.</p>";
+        }
+        $stmt->close();
+    } else {
+        echo "<p>Error: Room not found or invalid RoomID.</p>";
+        $stmt->close();
+    }
 }
 
 // Handle cancellations
 if (isset($_POST['cancel'])) {
-    $reservationID = $_POST['reservationID'];
+    $reservationID = $_POST['ReservationID'];
     $stmt = $conn->prepare("DELETE FROM MyReservation WHERE ReservationID = ?");
     $stmt->bind_param("i", $reservationID);
     $stmt->execute();
@@ -65,8 +105,14 @@ if (isset($_POST['searchRoom'])) {
     $stmt->close();
 }
 
-// Fetch reservations
-$reservations = $conn->query("SELECT r.ReservationID, u.Fname, u.Lname, r.RoomID, r.CheckIn, r.CheckOut, r.TotalPrice FROM MyReservation r JOIN UserAccount u ON r.UserID = u.UserID");
+$reservation = $conn->query("SELECT * FROM MyReservation");
+
+if (!$reservation) {
+    die("Query failed: " . $conn->error); // Debugging output
+}
+
+// Fetch results if the query is successful
+$reservationData = $reservation->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <h2>Manage Reservations</h2>
@@ -75,28 +121,43 @@ $reservations = $conn->query("SELECT r.ReservationID, u.Fname, u.Lname, r.RoomID
     <th>Reservation ID</th>
     <th>Guest</th>
     <th>Room ID</th>
+    <th>Rooms And Suites ID</th>
     <th>Check-In</th>
     <th>Check-Out</th>
     <th>Total Price</th>
-    <th>Actions</th>
+    <th colspan = '2'>Actions</th>
   </tr>
-  <?php while ($row = $reservations->fetch_assoc()): ?>
-  <tr>
     <form method="post">
-      <td><?= $row['ReservationID'] ?></td>
-      <td><?= $row['Fname'] . ' ' . $row['Lname'] ?></td>
-      <td><input type="number" name="roomID" value="<?= $row['RoomID'] ?>"></td>
-      <td><input type="date" name="checkIn" value="<?= $row['CheckIn'] ?>"></td>
-      <td><input type="date" name="checkOut" value="<?= $row['CheckOut'] ?>"></td>
-      <td>₱<?= $row['TotalPrice'] ?></td>
-      <td>
-        <input type="hidden" name="reservationID" value="<?= $row['ReservationID'] ?>">
-        <button type="submit" name="update">Update</button>
-        <button type="submit" name="cancel">Cancel</button>
-      </td>
+      <?php 
+        if (empty($reservationData)) {
+            echo "<tr><td colspan='8'>No reservations found.</td></tr>";
+        } else {
+            foreach ($reservationData as $row) {
+                echo "<tr>";
+                echo "<form method='post'>"; // Start a new form for each row
+                echo "<td>" . htmlspecialchars($row['ReservationID']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['UserID']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['RoomID']) . "</td>"; // Display RoomID as plain text
+                echo "<input type='hidden' name='roomID' value='" . htmlspecialchars($row['RoomID']) . "'>"; // Hidden input for RoomID
+                echo "<td>" . htmlspecialchars($row['RaSid']) . "</td>";
+                echo "<td><input type='date' name='checkIn' value='" . htmlspecialchars($row['CheckIn']) . "' required></td>";
+                echo "<td><input type='date' name='checkOut' value='" . htmlspecialchars($row['CheckOut']) . "' required></td>";
+                echo "<td>₱" . htmlspecialchars($row['TotalPrice']) . "</td>";
+                echo "<td>
+                        <input type='hidden' name='ReservationID' value='" . htmlspecialchars($row['ReservationID']) . "'>
+                        <button type='submit' name='update'>Update</button>
+                      </td>";
+                echo "<td>
+                        <input type='hidden' name='ReservationID' value='" . htmlspecialchars($row['ReservationID']) . "'>
+                        <button type='submit' name='cancel'>Cancel</button>
+                      </td>";
+                echo "</form>"; // End the form for this row
+                echo "</tr>";
+            }
+        }
+      ?>
     </form>
-  </tr>
-  <?php endwhile; ?>
+ 
 </table>
 
 <h2>Search Room by ID</h2>
