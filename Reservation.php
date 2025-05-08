@@ -1,16 +1,33 @@
-
 <?php
-  session_start();
-  $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
+session_start();
 
-  
-  $servername = "localhost";
-  $dbuser = "root";
-  $password = "";
-  $dbname = "hotel_db";
-  $errorMsg = [];
-  $successMsg = "";
-  $roomForReserve = "";
+// Database connection
+$servername = "localhost";
+$dbuser = "root";
+$password = "";
+$dbname = "hotel_db";
+
+$conn = new mysqli($servername, $dbuser, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
+
+if ($username) {
+    $stmt = $conn->prepare("SELECT Fname, Lname FROM UserAccount WHERE Username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $userResult = $stmt->get_result();
+    $userRow = $userResult->fetch_assoc();
+
+    $firstName = $userRow['Fname'] ?? 'Guest';
+    $lastName = $userRow['Lname'] ?? '';
+    $stmt->close();
+} else {
+    $firstName = 'Guest';
+    $lastName = '';
+}
 
   // Connect to MySQL server
   $conn = new mysqli($servername, $dbuser, $password, $dbname);
@@ -35,6 +52,13 @@
 if (isset($_POST['reserve'])) {
     $checkin = $_POST['checkin'];
     $checkout = $_POST['checkout'];
+
+    // Validate that check-in is earlier than check-out
+    if (strtotime($checkin) > strtotime($checkout)) {
+        echo "<script>alert('Check-in date must be earlier than the check-out date.');</script>";
+        return;
+    }
+
     $adults = $_POST['adults'];
     $children = $_POST['children'];
     $room_type = $_POST['room-type'];
@@ -123,16 +147,10 @@ if ($roomForReserve != 0) {
     $stmt->execute();
     $stmt->close();
 
-    
+    echo "<script>alert('Reservation confirmed!');</script>";
+} else {
+    echo "<script>alert('No available rooms for the selected dates or room type. Please choose different dates or room type.');</script>";
 }
-}
-
-if (isset($_POST['reserve'])) {
-  // Your reservation logic here...
-
-  // If reservation is successful
-  header("Location: Reservation.php?success=1");
-  exit();
 }
 ?>
 
@@ -157,7 +175,7 @@ if (isset($_POST['reserve'])) {
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Satisfy&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles/Reservation.css">
+    <link rel="stylesheet" href="styles/Reservation.css" />
   </head>
   <body>
     <script src="Home.js"></script>
@@ -215,18 +233,28 @@ if (isset($_POST['reserve'])) {
 
 <form action="" method="post">
     <div class="room-form">
-        <label for="checkin">Check-in Date:</label>
-        <input type="date" id="checkin" name="checkin" required>
+        <div class="form-row">
+            <div class="form-column">
+                <label for="checkin">Check-in Date:</label>
+                <input type="date" id="checkin" name="checkin" required>
 
-        <label for="checkout">Check-out Date:</label>
-        <input type="date" id="checkout" name="checkout" required>
+                <label for="checkout">Check-out Date:</label>
+                <input type="date" id="checkout" name="checkout" required>
 
-        <label for="room-type">Room Type:</label>
-        <select id="room-type" name="room-type" required>
-            <option value="" disabled selected>Select a room type</option>
-            <option value="Standard Room">Standard Room</option>
-            <option value="Deluxe Room">Deluxe Room</option>
-        </select>
+                <label for="room-type">Room Type:</label>
+                <select id="room-type" name="room-type" required>
+                    <option value="" disabled selected>Select a room type</option>
+                    <option value="Standard Room">Standard Room</option>
+                    <option value="Deluxe Room">Deluxe Room</option>
+                </select>
+            </div>
+
+            <div class="price-column">
+                <div class="price-output">
+                    <p>Total Price: <span id="calculated-price">₱0</span></p>
+                </div>
+            </div>
+        </div>
 
         <div class="people-inputs">
             <label>Adults:</label>
@@ -248,52 +276,43 @@ if (isset($_POST['reserve'])) {
         <input type="hidden" name="adults" id="adultsInput" value="1">
         <input type="hidden" name="children" id="childrenInput" value="0">
         <input type="hidden" name="total_price" id="total_price">
-         <div class="price-output">
-    <p>Total Price: <span id="calculated-price">₱0</span></p>
-  </div>
+
         <div class="reservation-footer">
-        <button type="button" class="reserve-btn" onclick="openConfirmReservationModal()">Confirm Reservation</button>
-
- 
-</div>
-
+        <button type="button" class="reserve-btn" onclick="showConfirmationModal()">Confirm Reservation</button>
+        
+        </div>
+    </div>
 </form>
 
-
-
-<?php if (isset($_GET['success'])): ?>
-<div id="popup-notification" class="popup">
-  Reservation successfully made.
-</div>
-<script>
-  setTimeout(() => {
-    document.getElementById('popup-notification').style.opacity = '0';
-  }, 3000);
-</script>
-<?php endif; ?>
-
-    <!-- First Popup: Confirm Reservation -->
-    <div id="confirm-reservation-modal" class="modal">
+<div id="confirm-modal" class="modal" style="display: none;">
   <div class="modal-content">
-    <p>Do you want to proceed with the reservation?</p>
-    <button class="confirm-btn" onclick="openPaymentModal()">Yes, Proceed</button>
-    <button class="close-btn" onclick="closeModal('confirm-reservation-modal')">Cancel</button>
-  </div>
-</div>
-<!-- Second Popup: Payment -->
-<div id="payment-modal" class="slide-modal">
-  <div class="slide-modal-content">
-    <!-- Close Button -->
-    <span class="close-icon" onclick="closeModal('payment-modal')">&times;</span>
-    <p>Please confirm your payment to reserve the room.</p>
-    <button class="confirm-btn" onclick="showSuccessPopup()">Pay</button>
-    <button class="close-btn" onclick="closeModal('payment-modal')">Cancel</button>
+    <p>Do you want to proceed to payment?</p>
+    <button class="confirm-btn" onclick="showSidebarSummary()">Yes, Proceed</button>
+    <button class="close-btn" onclick="closeModal()">Cancel</button>
   </div>
 </div>
 
-<!-- Third Popup: Successfully Reserved -->
-<div id="success-popup" class="popup">
-  Reservation successfully made!
+<div id="sidebar-summary" class="sidebar" style="display: none;">
+  <h3>Reservation Summary</h3>
+  <p><strong>First Name:</strong> <?php echo htmlspecialchars($firstName); ?></p>
+  <p><strong>Last Name:</strong> <?php echo htmlspecialchars($lastName); ?></p>
+  <p><strong>Check-in:</strong> <span id="summary-checkin"></span></p>
+  <p><strong>Check-out:</strong> <span id="summary-checkout"></span></p>
+  <p><strong>Room Type:</strong> <span id="summary-room"></span></p>
+  <p><strong>Adults:</strong> <span id="summary-adults"></span></p>
+  <p><strong>Children:</strong> <span id="summary-children"></span></p>
+  <p><strong>Total:</strong> ₱<span id="summary-total"></span></p>
+  <form method="post">
+    <!-- Hidden fields to pass back the values -->
+    <input type="hidden" name="checkin" id="pay-checkin">
+    <input type="hidden" name="checkout" id="pay-checkout">
+    <input type="hidden" name="room-type" id="pay-room">
+    <input type="hidden" name="adults" id="pay-adults">
+    <input type="hidden" name="children" id="pay-children">
+    <input type="hidden" name="total_price" id="pay-total">
+    <button type="submit" name="reserve" class="pay-btn">Pay</button>
+    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+  </form>
 </div>
 
     <script>
@@ -304,131 +323,117 @@ if (isset($_POST['reserve'])) {
         }
 
         let adultCount = 1;
-        let childCount = 0;
+  let childCount = 0;
 
-        function increment(type) {
-          if (type === 'adult') {
-            adultCount++;
-            document.getElementById('adult-count').textContent = adultCount;
-            document.getElementById('adultsInput').value = adultCount;
-          } else if (type === 'child') {
-            childCount++;
-            document.getElementById('child-count').textContent = childCount;
-            document.getElementById('childrenInput').value = childCount;
-          }
-        }
+  function increment(type) {
+    if (type === 'adult') {
+      adultCount++;
+      document.getElementById('adult-count').textContent = adultCount;
+      document.getElementById('adultsInput').value = adultCount;
+    } else if (type === 'child') {
+      childCount++;
+      document.getElementById('child-count').textContent = childCount;
+      document.getElementById('childrenInput').value = childCount;
+    }
+  }
 
-        function decrement(type) {
-          if (type === 'adult' && adultCount > 1) {
-            adultCount--;
-            document.getElementById('adult-count').textContent = adultCount;
-            document.getElementById('adultsInput').value = adultCount;
-          } else if (type === 'child' && childCount > 0) {
-            childCount--;
-            document.getElementById('child-count').textContent = childCount;
-            document.getElementById('childrenInput').value = childCount;
-          }
-        }
+  function decrement(type) {
+    if (type === 'adult' && adultCount > 1) {
+      adultCount--;
+      document.getElementById('adult-count').textContent = adultCount;
+      document.getElementById('adultsInput').value = adultCount;
+    } else if (type === 'child' && childCount > 0) {
+      childCount--;
+      document.getElementById('child-count').textContent = childCount;
+      document.getElementById('childrenInput').value = childCount;
+    }
+  }
 
-        function calculatePrice() {
-          const roomType = document.getElementById('room-type').value;
-          const checkin = new Date(document.getElementById('checkin').value);
-          const checkout = new Date(document.getElementById('checkout').value);
+  function calculatePrice() {
+    const roomType = document.getElementById('room-type').value;
+    const checkin = new Date(document.getElementById('checkin').value);
+    const checkout = new Date(document.getElementById('checkout').value);
 
-          if (isNaN(checkin.getTime()) || isNaN(checkout.getTime()) || !roomType) {
-            document.getElementById('calculated-price').textContent = '₱0';
-            return;
-          }
-
-          if(roomType === 'Standard Room') {
-            roomPrice = <?php echo $standardPrice; ?> // Standard Room price
-          } else if(roomType === 'Deluxe Room') {
-            roomPrice = <?php echo $deluxePrice; ?> // Deluxe Room price
-          }
-          const timeDiff = checkout - checkin;
-      let nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-      // Handle invalid date range (checkout before checkin)
-      if (timeDiff < 0) {
+    if (isNaN(checkin.getTime()) || isNaN(checkout.getTime()) || !roomType) {
         document.getElementById('calculated-price').textContent = '₱0';
         return;
-      }
+    }
 
-      // Treat same-day check-in and check-out as 1 night
-      if (nights === 0) {
+    // Ensure check-in is earlier than check-out
+    if (checkin > checkout) {
+        alert("Check-in date must be earlier than the check-out date.");
+        document.getElementById('calculated-price').textContent = '₱0';
+        return;
+    }
+
+    let roomPrice = 0;
+    if (roomType === 'Standard Room') {
+        roomPrice = <?php echo $standardPrice; ?>; // Standard Room price
+    } else if (roomType === 'Deluxe Room') {
+        roomPrice = <?php echo $deluxePrice; ?>; // Deluxe Room price
+    }
+
+    const timeDiff = checkout - checkin;
+    let nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    // Treat same-day check-in and check-out as 1 night
+    if (nights === 0) {
         nights = 1;
-      }
+    }
 
-
-          const totalPrice = roomPrice * nights;
-          document.getElementById('calculated-price').textContent = `₱${totalPrice}`;
-          document.getElementById('total_price').value = totalPrice
-
-        }
-
-      document.getElementById('room-type').addEventListener('change', calculatePrice);
-      document.getElementById('checkin').addEventListener('change', calculatePrice);
-      document.getElementById('checkout').addEventListener('change', calculatePrice);
-
-      function openConfirmReservationModal() {
-          const modal = document.getElementById('confirm-reservation-modal');
-          modal.style.display = 'flex';
-        }
-
-       
-        function showSuccessPopup() {
-          closeModal('payment-modal'); // Close the payment modal
-          const successPopup = document.getElementById('success-popup');
-          successPopup.style.display = 'block';
-
-          // Automatically fade out the success popup after 3 seconds
-          setTimeout(() => {
-            successPopup.classList.add('fade-out');
-            setTimeout(() => successPopup.style.display = 'none', 500); // Remove after fade-out
-          }, 3000);
-        }
-
-      
-
-        // Close modal if user clicks outside of it
-        window.onclick = function(event) {
-        const confirmModal = document.getElementById('confirm-reservation-modal');
-        const paymentModal = document.getElementById('payment-modal');
-        if (event.target === confirmModal) {
-          closeModal('confirm-reservation-modal');
-        }
-        if (event.target === paymentModal) {
-          closeModal('payment-modal');
-        }
-      };
-
-      // Prevent clicks inside the modal content from closing the modal
-      document.querySelectorAll('.modal-content, .slide-modal-content').forEach(modalContent => {
-        modalContent.onclick = function(event) {
-          event.stopPropagation();
-        };
-      });
-
-        function openPaymentModal() {
-        const modal = document.getElementById('payment-modal');
-        modal.style.display = 'block'; // Ensure it's visible
-        modal.classList.add('show'); // Add the slide-in effect
-      }
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modalId === 'payment-modal') {
-    modal.classList.remove('show'); // Slide out
-    setTimeout(() => {
-      modal.style.display = 'none'; // Hide after sliding out
-    }, 500); // Match the transition duration
-  } else {
-    modal.style.display = 'none';
-  }
+    const totalPrice = roomPrice * nights;
+    document.getElementById('calculated-price').textContent = `₱${totalPrice}`;
+    document.getElementById('total_price').value = totalPrice;
 }
 
+document.getElementById('room-type').addEventListener('change', calculatePrice);
+document.getElementById('checkin').addEventListener('change', calculatePrice);
+document.getElementById('checkout').addEventListener('change', calculatePrice);
+
+
+function showConfirmationModal() {
+    document.getElementById('confirm-modal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('confirm-modal').style.display = 'none';
+}
+
+function showSidebarSummary() {
+    closeModal();
+
+    // Collect data from form
+    const checkin = document.getElementById('checkin').value;
+    const checkout = document.getElementById('checkout').value;
+    const roomType = document.getElementById('room-type').value;
+    const adults = document.getElementById('adult-count').innerText;
+    const children = document.getElementById('child-count').innerText;
+    const total = document.getElementById('calculated-price').innerText.replace('₱', '');
+
+    // Display in sidebar
+    document.getElementById('summary-checkin').innerText = checkin;
+    document.getElementById('summary-checkout').innerText = checkout;
+    document.getElementById('summary-room').innerText = roomType;
+    document.getElementById('summary-adults').innerText = adults;
+    document.getElementById('summary-children').innerText = children;
+    document.getElementById('summary-total').innerText = total;
+
+    // Populate hidden form inputs
+    document.getElementById('pay-checkin').value = checkin;
+    document.getElementById('pay-checkout').value = checkout;
+    document.getElementById('pay-room').value = roomType;
+    document.getElementById('pay-adults').value = adults;
+    document.getElementById('pay-children').value = children;
+    document.getElementById('pay-total').value = total;
+
+    // Show sidebar
+    document.getElementById('sidebar-summary').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('confirm-modal').style.display = 'none';
+    document.getElementById('sidebar-summary').style.display = 'none';
+}
     </script>
-
-
 </body>
 </html>
