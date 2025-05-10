@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
   $Lname = $_POST['lastName'];
   $username = $_POST['signupUser'];
   $password = $_POST['signupPass'];
-  $usertype = $_POST['usertype'];
 
   // Default birthday if not provided
   $Birthday = $_POST['Birthday'] ?? date('Y-m-d');
