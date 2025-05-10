@@ -314,7 +314,7 @@
         </div>
         <div class="room-list">
             <h3>Room Details</h3>
-            <h2 id="roomName">Select a Room from the List</h2>
+            <h2 >Select a Room from the List</h2>
             <form action="" method="post">
                 <input type="hidden" name="roomlistID" id="roomlistID">
                 <button type = 'submit' name = 'query'>Search for rooms</button>
