@@ -22,6 +22,7 @@
       $beds = $_POST['beds'];
       $utilities = $_POST['utilities'];
 
+
       // Update the room details in the database
       $stmt = $conn->prepare("UPDATE RoomsandSuites SET RoomAccomodation = ?, Beds = ?, Utilities = ? WHERE RaSid = ?");
       $stmt->bind_param("sssi", $capacity, $beds, $utilities, $roomID);
@@ -223,6 +224,7 @@
     </style>
 </head>
 <body>
+
     <header>
         <div class="container">
             <div class="header-content">
@@ -236,6 +238,24 @@
                     <?php endif; ?>
                 </div>
             </div>
+
+    <table>
+    <th>Room Names</th>
+    <?php
+        foreach ($rooms as $room) {
+            echo "<tr onclick=\"populateFields('" . addslashes($room['RoomName']) . "', '" . addslashes($room['RoomAccomodation']) . "', '" . addslashes($room['Beds']) . "', '" . addslashes($room['Utilities']) . "', '" . $room['RaSid'] . "')\">";
+            echo "<td>". htmlspecialchars($room['RoomName']) ."</td>";
+            echo "</tr>";
+        }
+    ?>
+    </table>
+
+<div>
+    <form action="" method="post">
+        <h2 id="roomName">Room Name</h2>
+        <div>
+            <label for="capacity">Capacity</label>
+            <input type="text" name="capacity" id="capacity">            
         </div>
     </header>
 
@@ -293,6 +313,7 @@
                 </form>
             </div>
         </div>
+
     </div>
 
     <script>
@@ -304,5 +325,22 @@
             document.getElementById('roomID').value = roomID;
         }
     </script>
+    </form>
+    <td>
+    </td>
+</div>
+
+
+
+<script>
+    function populateFields(roomName, capacity, beds, utilities, roomID) {
+        document.getElementById('roomName').innerHTML = roomName;
+        document.getElementById('capacity').value = capacity;
+        document.getElementById('beds').value = beds;
+        document.getElementById('utilities').value = utilities;
+        document.getElementById('roomID').value = roomID; // Dynamically set the roomID
+    }
+</script>
+
 </body>
 </html>

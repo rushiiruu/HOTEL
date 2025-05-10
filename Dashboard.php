@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Charts -->
     <script src="https://www.gstatic.com/charts/loader.js"></script>
+  
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -69,6 +70,7 @@
             padding: 20px 0;
             margin-top: 30px;
         }
+
     </style>
 </head>
 <body>
@@ -173,6 +175,7 @@
 <!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <script>
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(ReservationPerRoom);
@@ -184,9 +187,13 @@
         var data = google.visualization.arrayToDataTable([
             ['Room Name', 'Number of Reservations'],
             <?php 
-                foreach ($roomNames as $room) {
-                    $count = count($conn->query("SELECT * FROM MyReservation where RaSid = $room[RaSid]")->fetch_all(MYSQLI_ASSOC));
-                    echo "['" . $room['RoomName'] . "', " . $count . "],";
+                if (!empty($roomNames)) {
+                    foreach ($roomNames as $room) {
+                        $count = count($conn->query("SELECT * FROM MyReservation where RaSid = $room[RaSid]")->fetch_all(MYSQLI_ASSOC));
+                        echo "['" . $room['RoomName'] . "', " . $count . "],";
+                    }
+                } else {
+                    echo "['No Data', 0],";
                 }
             ?>
         ]);
@@ -214,9 +221,13 @@
         var data = google.visualization.arrayToDataTable([
             ['Username', 'Number of Reservations'],
             <?php 
-                foreach ($userNames as $user) {
-                    $count = count($conn->query("SELECT * FROM MyReservation where UserID = $user[UserID]")->fetch_all(MYSQLI_ASSOC));
-                    echo "['" . $user['username'] . "', " . $count . "],";
+                if (!empty($userNames)) {
+                    foreach ($userNames as $user) {
+                        $count = count($conn->query("SELECT * FROM MyReservation where UserID = $user[UserID]")->fetch_all(MYSQLI_ASSOC));
+                        echo "['" . $user['username'] . "', " . $count . "],";
+                    }
+                } else {
+                    echo "['No Data', 0],";
                 }
             ?>
         ]);
@@ -240,17 +251,39 @@
     }
 
     function ReservationPerDates() {
-        var data = google.visualization.arrayToDataTable([
-            ['Check-In Date', 'Number of Reservations'],
-            <?php 
+      
+    var data = google.visualization.arrayToDataTable([
+        ['Check-In Date', 'Number of Reservations'],
+        <?php 
+            if (!empty($resDates)) {
                 foreach ($resDates as $date) {
                     $checkInDate = $date['CheckIn'];
                     $result = $conn->query("SELECT COUNT(*) AS count FROM MyReservation WHERE CheckIn = '$date[CheckIn]'");
                     $count = $result->fetch_assoc()['count'];
                     echo "['" . $checkInDate . "', " . $count . "],";
                 }
+
             ?>
         ]);
+            } else {
+                echo "['No Data', 0],";
+            }
+        ?>
+    ]);
+
+    var options = {
+        title: 'Reservations Per Check-In Date',
+        chartArea: {width: '50%'},
+        hAxis: {
+            title: 'Check-In Date',
+            slantedText: true, // Optional: Slant text for better readability
+            slantedTextAngle: 45 // Optional: Adjust angle of slanted text
+        },
+        vAxis: {
+            title: 'Number of Reservations',
+            minValue: 0
+        }
+    };
 
         var options = {
             title: 'Reservations Per Check-In Date',
