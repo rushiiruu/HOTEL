@@ -36,6 +36,23 @@
   }
 
   $rooms = $conn->query("SELECT * FROM RoomsandSuites")->fetch_all(MYSQLI_ASSOC);
+
+  if(isset($_POST['UpdateAvail'])) {
+      $roomID = $_POST['roomID'];
+      $roomAvailability = $_POST['RoomAvail'];
+
+      // Update the room availability in the database
+      $stmt = $conn->prepare("UPDATE Rooms SET Avail = ? WHERE RoomID = ?");
+      $stmt->bind_param("si", $roomAvailability, $roomID);
+
+      if ($stmt->execute()) {
+          $successMsg = "Room availability updated successfully.";
+      } else {
+          $errorMsg[] = "Error updating room availability: " . $stmt->error;
+      }
+      $stmt->close();
+  }
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -238,24 +255,6 @@
                     <?php endif; ?>
                 </div>
             </div>
-
-    <table>
-    <th>Room Names</th>
-    <?php
-        foreach ($rooms as $room) {
-            echo "<tr onclick=\"populateFields('" . addslashes($room['RoomName']) . "', '" . addslashes($room['RoomAccomodation']) . "', '" . addslashes($room['Beds']) . "', '" . addslashes($room['Utilities']) . "', '" . $room['RaSid'] . "')\">";
-            echo "<td>". htmlspecialchars($room['RoomName']) ."</td>";
-            echo "</tr>";
-        }
-    ?>
-    </table>
-
-<div>
-    <form action="" method="post">
-        <h2 id="roomName">Room Name</h2>
-        <div>
-            <label for="capacity">Capacity</label>
-            <input type="text" name="capacity" id="capacity">            
         </div>
     </header>
 
@@ -313,6 +312,45 @@
                 </form>
             </div>
         </div>
+        <div class="room-list">
+            <h3>Room Details</h3>
+            <h2 id="roomName">Select a Room from the List</h2>
+            <form action="" method="post">
+                <input type="hidden" name="roomlistID" id="roomlistID">
+                <button type = 'submit' name = 'query'>Search for rooms</button>
+            </form>
+            
+            <?php 
+                if (isset($_POST['query'])) {
+                    $listID = isset($_POST['roomlistID']) ? $_POST['roomlistID'] : 0;
+
+                    $stmt = $conn->prepare("SELECT * FROM rooms WHERE RaSid = ?");
+                    $stmt->bind_param("i", $listID);
+                    $stmt->execute();
+                    $roomlist = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+                    $stmt->close();
+
+                    if ($roomlist) {
+                        foreach ($roomlist as $room) {
+                            echo "<form action='' method='post'>";
+                            echo "<div class='room-item' onclick='roomFields(\"{$room['Avail']}\")'>";
+                            echo "<h4>Room ID: {$room['RoomID']}</h4>";
+                            echo "<h6>Room Type: {$room['roomtype']}</h6>";
+                            echo "<input type='hidden' name='roomID' id='roomID' value='{$room['RoomID']}'>";
+                            echo "<select name='RoomAvail' id='RoomAvail'>";
+                            echo "<option value='Available'" . ($room['Avail'] === 'Available' ? " selected" : "") . ">Available</option>";
+                            echo "<option value='Not Available'" . ($room['Avail'] === 'Not Available' ? " selected" : "") . ">Not Available</option>";
+                            echo "</select>";
+                            echo "<button type='submit' name='UpdateAvail'>Change</button>";
+                            echo "</div>"; 
+                            echo "</form>";     
+                        }
+                    } else {
+                        echo "No rooms found or an error occurred.";
+                    }
+                }
+            ?>
+        
 
     </div>
 
@@ -323,24 +361,14 @@
             document.getElementById('beds').value = beds;
             document.getElementById('utilities').value = utilities;
             document.getElementById('roomID').value = roomID;
+            document.getElementById('roomlistID').value = roomID;
         }
     </script>
+
     </form>
     <td>
     </td>
 </div>
-
-
-
-<script>
-    function populateFields(roomName, capacity, beds, utilities, roomID) {
-        document.getElementById('roomName').innerHTML = roomName;
-        document.getElementById('capacity').value = capacity;
-        document.getElementById('beds').value = beds;
-        document.getElementById('utilities').value = utilities;
-        document.getElementById('roomID').value = roomID; // Dynamically set the roomID
-    }
-</script>
 
 </body>
 </html>
