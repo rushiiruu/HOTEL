@@ -162,12 +162,12 @@ if ($roomForReserve != 0) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rooms & Suites</title>
+    <title>Reservation  </title>
     
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-    />
+    />  
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -181,17 +181,56 @@ if ($roomForReserve != 0) {
     <script src="Home.js"></script>
     <?php include 'Navbar.php'; ?>
 
-    <img
-      src="https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F54089c95-8f88-4f62-a702-b77d2cc3a6c4.jpg?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1"
-      class="main-image"
-      alt="bg"
-    />
-    <span class =span-menu>
-      <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
-      <a href="AboutUs.php">ABOUT US</a>
+    <nav id="navbar" class="scrolled">
+
+  <a href="#" class="menu-icon" onclick="toggleMenu()">
+        <i class="bi bi-list" id="menu"></i>
+      </a>
+
+      <a href="#" class="hotel-name">
+        LA GINTA REAL
+        <span class="hotel-location">PHILIPPINES</span>
+      </a>
+
+      <div class="nav-right">
+        <a href="ManageReservation.php">MY RESERVATION</a>
+        <a href="Rooms&Suites.php">BOOK</a>
+      </div>
+    </nav>
+    <div id="sideMenu" class="side-menu">
+
+  <!-- User icon and name at the top -->
+  <div class="user-info">
+    <i class="bi bi-person-circle" id="user-icon"></i>
+    <span class="username">
+      <?php echo $username ? htmlspecialchars($username) : "Guest"; ?>
     </span>
-    <div class="long-line"></div>
+  </div>
+
+  <!-- Close button -->
+  <button class="close-menu" onclick="toggleMenu()">
+    <i class="bi bi-x"></i>
+  </button>
+
+  <!-- Navigation menu -->
+  <ul>
+    <li><a href="Home.php">Home</a></li>
+    <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
+    <li><a href="#">Exclusive Offers</a></li>
+    <li><a href="AboutUs.php">About Us</a></li>
+    <li><a href="#">Contact Us</a></li>
+    <li><a href="ManageReservation.php">My Reservation</a></li>
+  </ul>
+
+  <!-- Login/Logout at the bottom -->
+  <div class="side-menu-bottom">
+    <?php if ($username): ?>
+      <a href="Logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <?php else: ?>
+      <a href="Login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+    <?php endif; ?>
+  </div>
+</div>
     <?php
         if (isset($_SESSION['room_id']) && is_numeric($_SESSION['room_id'])) {
             $room_id = intval($_SESSION['room_id']); // Sanitize the room ID
@@ -289,6 +328,13 @@ if ($roomForReserve != 0) {
     <p>Do you want to proceed to payment?</p>
     <button class="confirm-btn" onclick="showSidebarSummary()">Yes, Proceed</button>
     <button class="close-btn" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<div id="input-modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <p>Please input necessary details</p>
+    <button class="confirm-btn" onclick="closeIModal()">Okay</button>
   </div>
 </div>
 
@@ -392,11 +438,29 @@ document.getElementById('checkout').addEventListener('change', calculatePrice);
 
 
 function showConfirmationModal() {
-    document.getElementById('confirm-modal').style.display = 'block';
+    const price = document.getElementById('calculated-price').innerText;
+    if (price === '₱0') {
+    button_disabled(); // this already disables and shows modal
+}
+
+    else 
+    {
+        document.getElementById('confirm-modal').style.display = 'block';
+    }
+    
+}
+function button_disabled() {
+    const button = document.getElementById('reserve-btn');
+    document.getElementById('input-modal').style.display = 'block'; 
+    button.disabled = true; // disable the button// show the modal
 }
 
 function closeModal() {
     document.getElementById('confirm-modal').style.display = 'none';
+}
+
+function closeIModal() {
+    document.getElementById('input-modal').style.display = 'none';
 }
 
 function showSidebarSummary() {
