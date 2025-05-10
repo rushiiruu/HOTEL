@@ -295,5 +295,7 @@
     </div>
     <p>&copy; 2023 La Ginta Real. All rights reserved.</p>
   </footer>
+
+  
   </body>
 </html>

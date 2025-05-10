@@ -206,3 +206,14 @@ nav {
   font-weight: bold;
   margin-bottom: 90px;
 }
+
+.hidden-on-load {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.show-on-scroll {
+  opacity: 1;
+  visibility: visible;
+}
