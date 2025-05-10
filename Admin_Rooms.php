@@ -33,6 +33,7 @@ if (isset($_POST['Update'])) {
         $errorMsg[] = "Error updating room details: " . $stmt->error;
     }
     $stmt->close();
+
 }
 
 
@@ -46,13 +47,17 @@ if (isset($_POST['Update'])) {
     <title>Document</title>
 </head>
 <body>
-<?php
-    foreach ($rooms as $room) {
-        echo "<div onclick=\"populateFields('" . addslashes($room['RoomName']) . "', '" . addslashes($room['RoomAccomodation']) . "', '" . addslashes($room['Beds']) . "', '" . addslashes($room['Utilities']) . "', '" . $room['RaSid'] . "')\">";
-        echo "<h2>" . htmlspecialchars($room['RoomName']) . "</h2>";
-        echo "</div>";
-    }
-?>
+    <table>
+    <th>Room Names</th>
+    <?php
+        foreach ($rooms as $room) {
+            echo "<tr onclick=\"populateFields('" . addslashes($room['RoomName']) . "', '" . addslashes($room['RoomAccomodation']) . "', '" . addslashes($room['Beds']) . "', '" . addslashes($room['Utilities']) . "', '" . $room['RaSid'] . "')\">";
+            echo "<td>". htmlspecialchars($room['RoomName']) ."</td>";
+            echo "</tr>";
+        }
+    ?>
+    </table>
+
 <div>
     <form action="" method="post">
         <h2 id="roomName">Room Name</h2>
@@ -75,7 +80,13 @@ if (isset($_POST['Update'])) {
             <button type="submit" name="Update">Update</button>
         </div>
     </form>
+
+    <td>
+        
+    </td>
 </div>
+
+
 
 <script>
     function populateFields(roomName, capacity, beds, utilities, roomID) {
