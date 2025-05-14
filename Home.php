@@ -22,6 +22,7 @@
       $conn->query("CREATE DATABASE $dbname");
   }
 
+  // Connect to the database
   $conn = new mysqli($servername, $dbuser, $password, $dbname);
 
   // Create UserAccount table if not exists
@@ -35,6 +36,7 @@
       Birthday DATE
   )");
 
+  // Insert default admin accounts if table is empty
   if($conn->query("SELECT COUNT(*) FROM UserAccount")->fetch_row()[0] == 0) {
     $conn->query("INSERT INTO UserAccount (Fname, Lname, username, password, usertype, Birthday) VALUES (
     'John', 'Doe', 'Admin1', '" . password_hash('admin1', PASSWORD_BCRYPT) . "', 'Admin', '1990-01-01')");
@@ -42,6 +44,8 @@
     $conn->query("INSERT INTO UserAccount (Fname, Lname, username, password, usertype, Birthday) VALUES (
     'Jane', 'Doe', 'Admin2', '" . password_hash('admin2', PASSWORD_BCRYPT) . "', 'Admin', '1990-01-01')");
   }
+
+  // Create RoomsandSuites table if not exists
   $conn->query("CREATE TABLE IF NOT EXISTS RoomsandSuites (
       RaSid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
       Img VARCHAR(300) NOT NULL,
@@ -53,6 +57,7 @@
       Utilities VARCHAR(100) NOT NULL
   )");
 
+  // Insert default room data if table is empty
   if ($conn->query("SELECT COUNT(*) FROM RoomsandSuites")->fetch_row()[0] == 0) {
       $conn ->query("Insert into RoomsandSuites (Img, RoomName, RoomDesc, RoomSize, RoomAccomodation, Beds, Utilities)
       values ('https://static-new.lhw.com/HotelImages/Final/LW6003/lw6003_28072680_960x540.jpg',
@@ -91,7 +96,7 @@
       '70 sqm', '2 adults, 2 children', '2 King Bed + 2 Single Beds', 'Aircon, Multiple Smart TVs, Kitchenette, Dining Area, Jacuzzi, Private Garden, Butler Service')");
   }
 
-
+  // Create Rooms table if not exists
   $conn->query("CREATE TABLE IF NOT EXISTS Rooms (
       RoomID INT UNSIGNED PRIMARY KEY,
       Price DECIMAL(10, 2) NOT NULL,
@@ -101,7 +106,7 @@
       Avail VARCHAR(50) NOT NULL DEFAULT 'Available'
   )");
 
-
+  // Insert default room data if table is empty
   if($conn->query("SELECT COUNT(*) FROM Rooms")->fetch_row()[0] == 0) {
     for($i = 1; $i <= 60; $i++) {
       if($i <=5){
@@ -143,6 +148,7 @@
     }
   }
 
+  // Create MyReservation table if not exists
   $conn->query("CREATE TABLE IF NOT EXISTS MyReservation (
       ReservationID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
       UserID INT UNSIGNED NOT NULL,
@@ -166,12 +172,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
-    
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
