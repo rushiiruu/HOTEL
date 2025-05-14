@@ -30,12 +30,18 @@
     <div id="sideMenu" class="side-menu">
 
   <!-- User icon and name at the top -->
+   
   <div class="user-info">
-    <i class="bi bi-person-circle" id="user-icon"></i>
+    <a href="UserAccount.php">
+    <i class="bi bi-person-circle" id="user-icon">
+    </i>
+  </a> 
     <span class="username">
       <?php echo $username ? htmlspecialchars($username) : "Guest"; ?>
     </span>
   </div>
+
+
 
   <!-- Close button -->
   <button class="close-menu" onclick="toggleMenu()">

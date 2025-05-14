@@ -33,25 +33,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Charts -->
     <script src="https://www.gstatic.com/charts/loader.js"></script>
-  
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Satisfy&display=swap"
+      rel="stylesheet"
+    />
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
         }
-        .navbar {
-            background-color: #343a40;
-        }
-        .navbar-brand {
-            font-weight: bold;
-            color: #fff;
-        }
+        
         .chart-container {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin-bottom: 30px;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
         }
         .chart-title {
             color: #343a40;
@@ -63,6 +68,12 @@
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .footer {
             background-color: #343a40;
@@ -70,93 +81,74 @@
             padding: 20px 0;
             margin-top: 30px;
         }
-
+        .dashboard-header {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            margin-top: 150px;
+        }
+        .dashboard-title {
+            color: #343a40;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .social-icons a {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #17a2b8 !important;
+        }
     </style>
+    
 </head>
 <body>
-
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-        <a class="navbar-brand" href="#">La Ginta Real</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php"><i class="fas fa-home"></i> Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="rooms.php"><i class="fas fa-bed"></i> Rooms</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="reservation.php"><i class="fas fa-calendar-check"></i> Reservations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#"><i class="fas fa-chart-bar"></i> Analytics</a>
-                </li>
-                <?php if ($username): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="profile.php"><i class="fas fa-user"></i> <?php echo $username; ?></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </li>
-                <?php else: ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.php"><i class="fas fa-sign-in-alt"></i> Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="register.php"><i class="fas fa-user-plus"></i> Register</a>
-                </li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include 'Admin_Navbar.php'; ?>
 
 <!-- Main Content -->
 <div class="container py-5">
-    <div class="row mb-4">
-        <div class="col">
-            <h2 class="text-center mb-4">Reservation Analytics Dashboard</h2>
-            <p class="text-center text-muted">View comprehensive statistics on room reservations, user bookings, and popular dates.</p>
-        </div>
+    <div class="dashboard-header">
+        <h2 class="dashboard-title">Reservation Analytics Dashboard</h2>
+        <p class="text-muted">View comprehensive statistics on room reservations, user bookings, and popular dates.</p>
     </div>
 
     <div class="row">
-        <div class="col-md-12 mb-4">
+        <!-- First row with two charts side by side -->
+        <div class="col-md-6 mb-4">
             <div class="chart-container">
                 <h4 class="chart-title"><i class="fas fa-bed me-2"></i>Reservations per Room</h4>
-                <div id="Rooms" style="height: 400px;"></div>
+                <div id="Rooms" style="height: 350px;"></div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 mb-4">
+        
+        <div class="col-md-6 mb-4">
             <div class="chart-container">
                 <h4 class="chart-title"><i class="fas fa-users me-2"></i>Reservations by Users</h4>
-                <div id="Users" style="height: 400px;"></div>
+                <div id="Users" style="height: 350px;"></div>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-12 mb-4">
+        <!-- Second row with one chart taking full width -->
+        <div class="col-md-12 mb-6">
             <div class="chart-container">
                 <h4 class="chart-title"><i class="fas fa-calendar me-2"></i>Reservations Per Check-In Date</h4>
-                <div id="Dates" style="height: 400px;"></div>
+                <div id="Dates" style="height: 650px;"></div>
             </div>
         </div>
     </div>
     
-    <div class="row mt-4">
-        <div class="col-md-12 text-center">
-            <a href="reservation.php" class="btn btn-primary"><i class="fas fa-arrow-left me-2"></i>Back to Reservations</a>
-        </div>
-    </div>
+   
 </div>
 
 <!-- Footer -->
@@ -181,6 +173,13 @@
     google.charts.setOnLoadCallback(ReservationPerRoom);
     google.charts.setOnLoadCallback(ReservationPerUsers);
     google.charts.setOnLoadCallback(ReservationPerDates);
+
+    // Reset chart size on window resize for responsiveness
+    window.addEventListener('resize', function() {
+        ReservationPerRoom();
+        ReservationPerUsers();
+        ReservationPerDates();
+    });
 
     function ReservationPerRoom() {
         // PHP to dynamically generate the data array
@@ -208,8 +207,13 @@
             vAxis: {
                 title: 'Room Name'
             },
-            colors: ['#007bff'],
-            legend: { position: 'none' }
+            colors: ['#4e73df'],
+            legend: { position: 'none' },
+            animation: {
+                startup: true,
+                duration: 1000,
+                easing: 'out'
+            }
         };
 
         var chart = new google.visualization.BarChart(document.getElementById('Rooms'));
@@ -242,8 +246,13 @@
             vAxis: {
                 title: 'Username'
             },
-            colors: ['#28a745'],
-            legend: { position: 'none' }
+            colors: ['#1cc88a'],
+            legend: { position: 'none' },
+            animation: {
+                startup: true,
+                duration: 1000,
+                easing: 'out'
+            }
         };
 
         var chart = new google.visualization.BarChart(document.getElementById('Users'));
@@ -262,28 +271,11 @@
                     $count = $result->fetch_assoc()['count'];
                     echo "['" . $checkInDate . "', " . $count . "],";
                 }
-
-            ?>
-        ]);
             } else {
                 echo "['No Data', 0],";
             }
         ?>
     ]);
-
-    var options = {
-        title: 'Reservations Per Check-In Date',
-        chartArea: {width: '50%'},
-        hAxis: {
-            title: 'Check-In Date',
-            slantedText: true, // Optional: Slant text for better readability
-            slantedTextAngle: 45 // Optional: Adjust angle of slanted text
-        },
-        vAxis: {
-            title: 'Number of Reservations',
-            minValue: 0
-        }
-    };
 
         var options = {
             title: 'Reservations Per Check-In Date',
@@ -297,8 +289,13 @@
                 title: 'Number of Reservations',
                 minValue: 0
             },
-            colors: ['#fd7e14'],
-            legend: { position: 'none' }
+            colors: ['#f6c23e'],
+            legend: { position: 'none' },
+            animation: {
+                startup: true,
+                duration: 1000,
+                easing: 'out'
+            }
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('Dates'));
