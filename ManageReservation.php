@@ -59,60 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
   </head>
   <body>
-    
-  <nav id="navbar" class="scrolled">
-
-  <a href="#" class="menu-icon" onclick="toggleMenu()">
-        <i class="bi bi-list" id="menu"></i>
-      </a>
-
-      <a href="#" class="hotel-name">
-        LA GINTA REAL
-        <span class="hotel-location">PHILIPPINES</span>
-      </a>
-
-      <div class="nav-right">
-        <a href="ManageReservation.php">MY RESERVATION</a>
-        <a href="Rooms&Suites.php">BOOK</a>
-      </div>
-    </nav>
-    <div id="sideMenu" class="side-menu">
-
-  <!-- User icon and name at the top -->
-  <div class="user-info">
-    <i class="bi bi-person-circle" id="user-icon"></i>
-    <span class="username">
-      <?php echo $username ? htmlspecialchars($username) : "Guest"; ?>
-    </span>
-  </div>
-
-  <!-- Close button -->
-  <button class="close-menu" onclick="toggleMenu()">
-    <i class="bi bi-x"></i>
-  </button>
-
-  <!-- Navigation menu -->
-  <ul>
-    <li><a href="Home.php">Home</a></li>
-    <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
-    <li><a href="#">Exclusive Offers</a></li>
-    <li><a href="AboutUs.php">About Us</a></li>
-    <li><a href="#">Contact Us</a></li>
-    <li><a href="ManageReservation.php">My Reservation</a></li>
-  </ul>
-
-  <!-- Login/Logout at the bottom -->
-  <div class="side-menu-bottom">
-    <?php if ($username): ?>
-      <a href="Logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a>
-    <?php else: ?>
-      <a href="Login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a>
-    <?php endif; ?>
-  </div>
-</div>
-
-
-    
+  <?php include 'NavbarNoBack.php'; ?>
+  
 <div class="reservation-container">
   <h2>My Reservations</h2>
   <table class="reservation-table">
