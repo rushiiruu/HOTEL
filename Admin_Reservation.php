@@ -125,7 +125,7 @@ if (isset($_POST['searchReservation'])) {
     <title>Manage Reservations</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
+            --primary-color:rgb(0, 0, 0);
             --secondary-color: #3498db;
             --accent-color: #e74c3c;
             --success-color: #2ecc71;
@@ -150,12 +150,13 @@ if (isset($_POST['searchReservation'])) {
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 0 auto;
             padding: 20px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             border-radius: var(--border-radius);
+            margin-top: 150px;
         }
         
         h1, h2 {
@@ -288,6 +289,7 @@ if (isset($_POST['searchReservation'])) {
     </style>
 </head>
 <body>
+<?php include 'Admin_Navbar.php'; ?>
   
 <div class="container">
     <h1>Manage Reservations</h1>

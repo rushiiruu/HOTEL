@@ -22,7 +22,6 @@
       $beds = $_POST['beds'];
       $utilities = $_POST['utilities'];
 
-
       // Update the room details in the database
       $stmt = $conn->prepare("UPDATE RoomsandSuites SET RoomAccomodation = ?, Beds = ?, Utilities = ? WHERE RaSid = ?");
       $stmt->bind_param("sssi", $capacity, $beds, $utilities, $roomID);
@@ -61,6 +60,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room Management - Luxe Hotels</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Satisfy&display=swap"
+      rel="stylesheet"
+    />
     <style>
         * {
             box-sizing: border-box;
@@ -76,17 +81,18 @@
         }
 
         .container {
-            width: 90%;
-            max-width: 1200px;
+            width: 95%;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
         header {
-            background: linear-gradient(to right, #1a1a1a, #333);
+            
             color: #fff;
             padding: 20px 0;
             margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -99,6 +105,7 @@
             font-size: 24px;
             font-weight: bold;
             letter-spacing: 1px;
+            color: #c8a97e;
         }
 
         .user-info {
@@ -123,28 +130,41 @@
             background-color: #b89b6f;
         }
 
-        .room-management {
-            display: flex;
-            gap: 30px;
+        h1 {
+            margin-bottom: 20px;
+            color: #343a40;
+            font-size: 28px;
+            border-bottom: 2px solid #c8a97e;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
             margin-top: 20px;
         }
 
-        .room-list {
-            flex: 1;
+        .panel {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            max-height: 600px;
-            overflow-y: auto;
+            height: fit-content;
         }
 
-        .room-list h3 {
+        .panel h3 {
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 1px solid #eee;
             color: #333;
             font-size: 18px;
+        }
+
+        .room-list {
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .room-item {
@@ -154,6 +174,7 @@
             border-left: 4px solid #c8a97e;
             cursor: pointer;
             transition: all 0.3s ease;
+            border-radius: 4px;
         }
 
         .room-item:hover {
@@ -166,17 +187,15 @@
             margin-bottom: 5px;
         }
 
-        .edit-form {
-            flex: 2;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 25px;
+        .room-item h6 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
         }
 
         .edit-form h2 {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
             border-bottom: 1px solid #eee;
             color: #333;
             font-size: 22px;
@@ -193,17 +212,19 @@
             color: #555;
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
+            transition: all 0.3s ease;
         }
 
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: #c8a97e;
             outline: none;
+            box-shadow: 0 0 5px rgba(200, 169, 126, 0.3);
         }
 
         .btn {
@@ -215,10 +236,20 @@
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .btn:hover {
             background-color: #b89b6f;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color:rgb(0, 0, 0);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
 
         .alert {
@@ -238,10 +269,70 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        .room-availability {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .room-availability select {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .room-availability button {
+            flex-shrink: 0;
+        }
+
+        .room-details-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c8a97e;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b89b6f;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 2fr;
+            }
+            .room-details {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .room-list, .edit-form, .room-details {
+                grid-column: span 1;
+            }
+        }
     </style>
 </head>
 <body>
-
+    <?php include 'Admin_Navbar.php'; ?>
     <header>
         <div class="container">
             <div class="header-content">
@@ -277,18 +368,22 @@
             </div>
         <?php endif; ?>
         
-        <div class="room-management">
-            <div class="room-list">
-                <h3>Select a Room to Edit</h3>
-                <?php foreach ($rooms as $room): ?>
-                    <div class="room-item" onclick="populateFields('<?php echo addslashes($room['RoomName']); ?>', '<?php echo addslashes($room['RoomAccomodation']); ?>', '<?php echo addslashes($room['Beds']); ?>', '<?php echo addslashes($room['Utilities']); ?>', '<?php echo $room['RaSid']; ?>')">
-                        <h4><?php echo htmlspecialchars($room['RoomName']); ?></h4>
-                    </div>
-                <?php endforeach; ?>
+        <div class="dashboard-grid">
+            <!-- Room Selection Panel -->
+            <div class="panel">
+                <h3><i class="fas fa-door-open"></i> Room Selection</h3>
+                <div class="room-list">
+                    <?php foreach ($rooms as $room): ?>
+                        <div class="room-item" onclick="populateFields('<?php echo addslashes($room['RoomName']); ?>', '<?php echo addslashes($room['RoomAccomodation']); ?>', '<?php echo addslashes($room['Beds']); ?>', '<?php echo addslashes($room['Utilities']); ?>', '<?php echo $room['RaSid']; ?>')">
+                            <h4><?php echo htmlspecialchars($room['RoomName']); ?></h4>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
             
-            <div class="edit-form">
-                <h2 id="roomName">Select a Room from the List</h2>
+            <!-- Edit Form Panel -->
+            <div class="panel edit-form">
+                <h2 id="roomName">Select a Room to Edit</h2>
                 <form action="" method="post">
                     <div class="form-group">
                         <label for="capacity"><i class="fas fa-users"></i> Capacity</label>
@@ -311,47 +406,55 @@
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="room-list">
-            <h3>Room Details</h3>
-            <h2 >Select a Room from the List</h2>
-            <form action="" method="post">
-                <input type="hidden" name="roomlistID" id="roomlistID">
-                <button type = 'submit' name = 'query'>Search for rooms</button>
-            </form>
-            
-            <?php 
-                if (isset($_POST['query'])) {
-                    $listID = isset($_POST['roomlistID']) ? $_POST['roomlistID'] : 0;
 
-                    $stmt = $conn->prepare("SELECT * FROM rooms WHERE RaSid = ?");
-                    $stmt->bind_param("i", $listID);
-                    $stmt->execute();
-                    $roomlist = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-                    $stmt->close();
+            <!-- Room Details Panel -->
+            <div class="panel room-details">
+                <h3><i class="fas fa-list-alt"></i> Room Details</h3>
+                <form action="" method="post" class="form-group">
+                    <input type="hidden" name="roomlistID" id="roomlistID">
+                    <button type="submit" name="query" class="btn btn-secondary">
+                         View Room Availability
+                    </button>
+                </form>
+                
+                <div class="room-details-list">
+                    <?php 
+                        if (isset($_POST['query'])) {
+                            $listID = isset($_POST['roomlistID']) ? $_POST['roomlistID'] : 0;
 
-                    if ($roomlist) {
-                        foreach ($roomlist as $room) {
-                            echo "<form action='' method='post'>";
-                            echo "<div class='room-item' onclick='roomFields(\"{$room['Avail']}\")'>";
-                            echo "<h4>Room ID: {$room['RoomID']}</h4>";
-                            echo "<h6>Room Type: {$room['roomtype']}</h6>";
-                            echo "<input type='hidden' name='roomID' id='roomID' value='{$room['RoomID']}'>";
-                            echo "<select name='RoomAvail' id='RoomAvail'>";
-                            echo "<option value='Available'" . ($room['Avail'] === 'Available' ? " selected" : "") . ">Available</option>";
-                            echo "<option value='Not Available'" . ($room['Avail'] === 'Not Available' ? " selected" : "") . ">Not Available</option>";
-                            echo "</select>";
-                            echo "<button type='submit' name='UpdateAvail'>Change</button>";
-                            echo "</div>"; 
-                            echo "</form>";     
+                            $stmt = $conn->prepare("SELECT * FROM rooms WHERE RaSid = ?");
+                            $stmt->bind_param("i", $listID);
+                            $stmt->execute();
+                            $roomlist = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+                            $stmt->close();
+
+                            if ($roomlist) {
+                                foreach ($roomlist as $room) {
+                                    echo "<form action='' method='post'>";
+                                    echo "<div class='room-item'>";
+                                    echo "<h4>Room ID: {$room['RoomID']}</h4>";
+                                    echo "<h6>Room Type: {$room['roomtype']}</h6>";
+                                    echo "<div class='room-availability'>";
+                                    echo "<input type='hidden' name='roomID' value='{$room['RoomID']}'>";
+                                    echo "<select name='RoomAvail' id='RoomAvail'>";
+                                    echo "<option value='Available'" . ($room['Avail'] === 'Available' ? " selected" : "") . ">Available</option>";
+                                    echo "<option value='Not Available'" . ($room['Avail'] === 'Not Available' ? " selected" : "") . ">Not Available</option>";
+                                    echo "</select>";
+                                    echo "<button type='submit' name='UpdateAvail' class='btn'>Update</button>";
+                                    echo "</div>";
+                                    echo "</div>"; 
+                                    echo "</form>";     
+                                }
+                            } else {
+                                echo "<div class='alert alert-info'>No rooms found for this selection.</div>";
+                            }
+                        } else {
+                            echo "<div class='alert alert-info'>Select a room type first to view its availability details.</div>";
                         }
-                    } else {
-                        echo "No rooms found or an error occurred.";
-                    }
-                }
-            ?>
-        
-
+                    ?>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -364,11 +467,5 @@
             document.getElementById('roomlistID').value = roomID;
         }
     </script>
-
-    </form>
-    <td>
-    </td>
-</div>
-
 </body>
 </html>
