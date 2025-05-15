@@ -52,7 +52,6 @@ rel="stylesheet"
     <li><a href="Home.php">Home</a></li>
     <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
     <li><a href="AboutUs.php">About Us</a></li>
-    <li><a href="#">Contact Us</a></li>
     <li><a href="ManageReservation.php">My Reservation</a></li>
   </ul>
 

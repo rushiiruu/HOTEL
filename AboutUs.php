@@ -57,7 +57,8 @@
 
 At Hotel La Ginta Real, we believe that true hospitality means creating moments that stay with you long after you leave.</p>
 
-      
+    
+<?php include 'Footer.php'; ?>
     
     <script>
         // Menu Toggle Functionality

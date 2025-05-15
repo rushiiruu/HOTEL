@@ -166,7 +166,7 @@
 ?>
 
 
-<!DOCTYPE html
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -184,18 +184,19 @@
     />
     <link rel= "stylesheet" href="styles/Home.css">
   </head>
+
   <body>
-    <script src="Home.js"></script>
+    <script src="scripts/Home.js"></script>
     <?php include 'Navbar.php'; ?>
 
-
+    <main>
     <img
       src="https://www.outthere.travel/wp-content/uploads/2019/07/LM2_FIN.jpg"
       class="main-image"
       alt="bg"
     />
 
-    <div class="centered-title show-on-scroll">
+    <section class="centered-title show-on-scroll">
       <img
         src="icons/logo-2.png"
         alt="Logo"
@@ -203,25 +204,28 @@
       />
       <h1>LA GINTA REAL</h1>
       <h2>PHILIPPINES</h2>
-    </div>
+    </section>
 
     <span class="span-menu">
       <a href="Home.php">LA GINTA REAL</a>
       <a href="Rooms&Suites.php">ROOMS & SUITES</a>
       <a href="AboutUs.php">ABOUT US</a>
     </span>
+
     <div class="long-line"></div>
 
-    <h2 class="hotel-desc">
-      True to its singular identity, <br />La Ginta Real is constantly
-      reinventing itself, fashioning a unique magic woven <br />
-      of elegance and exception.
-    </h2>
-    <img
-      src="https://northafricapost.com/wp-content/uploads/2018/11/la-mamounia-hotel.jpg"
-      alt=""
-      class="second-image"
-    />
+    <section>
+      <h2 class="hotel-desc">
+        True to its singular identity, <br />La Ginta Real is constantly
+        reinventing itself, fashioning a unique magic woven <br />
+        of elegance and exception.
+      </h2>
+      <img
+        src="https://northafricapost.com/wp-content/uploads/2018/11/la-mamounia-hotel.jpg"
+        alt=""
+        class="second-image"
+      />
+    </section>
     <section class="accommodations-container">
       <div class="accommodations-desc">
         <h3 class="acc-desc-title">
@@ -237,9 +241,10 @@
           softness of velvet and leather, the contours of sculpted plaster and
           zellige tilework, the freshness of cool marble.
         </p>
+        <a href="Rooms&Suites.php">
         <button class="acc-button">ROOMS & SUITES</button>
+        </a>
       </div>
-
       <div class="accommodations-image">
         <img
           src="https://www.telegraph.co.uk/content/dam/Travel/hotels/africa/morocco/marrakech/la-mamounia-marrakech-bedroom-2.jpg"
@@ -248,58 +253,38 @@
         />
       </div>
   </section>
-<!-- Exclusive Offers Section -->
+
 <section class="exclusive-offers">
   <h2 style="text-align: center; color: #781924; font-size: 2.5rem; margin-bottom: 40px;">What makes La Ginta Real so unique in their eyes?  </h2>
   <p>An art of living inherited from a long tradition of care and attention. A unique atmosphere perfumed with the delicate scent of Moroccan dates. Welcoming smiles and thoughtful touches.
-
   <br><br>A sense of hospitality that translates into a thousand and one details. From your first visit, we remember your preferences: your ideal room temperature, your favourite coffee, the drinks and dishes you like...
-
   <br><br> So, we know not only what will please you during your next stay, but also what will surprise you and make you want to come back for an experience that is always fresh and new. </p>
 </section>
 
-
 <section class="accommodations-container">
-      
-
-      <div class="accommodations-image">
-      <img
-      src="https://mamounia.com/media/cache/jadro_resize/rc/in9iLpVz1743575366/jadroRoot/medias/653fcee154467/6540e50e0c796/6540e5783a736/accueil-entree.jpeg"
-      alt=""
-      class="acc-image"
+  <div class="accommodations-image">
+    <img
+    src="https://mamounia.com/media/cache/jadro_resize/rc/in9iLpVz1743575366/jadroRoot/medias/653fcee154467/6540e50e0c796/6540e5783a736/accueil-entree.jpeg"
+    alt=""
+    class="acc-image"
     />
-      </div>
-      <div class="accommodations-desc">
-        <h2 class="acc-desc-title">
-        To return to La Ginta Real time and time again
-        </h2>
-        <p class="acc-desc">
-        We are both honoured and inspired to have been nominated the best hotel in the world on several occasions.<br><br>
+  </div>
+  <div class="accommodations-desc">
+    <h2 class="acc-desc-title">
+    To return to La Ginta Real time and time again
+    </h2>
+    <p class="acc-desc">
+      We are both honoured and inspired to have been nominated the best hotel in the world on several occasions.<br><br>
       Our excellence is the result of tireless endeavour, the unfailing commitment of our 800 employees, constant self-questioning, and innovations that are daring yet respectful of the past. This is how La Mamounia remains a place of legend that moves with the times while always remaining in tune with the here and now.<br><br>
       Our greatest reward is the loyalty of our customers, who love coming back here because they are made to feel so at home.<br />
-         
-        </p>
-        <button class="acc-button">BOOK A STAY</button>
-      </div>
-  </section>
+    </p>
+    <a href="Rooms&Suites.php">
+    <button class="acc-button">BOOK A STAY</button>
+    </a>
+  </div>
+</section>
 
+<?php include 'Footer.php'; ?>
 
-  <footer>
-    <div class="footer-container">
-      <div class="footer-logo">
-        <img src="icons/logo-login (1).png" class="footer-logo-img" alt="">
-        <h1>LA GINTA REAL</h1>
-        <h3>PHILIPPINES</h3>
-      </div>
-      <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact Us</a>
-      </div>
-    </div>
-    <p>&copy; 2023 La Ginta Real. All rights reserved.</p>
-  </footer>
-
-  
-  </body>
+</body>
 </html>

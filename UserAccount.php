@@ -100,187 +100,12 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     />
-    <style>
-        :root {
-            --primary-color: #4a6fa5;
-            --primary-hover:rgb(15, 17, 20);
-            --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --white: #fff;
-            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --border-radius: 8px;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            margin-top: 150px;
-        }
-        
-        .card {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-        }
-        
-        .card-header h2 {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            margin: 0;
-        }
-        
-        .card-header i {
-            font-size: 1.5rem;
-            margin-right: 0.75rem;
-            color: var(--primary-color);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0 -0.5rem;
-        }
-        
-        .form-col {
-            flex: 1;
-            padding: 0 0.5rem;
-            min-width: 250px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark-color);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            font-size: 1rem;
-            border: 1px solid #ced4da;
-            border-radius: var(--border-radius);
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
-            outline: 0;
-        }
-        
-        .btn {
-            display: inline-block;
-            font-weight: 500;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: var(--border-radius);
-            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-            text-decoration: none;
-        }
-        
-        .btn-primary {
-            color: var(--white);
-            background-color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-            border-color: var(--primary-hover);
-        }
-        
-        .btn-secondary {
-            color: var(--white);
-            background-color: var(--secondary-color);
-            border: 1px solid var(--secondary-color);
-        }
-        
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
-        }
-        
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .alert {
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: var(--border-radius);
-        }
-        
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .alert-danger {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .required-field::after {
-            content: "*";
-            color: var(--danger-color);
-            margin-left: 0.25rem;
-        }
-        
-        .password-toggle {
-            position: relative;
-        }
-        
-        .password-toggle i {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--secondary-color);
-        }
-
-
-    </style>
+    <link rel="stylesheet" href="styles/User.css">
 </head>
 <body>
   <?php include 'NavbarNoBack.php'; ?>
     
-    <div class="container">
+    <section class="container">
         <div class="card">
             <div class="card-header">
                 <i class="fas fa-user-edit"></i>
@@ -343,19 +168,9 @@
                 </div>
             </form>
         </div>
-    </div>
-    <script>
-        // Form validation
-        document.getElementById('account-form').addEventListener('submit', function(event) {
-            const fname = document.getElementById('Fname').value.trim();
-            const lname = document.getElementById('Lname').value.trim();
-            const username = document.getElementById('username').value.trim();
-            
-            if (fname === '' || lname === '' || username === '') {
-                event.preventDefault();
-                alert('Please fill in all required fields.');
-            }
-        });
-    </script>
+    </section>
+   
+    <?php include 'Footer.php'; ?>
+     <script src = "scripts/User.js">
 </body>
 </html>
