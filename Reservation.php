@@ -1,4 +1,11 @@
 <?php
+/**
+ * Purpose:
+ *   - Displays all available rooms and suites for the hotel.
+ *   - Allows users to browse, search, and view details for each room or suite.
+ *   - Provides a "BOOK NOW" button for each room, redirecting users to the reservation page.
+ *   - Fetches room data dynamically from the 'roomsandsuites' table in the database.
+ */
 session_start();
 
 // Database connection configuration
@@ -157,11 +164,13 @@ if (isset($_POST['reserve'])) {
             $stmt->bind_param("iiissiii", $UserID, $roomForReserve, $room_id, $checkin, $checkout, $adults, $children, $totalPrice);
             $stmt->execute();
             $stmt->close();
+
             
             // Set the success flag
             $reservation_success = true;
         } else {
-            $error_message = "No available rooms for the selected dates or room type. Please choose different dates or room type.";
+            $_SESSION['Error'] = "No available rooms for the selected dates or room type. Please choose different dates or room type.";
+            include 'ErrorModule.php';
         }
     }
 }
@@ -490,40 +499,41 @@ if (isset($_POST['reserve'])) {
      * Populates the summary and hidden form fields.
      */
     function showSidebarSummary() {
-      alert('hi');
-      closeModal();
+  // Close the confirmation modal
+  closeModal();
 
-      // Collect data from form
-      const checkin = document.getElementById('checkin').value;
-      const checkout = document.getElementById('checkout').value;
-      const roomType = document.getElementById('room-type').value;
-      const adults = document.getElementById('adult-count').innerText;
-      const children = document.getElementById('child-count').innerText;
-      const total = document.getElementById('calculated-price').innerText.replace('₱', '');
+  // Collect data from form
+  const checkin = document.getElementById('checkin').value;
+  const checkout = document.getElementById('checkout').value;
+  const roomType = document.getElementById('room-type').value;
+  const adults = document.getElementById('adult-count').innerText;
+  const children = document.getElementById('child-count').innerText;
+  const total = document.getElementById('calculated-price').innerText.replace('₱', '');
 
-      // Display in sidebar
-      document.getElementById('summary-checkin').innerText = checkin;
-      document.getElementById('summary-checkout').innerText = checkout;
-      document.getElementById('summary-room').innerText = roomType;
-      document.getElementById('summary-adults').innerText = adults;
-      document.getElementById('summary-children').innerText = children;
-      document.getElementById('summary-total').innerText = total;
+  // Display in sidebar
+  document.getElementById('summary-checkin').innerText = checkin;
+  document.getElementById('summary-checkout').innerText = checkout;
+  document.getElementById('summary-room').innerText = roomType;
+  document.getElementById('summary-adults').innerText = adults;
+  document.getElementById('summary-children').innerText = children;
+  document.getElementById('summary-total').innerText = total;
 
-      // Populate hidden form inputs
-      document.getElementById('pay-checkin').value = checkin;
-      document.getElementById('pay-checkout').value = checkout;
-      document.getElementById('pay-room').value = roomType;
-      document.getElementById('pay-adults').value = adults;
-      document.getElementById('pay-children').value = children;
-      document.getElementById('pay-total').value = total;
+  // Populate hidden form inputs
+  document.getElementById('pay-checkin').value = checkin;
+  document.getElementById('pay-checkout').value = checkout;
+  document.getElementById('pay-room').value = roomType;
+  document.getElementById('pay-adults').value = adults;
+  document.getElementById('pay-children').value = children;
+  document.getElementById('pay-total').value = total;
 
-      // Show sidebar
-      document.getElementById('sidebar-summary').style.display = 'block';
-    }
+  // Show sidebar and position it correctly
+  const sidebar = document.getElementById('sidebar-summary');
+  sidebar.style.display = 'block';
+  sidebar.style.right = '0'; // Move it into view
+}
 
-    /**
-     * Shows the reservation confirmation popup and hides it after 3 seconds.
-     */
+    
+    //Shows the reservation confirmation popup and hides it after 3 seconds.
     function showReservationPopup() {
       const popup = document.getElementById('reservation-popup');
       popup.style.display = 'block';

@@ -1,4 +1,12 @@
 <?php
+  /**
+   * Purpose:
+   *   - Allows logged-in users to view and manage their hotel room reservations.
+   *   - Displays a list of upcoming reservations for the current user.
+   *   - Provides the ability to cancel reservations with confirmation.
+   *   - Shows a notification when a reservation is successfully cancelled.
+
+   */
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
@@ -17,8 +25,11 @@
   $stmt->execute();
   $userResult = $stmt->get_result();
   $userRow = $userResult->fetch_assoc();
+  if (!$userRow) {
+    include 'check_login.php';
+    exit;
+  }
   $UserID = $userRow['UserID'];
-  $stmt->close();
   
   // Handle cancel request
   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') {
@@ -28,13 +39,13 @@
     $stmt->bind_param("i", $roomIDToCancel);
     $stmt->execute();
     $stmt->close();
+    header("Location: " . $_SERVER['PHP_SELF'] . "?cancel=1");
     // Refresh to reflect the changes
-    header("Location: " . $_SERVER['PHP_SELF']);
     exit;
   }
 ?>
 
-<?php include 'check_login.php'; ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +119,7 @@
                     </div>
                     <div class="reservation-detail">
                       <span class="detail-label">Total Price</span>
-                      <span class="detail-value">$' . htmlspecialchars(number_format($price, 2)) . '</span>
+                      <span class="detail-value">₱' . htmlspecialchars(number_format($price, 2)) . '</span>
                     </div>
                   </div>
                   <footer class="card-footer">
@@ -125,7 +136,7 @@
                 <i class="bi bi-calendar-x"></i>
                 <h3>No Reservations Found</h3>
                 <p>You don\'t have any upcoming reservations. Browse our selection of rooms and suites to book your perfect stay.</p>
-                <a href="rooms.php" class="btn">Explore Rooms</a>
+                <a href="Rooms&Suites.php" class="btn">Explore Rooms</a>
               </div>';
             }
           ?>
@@ -146,10 +157,21 @@
           <input type="hidden" name="action" value="cancel">
           <input type="hidden" name="room_id" id="room-id-input">
           <button type="button" class="btn btn-outline" onclick="closeModal()">Keep Reservation</button>
-          <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+          <button type="submit" name = "cancel" class="btn btn-danger">Yes, Cancel</button>
         </div>
       </form>
     </dialog>
+
+    <?php if (isset($_GET['cancel'])): ?>
+      <div id="popup-notification" class="popupsucc" role="alert">
+        Reservation Successfully Cancelled
+      </div>
+      <script>
+        setTimeout(() => {
+          document.getElementById('popup-notification').style.opacity = '0';
+        }, 3000);
+      </script>
+    <?php endif; ?>
 
 
     <?php include 'Footer.php'; ?>

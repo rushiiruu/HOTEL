@@ -1,5 +1,12 @@
 
 <?php
+  /**
+   * Purpose:
+   *   - This page displays all available rooms and suites for La Ginta Real Hotel.
+   *   - Allows users to browse, search, and view details for each room or suite.
+   *   - Provides a "BOOK NOW" button for each room, redirecting users to the reservation page.
+   *   - Fetches room data dynamically from the 'roomsandsuites' table in the database.
+ */
   session_start();
   // Get the current username from session if logged in
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
@@ -51,13 +58,7 @@
       alt="bg"
     />
 
-    <span class="span-menu" >
-      <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
-      <a href="AboutUs.php">ABOUT US</a>
-    </span>
-
-    <div class="long-line"></div>
+       <?php include 'SpanMenu.php'; ?>
 
     <section class="search-section">
       <div class="search-container">

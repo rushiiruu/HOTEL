@@ -1,4 +1,12 @@
 <?php 
+    /**
+     * Purpose:
+     *   - Provides an admin dashboard for La Ginta Real Hotel.
+     *   - Displays analytics and statistics on room reservations, user bookings, and reservation dates.
+     *   - Visualizes data using Google Charts for easy interpretation.
+     *   - Allows administrators to monitor hotel performance and booking trends.
+     *   - Integrates with the database to fetch real-time reservation and user data.
+     */
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
@@ -39,76 +47,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Satisfy&display=swap"
       rel="stylesheet"
     />
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-        }
-        
-        .chart-container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 30px;
-            height: 100%;
-            transition: transform 0.3s ease;
-        }
-        .chart-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-        }
-        .chart-title {
-            color: #343a40;
-            font-weight: bold;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #0069d9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 20px 0;
-            margin-top: 30px;
-        }
-        .dashboard-header {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-            margin-top: 150px;
-        }
-        .dashboard-title {
-            color: #343a40;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        .social-icons a {
-            transition: transform 0.3s ease;
-            display: inline-block;
-        }
-        .social-icons a:hover {
-            transform: translateY(-3px);
-        }
-        .nav-link {
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: #17a2b8 !important;
-        }
-    </style>
+    <link rel="stylesheet" href="styles/Dashboard.css">
     
 </head>
 <body>
@@ -151,22 +90,9 @@
    
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container text-center">
-        <p>&copy; <?php echo date('Y'); ?> Hotel Reservation System. All rights reserved.</p>
-        <div class="social-icons">
-            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-    </div>
-</footer>
-
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+<footer>
+   © 2025 La Ginta Real Philippines. All rights reserved.
+    </footer>
 
 <script>
     google.charts.load('current', {packages: ['corechart', 'bar']});

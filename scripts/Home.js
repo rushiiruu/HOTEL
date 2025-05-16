@@ -1,5 +1,5 @@
 
-
+// Adds/removes 'scrolled' class to navbar when user scrolls past 50px
   window.addEventListener('scroll', function() {
     var navbar = document.querySelector('nav');
     
@@ -10,8 +10,7 @@
     }
   });
   
-
-
+// Handles showing/hiding the hotel name and main title based on scroll position
   window.addEventListener("scroll", () => {
     const scrollY = window.scrollY;
     const hotelName = document.querySelector(".hotel-name");
@@ -28,16 +27,19 @@
     }
   });
 
+// Toggles the visibility of the side menu
   function toggleMenu() {
     const sideMenu = document.getElementById("sideMenu");
     sideMenu.classList.toggle("show");
   }
 
-  
+// Opens the form popup by setting its display to 'block'
+
   function openForm() {
     document.getElementById("myForm").style.display = "block";
   }
   
+// Closes the form popup by setting its display to 'none'
   function closeForm() {
     document.getElementById("myForm").style.display = "none";
   }

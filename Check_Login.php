@@ -1,4 +1,11 @@
 <?php
+/**
+ * Purpose:
+ *   - Checks if a user is logged in by verifying the 'username' session variable.
+ *   - If not logged in, displays an overlay message prompting the user to log in.
+ *   - Prevents access to protected pages for unauthenticated users.
+ *   - Provides a button to redirect users to the Login page.
+ */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

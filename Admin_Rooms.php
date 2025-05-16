@@ -1,4 +1,11 @@
 <?php 
+/**
+ * Purpose:
+ *   - Provides an admin interface for managing hotel rooms and suites.
+ *   - Allows administrators to view, edit, and update room details (capacity, beds, utilities).
+ *   - Enables updating the availability status of individual rooms.
+ *   - Integrates with the database to fetch and update real-time room data.
+ */
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
   
@@ -311,24 +318,12 @@
             background: #b89b6f;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 1200px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr 2fr;
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 80px;
             }
-            .room-details {
-                grid-column: span 2;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            .room-list, .edit-form, .room-details {
-                grid-column: span 1;
-            }
-        }
     </style>
 </head>
 <body>
@@ -456,6 +451,9 @@
             </div>
         </div>
     </div>
+    <footer>
+   © 2025 La Ginta Real Philippines. All rights reserved.
+    </footer>
 
     <script>
         function populateFields(roomName, capacity, beds, utilities, roomID) {

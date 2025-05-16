@@ -1,4 +1,11 @@
 <?php
+/**
+ * Purpose:
+ *   - Provides login and signup functionality for La Ginta Real Hotel users.
+ *   - Allows users to log in with their credentials or create a new account.
+ *   - Handles authentication, session management, and redirects based on user type (Admin or Guest).
+ *   - Integrates with the UserAccount database table for user management.
+ */
 session_start();
 
 // Database connection configuration
@@ -35,7 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
 
   if ($result->num_rows > 0) {
         // Username taken
-        $errorMsg['signup'] = "Username already exists.";
+
+        $_SESSION['Error'] = "Username already exists.";
+        include 'ErrorModule.php';
     } else {
         // Hash password and insert new user
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -48,7 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
             exit();
         } else {
             // Error during account creation
-            $errorMsg['signup'] = "Error creating account.";
+            $_SESSION['Error'] = "Error creating account.";
+            include 'ErrorModule.php';
         }
     }
 }
@@ -85,11 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             }
         } else {
             // Incorrect password
-            $errorMsg['login'] = "Incorrect password.";
+            $_SESSION['Error'] = "Incorrect password.";
+            include 'ErrorModule.php';
         }
     } else {
         // Username not found
-        $errorMsg['login'] = "Username not found.";
+        $_SESSION['Error'] = "Username not found.";
+        include 'ErrorModule.php';
     }
 }
 ?>

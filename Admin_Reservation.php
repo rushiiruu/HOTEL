@@ -1,4 +1,14 @@
 <?php
+/**
+ * Purpose:
+ *   - Provides an admin interface for managing all hotel reservations.
+ *   - Allows administrators to view, search, update, and cancel reservations.
+ *   - Supports searching reservations by ID and viewing all reservations.
+ *   - Enables updating reservation dates and recalculating total price.
+ *   - Checks for date conflicts and prevents overlapping bookings.
+ *   - Integrates with the database to fetch and update real-time reservation data.
+ *   - Displays success and error messages for admin actions.
+ */
 session_start();
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
@@ -75,7 +85,7 @@ if (isset($_POST['showAllReservations'])) {
 }
 
 // Handle cancellations
-if (isset($_POST['cancel'])) {
+if (isset($_POST['confirmcancel'])) {
     $reservationID = $_POST['ReservationID'];
     $stmt = $conn->prepare("DELETE FROM MyReservation WHERE ReservationID = ?");
     $stmt->bind_param("i", $reservationID);
@@ -123,170 +133,7 @@ if (isset($_POST['searchReservation'])) {
 <head>
     <meta charset="UTF-8">
     <title>Manage Reservations</title>
-    <style>
-        :root {
-            --primary-color:rgb(0, 0, 0);
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --border-radius: 4px;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        body {
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: var(--border-radius);
-            margin-top: 150px;
-        }
-        
-        h1, h2 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--light-color);
-        }
-        
-        .alert {
-            padding: 10px 15px;
-            margin-bottom: 20px;
-            border-radius: var(--border-radius);
-            font-weight: bold;
-        }
-        
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            background-color: white;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: bold;
-        }
-        
-        tr:hover {
-            background-color: rgba(52, 152, 219, 0.1);
-        }
-        
-        input[type="date"], 
-        input[type="number"],
-        input[type="text"] {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
-            font-size: 14px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 8px 15px;
-            color: white;
-            background-color: var(--secondary-color);
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-        
-        .btn-update {
-            background-color: var(--secondary-color);
-        }
-        
-        .btn-cancel {
-            background-color: var(--accent-color);
-        }
-        
-        .btn-search {
-            background-color: var(--primary-color);
-        }
-        
-        .search-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .search-container input {
-            flex: 1;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 20px;
-            font-style: italic;
-            color: #777;
-        }
-
-        .section {
-            margin-bottom: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            table {
-                display: block;
-                overflow-x: auto;
-            }
-            
-            th, td {
-                padding: 8px 10px;
-            }
-            
-            .search-container {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles/A_Reservation.css">
 </head>
 <body>
 <?php include 'Admin_Navbar.php'; ?>
@@ -357,7 +204,7 @@ if (isset($_POST['searchReservation'])) {
                         </td>
                         <td>
                             <input type="hidden" name="ReservationID" value="<?= $row['ReservationID'] ?>">
-                            <button type="submit" name="cancel" class="btn btn-cancel" onclick="return confirm('Cancel this reservation?');">Cancel</button>
+                            <button type="button" name="cancel" class="btn btn-cancel" onclick="openModal(<?= $row['ReservationID'] ?>)">Cancel</button>
                         </td>
                     </form>
                 </tr>
@@ -365,7 +212,62 @@ if (isset($_POST['searchReservation'])) {
             </tbody>
         </table>
     <?php endif; ?>
+
+
 </div>
 </div>
+
+<dialog id="cancel-modal" class="modal">
+    <form method="POST" id="cancel-form" class="modal-content">
+    <div class="modal-header">
+        <h3><i class="bi bi-exclamation-triangle"></i> Cancel Reservation</h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to cancel this reservation? This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="ReservationID" id="reservation-id-input">
+        <input type="hidden" name="action" value="cancel">
+        <button type="button" class="btn btn-outline" onclick="closeModal()">Keep Reservation</button>
+        <button type="submit" name="confirmcancel" class="btn btn-cancel">Yes, Cancel</button>
+    </div>
+    </form>
+</dialog>
+
+<footer>
+   © 2025 La Ginta Real Philippines. All rights reserved.
+</footer>
+
+<script>
+        function openModal(reservationID) {
+        // Show the modal
+        const modal = document.getElementById('cancel-modal');
+        modal.style.display = 'flex';
+
+        // Set the reservation ID in the hidden input
+        const reservationIdInput = document.getElementById('reservation-id-input');
+        reservationIdInput.value = reservationID;
+    }
+
+    function closeModal() {
+        // Hide the modal
+        const modal = document.getElementById('cancel-modal');
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('cancel-modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
 </body>
 </html>

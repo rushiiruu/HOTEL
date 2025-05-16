@@ -237,3 +237,7 @@ nav {
   opacity: 1;
   visibility: visible;
 }
+
+.username {
+  margin-bottom: 40px;
+}

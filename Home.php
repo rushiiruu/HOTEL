@@ -1,5 +1,12 @@
 
 <?php
+/**
+ * Purpose:
+ *   - Serves as the landing page for La Ginta Real Hotel's website.
+ *   - Initializes the database and creates required tables and default data if they do not exist.
+ *   - Displays the hotel introduction, features, and unique selling points.
+ *   - Provides navigation to rooms, suites, and booking options.
+ */
   session_start();
   $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
@@ -206,13 +213,8 @@
       <h2>PHILIPPINES</h2>
     </section>
 
-    <span class="span-menu">
-      <a href="Home.php">LA GINTA REAL</a>
-      <a href="Rooms&Suites.php">ROOMS & SUITES</a>
-      <a href="AboutUs.php">ABOUT US</a>
-    </span>
+    <?php include 'SpanMenu.php'; ?>
 
-    <div class="long-line"></div>
 
     <section>
       <h2 class="hotel-desc">

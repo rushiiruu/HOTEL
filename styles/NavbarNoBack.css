@@ -1,3 +1,6 @@
+body{
+    font-family: "Cormorant Garamond", serif;
+}
 nav {
     position: fixed;
     top: 0;
@@ -23,6 +26,7 @@ nav img {
 nav a {
     color: white;
     text-decoration: none;
+    font-family: "Cormorant Garamond", serif;
     margin: 0 15px;
     font-size: 12px;
     font-weight: bold;
@@ -54,6 +58,8 @@ nav button {
     font-style: normal;
     text-align: center;
 }
+
+
 
 .hotel-location {
     display: block;
@@ -253,4 +259,4 @@ li {
     font-size: 20px;
     gap: 10px;
     font-weight: bold;
-    margin-bottom: 90px; }
+    margin-bottom: 120px; }

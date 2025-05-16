@@ -31,7 +31,7 @@
       <i class="bi bi-list" id="menu"></i>
     </a>
 
-    <a href="admin_dashboard.php" class="hotel-name">
+    <a href="Dashboard.php" class="hotel-name">
       LA GINTA REAL
       <span class="hotel-location">ADMIN PANEL</span>
     </a>

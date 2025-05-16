@@ -298,21 +298,27 @@ p {
   background-color: #e0e0e0;
 }
 
+
 .sidebar-summary {
   position: fixed;
   top: 0;
-  right: -400px;
+  right: -400px; /* Start off-screen */
   height: 100%;
   width: 400px;
   background-color: white;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition */
   display: flex;
   flex-direction: column;
   padding: 40px;
   box-sizing: border-box;
   overflow-y: auto;
+}
+
+/* Additional styles to ensure proper display */
+.sidebar-summary.show {
+  right: 0; /* Move into view when .show class is added */
 }
 
 .sidebar-summary.active {
@@ -411,7 +417,7 @@ p {
 }
 
 #reservation-popup {
-  background-color: #000000;
+  background-color: #27ae60;;
 }
 
 #error-popup {
@@ -420,10 +426,6 @@ p {
 
 .popup.active {
   bottom: 30px;
-}
-
-#reservation-popup {
-  background-color: #000000;
 }
 
 #error-popup {

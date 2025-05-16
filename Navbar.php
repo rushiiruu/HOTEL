@@ -54,6 +54,7 @@
     <li><a href="Rooms&Suites.php">Rooms & Suites</a></li>
     <li><a href="AboutUs.php">About Us</a></li>
     <li><a href="ManageReservation.php">My Reservation</a></li>
+    <li><a href="UserAccount.php">Account</a></li>
   </ul>
 
   <!-- Login/Logout at the bottom -->
